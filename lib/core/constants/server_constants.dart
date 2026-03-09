@@ -39,8 +39,17 @@ class ApiEndpoints {
   // Inventory
   static const String inventoryItems = 'inventory/items';
   static String inventoryItemById(String itemId) => 'inventory/items/$itemId';
+  static String inventoryItemAvailability(String itemId) =>
+      'inventory/items/$itemId/availability';
   static const String inventoryStock = 'inventory/stock';
   static const String inventoryStockAdjustments = 'inventory/stock/adjustments';
   static const String inventoryUnits = 'inventory/units';
   static const String inventoryLocations = 'inventory/locations';
+  static const String inventoryRecipes = 'inventory/recipes';
+  static String inventoryRecipeById(String recipeId) =>
+      'inventory/recipes/$recipeId';
+  static const String inventoryTransfers = 'inventory/transfers';
+  static String inventoryTransferStatus(String transferId) =>
+      'inventory/transfers/$transferId/status';
+  static const String inventoryOutOfStock = 'inventory/out-of-stock';
 }
