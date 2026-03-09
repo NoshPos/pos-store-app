@@ -39,6 +39,7 @@ class OrderRepository {
   Future<Either<Failure, List<Order>>> getOrders({
     required String storeId,
     String? status,
+    String? orderType,
   }) async {
     try {
       if (!await connectionChecker.isConnected) {
@@ -48,6 +49,9 @@ class OrderRepository {
       final params = <String, String>{'store_id': storeId};
       if (status != null) {
         params['status'] = status;
+      }
+      if (orderType != null) {
+        params['order_type'] = orderType;
       }
 
       final uri = _buildUri(ApiEndpoints.orders, params);
@@ -128,6 +132,63 @@ class OrderRepository {
       return const Left(Failure('No internet connection.'));
     } catch (e) {
       return Left(Failure('Failed to update order status: $e'));
+    }
+  }
+
+  Future<Either<Failure, Order>> getOrderById(String orderId) async {
+    try {
+      if (!await connectionChecker.isConnected) {
+        return const Left(Failure('No internet connection.'));
+      }
+
+      final uri = _buildUri(ApiEndpoints.orderById(orderId));
+      final response = await client.get(uri);
+
+      if (response.statusCode != 200) {
+        final message = parsePydanticError(response.body);
+        return Left(Failure(message, response.statusCode));
+      }
+
+      final order = Order.fromJson(
+        jsonDecode(response.body) as Map<String, dynamic>,
+      );
+      return Right(order);
+    } on SocketException {
+      return const Left(Failure('No internet connection.'));
+    } catch (e) {
+      return Left(Failure('Failed to fetch order: $e'));
+    }
+  }
+
+  Future<Either<Failure, Order>> cancelOrder({
+    required String orderId,
+    required String reason,
+  }) async {
+    try {
+      if (!await connectionChecker.isConnected) {
+        return const Left(Failure('No internet connection.'));
+      }
+
+      final uri = _buildUri(ApiEndpoints.orderCancel(orderId));
+      final response = await client.put(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'reason': reason}),
+      );
+
+      if (response.statusCode != 200) {
+        final message = parsePydanticError(response.body);
+        return Left(Failure(message, response.statusCode));
+      }
+
+      final order = Order.fromJson(
+        jsonDecode(response.body) as Map<String, dynamic>,
+      );
+      return Right(order);
+    } on SocketException {
+      return const Left(Failure('No internet connection.'));
+    } catch (e) {
+      return Left(Failure('Failed to cancel order: $e'));
     }
   }
 
