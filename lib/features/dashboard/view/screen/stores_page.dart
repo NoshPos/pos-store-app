@@ -459,5 +459,3 @@ class _EditStoreDialogState extends ConsumerState<_EditStoreDialog> {
     );
   }
 }
-
-
