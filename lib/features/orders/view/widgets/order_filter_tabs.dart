@@ -43,10 +43,10 @@ class OrderFilterTabs extends ConsumerWidget {
                   onSelected: (_) => ref
                       .read(orderStatusFilterProvider.notifier)
                       .select(entry.key),
-                  selectedColor:
-                      Theme.of(context).colorScheme.primaryContainer,
-                  checkmarkColor:
-                      Theme.of(context).colorScheme.onPrimaryContainer,
+                  selectedColor: Theme.of(context).colorScheme.primaryContainer,
+                  checkmarkColor: Theme.of(
+                    context,
+                  ).colorScheme.onPrimaryContainer,
                   labelStyle: TextStyle(
                     color: selectedStatus == entry.key
                         ? Theme.of(context).colorScheme.onPrimaryContainer
@@ -83,10 +83,12 @@ class OrderFilterTabs extends ConsumerWidget {
                   onSelected: (_) => ref
                       .read(orderTypeFilterProvider.notifier)
                       .select(entry.key),
-                  selectedColor:
-                      Theme.of(context).colorScheme.secondaryContainer,
-                  checkmarkColor:
-                      Theme.of(context).colorScheme.onSecondaryContainer,
+                  selectedColor: Theme.of(
+                    context,
+                  ).colorScheme.secondaryContainer,
+                  checkmarkColor: Theme.of(
+                    context,
+                  ).colorScheme.onSecondaryContainer,
                   labelStyle: TextStyle(
                     color: selectedType == entry.key
                         ? Theme.of(context).colorScheme.onSecondaryContainer
