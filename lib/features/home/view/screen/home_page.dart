@@ -5,6 +5,7 @@ import '../../viewmodel/home_viewmodel.dart';
 import '../../viewmodel/store_viewmodel.dart';
 import '../../../dashboard/view/screen/dashboard_page.dart';
 import '../../../help/view/screen/help_page.dart';
+import '../../../kot/view/screen/kot_page.dart';
 import '../../../orders/view/screen/orders_page.dart';
 import '../../../settings/view/screen/settings_page.dart';
 import '../widgets/order_line_section.dart';
@@ -28,6 +29,8 @@ class _HomePageState extends ConsumerState<HomePage> {
       ref.invalidate(productListProvider);
       ref.invalidate(categoryListProvider);
       ref.invalidate(storeListProvider);
+      // Also refresh KOT if needed
+      // ref.invalidate(kitchenOrdersListProvider);
       return;
     }
     setState(() => _selectedIndex = index);
@@ -55,8 +58,9 @@ class _HomePageState extends ConsumerState<HomePage> {
       0 => const _PosScreen(),
       1 => const DashboardPage(),
       2 => const OrdersPage(),
-      3 => const HelpPage(),
-      4 => const SettingsPage(),
+      3 => const KotPage(),
+      4 => const HelpPage(),
+      5 => const SettingsPage(),
       _ => const _PosScreen(),
     };
   }

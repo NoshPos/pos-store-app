@@ -35,6 +35,16 @@ class ApiEndpoints {
   static String shiftById(String shiftId) => 'shifts/$shiftId';
   static String shiftClose(String shiftId) => 'shifts/$shiftId/close';
 
+  // Order Items
+  static String orderItems(String orderId) => 'orders/$orderId/items';
+  static String orderItem(String orderId, String itemId) =>
+      'orders/$orderId/items/$itemId';
+
+  // KOT (Kitchen Order Tickets)
+  static String orderKot(String orderId) => 'orders/$orderId/kot';
+  static const String kitchenOrders = 'kitchen/orders';
+  static String kitchenKotStatus(String kotId) => 'kitchen/kot/$kotId/status';
+
   // Inventory
   static const String inventoryItems = 'inventory/items';
   static String inventoryItemById(String itemId) => 'inventory/items/$itemId';

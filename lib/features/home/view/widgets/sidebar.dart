@@ -75,6 +75,14 @@ class AppSidebar extends ConsumerWidget {
             onTap: () => onItemSelected(2),
             tooltip: 'Orders',
           ),
+          _SidebarItem(
+            icon: Icons.restaurant_menu_outlined,
+            selectedIcon: Icons.restaurant_menu,
+            index: 3,
+            selectedIndex: selectedIndex,
+            onTap: () => onItemSelected(3),
+            tooltip: 'Kitchen (KOT)',
+          ),
           const Spacer(),
           // Dark mode toggle
           _SidebarActionItem(
@@ -96,17 +104,17 @@ class AppSidebar extends ConsumerWidget {
           _SidebarItem(
             icon: Icons.help_outline,
             selectedIcon: Icons.help,
-            index: 3,
+            index: 4,
             selectedIndex: selectedIndex,
-            onTap: () => onItemSelected(3),
+            onTap: () => onItemSelected(4),
             tooltip: 'Help',
           ),
           _SidebarItem(
             icon: Icons.settings_outlined,
             selectedIcon: Icons.settings,
-            index: 4,
+            index: 5,
             selectedIndex: selectedIndex,
-            onTap: () => onItemSelected(4),
+            onTap: () => onItemSelected(5),
             tooltip: 'Settings',
           ),
           _SidebarActionItem(

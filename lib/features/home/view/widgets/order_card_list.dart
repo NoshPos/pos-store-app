@@ -11,6 +11,7 @@ class OrderCardList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ordersAsync = ref.watch(activeOrdersProvider);
+    final currentOrderId = ref.watch(currentOrderIdProvider);
 
     return ordersAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
@@ -33,7 +34,15 @@ class OrderCardList extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             itemCount: orders.length,
             separatorBuilder: (context, index) => const SizedBox(width: 12),
-            itemBuilder: (context, index) => _OrderCard(order: orders[index]),
+            itemBuilder: (context, index) => _OrderCard(
+              order: orders[index],
+              isSelected: orders[index].id == currentOrderId,
+              onTap: () {
+                ref
+                    .read(orderOperationsProvider.notifier)
+                    .loadOrder(orders[index]);
+              },
+            ),
           ),
         );
       },
@@ -43,8 +52,10 @@ class OrderCardList extends ConsumerWidget {
 
 class _OrderCard extends StatelessWidget {
   final Order order;
+  final bool isSelected;
+  final VoidCallback? onTap;
 
-  const _OrderCard({required this.order});
+  const _OrderCard({required this.order, this.isSelected = false, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -57,86 +68,99 @@ class _OrderCard extends StatelessWidget {
         ? DateFormat('dd MMM, hh:mm a').format(order.createdAt!)
         : '';
 
-    return Container(
-      width: 200,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: colorScheme.outlineVariant, width: 0.5),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(
-                '#${order.orderNumber}',
-                style: textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const Spacer(),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(
-                  color: statusColor.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  _statusLabel(order.status),
-                  style: textTheme.labelSmall?.copyWith(color: statusColor),
-                ),
-              ),
-            ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 200,
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? colorScheme.primaryContainer
+              : colorScheme.surfaceContainerLow,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected
+                ? colorScheme.primary
+                : colorScheme.outlineVariant,
+            width: isSelected ? 2 : 0.5,
           ),
-          const SizedBox(height: 6),
-          Text(
-            '${order.orderType == 'dine_in' ? 'Table' : order.orderType} • $dateStr',
-            style: textTheme.bodySmall?.copyWith(
-              color: colorScheme.onSurfaceVariant,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  '#${order.orderNumber}',
+                  style: textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const Spacer(),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 2,
+                  ),
+                  decoration: BoxDecoration(
+                    color: statusColor.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    _statusLabel(order.status),
+                    style: textTheme.labelSmall?.copyWith(color: statusColor),
+                  ),
+                ),
+              ],
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const Spacer(),
-          Row(
-            children: [
-              Text(
-                '${order.items.length} Items',
-                style: textTheme.bodySmall?.copyWith(
-                  color: colorScheme.onSurfaceVariant,
-                ),
+            const SizedBox(height: 6),
+            Text(
+              '${order.orderType == 'dine_in' ? 'Table' : order.orderType} • $dateStr',
+              style: textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
               ),
-              const Spacer(),
-              Text(
-                '${(progress * 100).toInt()}%',
-                style: textTheme.labelSmall?.copyWith(
-                  color: statusColor,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 4),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: LinearProgressIndicator(
-              value: progress,
-              backgroundColor: colorScheme.surfaceContainerHighest,
-              color: statusColor,
-              minHeight: 4,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-          ),
-        ],
+            const Spacer(),
+            Row(
+              children: [
+                Text(
+                  '${order.items.length} Items',
+                  style: textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  '${(progress * 100).toInt()}%',
+                  style: textTheme.labelSmall?.copyWith(
+                    color: statusColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: LinearProgressIndicator(
+                value: progress,
+                backgroundColor: colorScheme.surfaceContainerHighest,
+                color: statusColor,
+                minHeight: 4,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   double _statusProgress(String status) {
     return switch (status) {
-      'pending' => 0.1,
-      'confirmed' => 0.3,
+      'pending' || 'open' => 0.1,
+      'confirmed' || 'sent_to_kitchen' => 0.3,
       'preparing' => 0.5,
       'ready' => 0.8,
       'served' || 'delivered' => 0.95,
@@ -147,8 +171,9 @@ class _OrderCard extends StatelessWidget {
 
   String _statusLabel(String status) {
     return switch (status) {
-      'pending' => 'Pending',
+      'pending' || 'open' => 'Open',
       'confirmed' => 'Confirmed',
+      'sent_to_kitchen' => 'In Kitchen',
       'preparing' => 'Cooking',
       'ready' => 'Ready',
       'served' => 'Served',
@@ -161,9 +186,9 @@ class _OrderCard extends StatelessWidget {
 
   Color _statusColor(String status, ColorScheme cs) {
     return switch (status) {
-      'pending' => Colors.orange,
+      'pending' || 'open' => Colors.orange,
       'confirmed' => Colors.blue,
-      'preparing' => cs.primary,
+      'sent_to_kitchen' || 'preparing' => cs.primary,
       'ready' => Colors.green,
       'served' || 'delivered' || 'completed' => Colors.teal,
       'cancelled' => cs.error,
