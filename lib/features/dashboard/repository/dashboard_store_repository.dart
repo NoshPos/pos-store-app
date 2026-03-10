@@ -40,6 +40,7 @@ class DashboardStoreRepository {
     return uri;
   }
 
+  // ─── List stores ──────────────────────────────────────────────────────
   Future<Either<Failure, List<Store>>> getStores() async {
     try {
       if (!await connectionChecker.isConnected) {
@@ -66,6 +67,33 @@ class DashboardStoreRepository {
     }
   }
 
+  // ─── Get single store ─────────────────────────────────────────────────
+  Future<Either<Failure, Store>> getStore(String storeId) async {
+    try {
+      if (!await connectionChecker.isConnected) {
+        return const Left(Failure('No internet connection.'));
+      }
+
+      final uri = _buildUri(ApiEndpoints.storeById(storeId));
+      final response = await client.get(uri);
+
+      if (response.statusCode != 200) {
+        final message = parsePydanticError(response.body);
+        return Left(Failure(message, response.statusCode));
+      }
+
+      final store = Store.fromJson(
+        jsonDecode(response.body) as Map<String, dynamic>,
+      );
+      return Right(store);
+    } on SocketException {
+      return const Left(Failure('No internet connection.'));
+    } catch (e) {
+      return Left(Failure('Failed to fetch store: $e'));
+    }
+  }
+
+  // ─── Create store ─────────────────────────────────────────────────────
   Future<Either<Failure, Store>> createStore(StoreCreate store) async {
     try {
       if (!await connectionChecker.isConnected) {
@@ -95,65 +123,61 @@ class DashboardStoreRepository {
     }
   }
 
-  Future<Either<Failure, POSTerminalResponse>> createTerminal(
-    POSTerminalCreate terminal,
+  // ─── Update store ─────────────────────────────────────────────────────
+  Future<Either<Failure, Store>> updateStore(
+    String storeId,
+    StoreUpdate update,
   ) async {
     try {
       if (!await connectionChecker.isConnected) {
         return const Left(Failure('No internet connection.'));
       }
 
-      final uri = _buildUri(ApiEndpoints.storesTerminals);
-      final response = await client.post(
+      final uri = _buildUri(ApiEndpoints.storeById(storeId));
+      final response = await client.put(
         uri,
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(terminal.toJson()),
+        body: jsonEncode(update.toJson()),
       );
 
-      if (response.statusCode != 200 && response.statusCode != 201) {
+      if (response.statusCode != 200) {
         final message = parsePydanticError(response.body);
         return Left(Failure(message, response.statusCode));
       }
 
-      final created = POSTerminalResponse.fromJson(
+      final updated = Store.fromJson(
         jsonDecode(response.body) as Map<String, dynamic>,
       );
-      return Right(created);
+      return Right(updated);
     } on SocketException {
       return const Left(Failure('No internet connection.'));
     } catch (e) {
-      return Left(Failure('Failed to create terminal: $e'));
+      return Left(Failure('Failed to update store: $e'));
     }
   }
 
-  Future<Either<Failure, DineInTableResponse>> createTable(
-    DineInTableCreate table,
-  ) async {
+  // ─── Get tables for store ─────────────────────────────────────────────
+  Future<Either<Failure, List<String>>> getStoreTables(String storeId) async {
     try {
       if (!await connectionChecker.isConnected) {
         return const Left(Failure('No internet connection.'));
       }
 
-      final uri = _buildUri(ApiEndpoints.storesTables);
-      final response = await client.post(
-        uri,
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(table.toJson()),
-      );
+      final uri = _buildUri(ApiEndpoints.storeTables(storeId));
+      final response = await client.get(uri);
 
-      if (response.statusCode != 200 && response.statusCode != 201) {
+      if (response.statusCode != 200) {
         final message = parsePydanticError(response.body);
         return Left(Failure(message, response.statusCode));
       }
 
-      final created = DineInTableResponse.fromJson(
-        jsonDecode(response.body) as Map<String, dynamic>,
-      );
-      return Right(created);
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final tables = TablesResponse.fromJson(data);
+      return Right(tables.tables);
     } on SocketException {
       return const Left(Failure('No internet connection.'));
     } catch (e) {
-      return Left(Failure('Failed to create table: $e'));
+      return Left(Failure('Failed to fetch tables: $e'));
     }
   }
 }

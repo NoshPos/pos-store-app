@@ -55,18 +55,18 @@ class CreateStoreAction extends _$CreateStoreAction {
 }
 
 // ---------------------------------------------------------------------------
-// Create Terminal
+// Update Store
 // ---------------------------------------------------------------------------
 
 @riverpod
-class CreateTerminalAction extends _$CreateTerminalAction {
+class UpdateStoreAction extends _$UpdateStoreAction {
   @override
   AsyncValue<void> build() => const AsyncData(null);
 
-  Future<bool> createTerminal(POSTerminalCreate terminal) async {
+  Future<bool> updateStore(String storeId, StoreUpdate update) async {
     state = const AsyncLoading();
     final repo = ref.read(dashboardStoreRepositoryProvider);
-    final result = await repo.createTerminal(terminal);
+    final result = await repo.updateStore(storeId, update);
     return result.fold(
       (failure) {
         state = AsyncError(failure.message, StackTrace.current);
@@ -74,6 +74,7 @@ class CreateTerminalAction extends _$CreateTerminalAction {
       },
       (_) {
         state = const AsyncData(null);
+        ref.invalidate(dashboardStoreListProvider);
         return true;
       },
     );
@@ -81,26 +82,24 @@ class CreateTerminalAction extends _$CreateTerminalAction {
 }
 
 // ---------------------------------------------------------------------------
-// Create Table
+// Fetch Store Tables
 // ---------------------------------------------------------------------------
 
 @riverpod
-class CreateTableAction extends _$CreateTableAction {
+class FetchStoreTablesAction extends _$FetchStoreTablesAction {
   @override
-  AsyncValue<void> build() => const AsyncData(null);
+  AsyncValue<List<String>> build() => const AsyncData([]);
 
-  Future<bool> createTable(DineInTableCreate table) async {
+  Future<void> fetchTables(String storeId) async {
     state = const AsyncLoading();
     final repo = ref.read(dashboardStoreRepositoryProvider);
-    final result = await repo.createTable(table);
-    return result.fold(
+    final result = await repo.getStoreTables(storeId);
+    result.fold(
       (failure) {
         state = AsyncError(failure.message, StackTrace.current);
-        return false;
       },
-      (_) {
-        state = const AsyncData(null);
-        return true;
+      (tables) {
+        state = AsyncData(tables);
       },
     );
   }

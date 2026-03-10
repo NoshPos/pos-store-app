@@ -106,28 +106,28 @@ abstract class _$CreateStoreAction extends $Notifier<AsyncValue<void>> {
   }
 }
 
-@ProviderFor(CreateTerminalAction)
-final createTerminalActionProvider = CreateTerminalActionProvider._();
+@ProviderFor(UpdateStoreAction)
+final updateStoreActionProvider = UpdateStoreActionProvider._();
 
-final class CreateTerminalActionProvider
-    extends $NotifierProvider<CreateTerminalAction, AsyncValue<void>> {
-  CreateTerminalActionProvider._()
+final class UpdateStoreActionProvider
+    extends $NotifierProvider<UpdateStoreAction, AsyncValue<void>> {
+  UpdateStoreActionProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'createTerminalActionProvider',
+        name: r'updateStoreActionProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$createTerminalActionHash();
+  String debugGetCreateSourceHash() => _$updateStoreActionHash();
 
   @$internal
   @override
-  CreateTerminalAction create() => CreateTerminalAction();
+  UpdateStoreAction create() => UpdateStoreAction();
 
   /// {@macro riverpod.override_with_value}
   Override overrideWithValue(AsyncValue<void> value) {
@@ -138,10 +138,9 @@ final class CreateTerminalActionProvider
   }
 }
 
-String _$createTerminalActionHash() =>
-    r'7f201bb30fc42624cf2b2da9415e4c0660927d78';
+String _$updateStoreActionHash() => r'567a23112230ccd802516a9bd510767e8b1a4b9d';
 
-abstract class _$CreateTerminalAction extends $Notifier<AsyncValue<void>> {
+abstract class _$UpdateStoreAction extends $Notifier<AsyncValue<void>> {
   AsyncValue<void> build();
   @$mustCallSuper
   @override
@@ -159,51 +158,55 @@ abstract class _$CreateTerminalAction extends $Notifier<AsyncValue<void>> {
   }
 }
 
-@ProviderFor(CreateTableAction)
-final createTableActionProvider = CreateTableActionProvider._();
+@ProviderFor(FetchStoreTablesAction)
+final fetchStoreTablesActionProvider = FetchStoreTablesActionProvider._();
 
-final class CreateTableActionProvider
-    extends $NotifierProvider<CreateTableAction, AsyncValue<void>> {
-  CreateTableActionProvider._()
+final class FetchStoreTablesActionProvider
+    extends
+        $NotifierProvider<FetchStoreTablesAction, AsyncValue<List<String>>> {
+  FetchStoreTablesActionProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'createTableActionProvider',
+        name: r'fetchStoreTablesActionProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$createTableActionHash();
+  String debugGetCreateSourceHash() => _$fetchStoreTablesActionHash();
 
   @$internal
   @override
-  CreateTableAction create() => CreateTableAction();
+  FetchStoreTablesAction create() => FetchStoreTablesAction();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(AsyncValue<void> value) {
+  Override overrideWithValue(AsyncValue<List<String>> value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<AsyncValue<void>>(value),
+      providerOverride: $SyncValueProvider<AsyncValue<List<String>>>(value),
     );
   }
 }
 
-String _$createTableActionHash() => r'eaae8debf58cd4a0f5f7c36d02d11a0fbf606428';
+String _$fetchStoreTablesActionHash() =>
+    r'bb09990978ef452614f12df150f87aa0bd9d4edc';
 
-abstract class _$CreateTableAction extends $Notifier<AsyncValue<void>> {
-  AsyncValue<void> build();
+abstract class _$FetchStoreTablesAction
+    extends $Notifier<AsyncValue<List<String>>> {
+  AsyncValue<List<String>> build();
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref = this.ref as $Ref<AsyncValue<void>, AsyncValue<void>>;
+    final ref =
+        this.ref as $Ref<AsyncValue<List<String>>, AsyncValue<List<String>>>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<void>, AsyncValue<void>>,
-              AsyncValue<void>,
+              AnyNotifier<AsyncValue<List<String>>, AsyncValue<List<String>>>,
+              AsyncValue<List<String>>,
               Object?,
               Object?
             >;
