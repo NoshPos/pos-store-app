@@ -9,7 +9,7 @@ part of 'order.dart';
 _Order _$OrderFromJson(Map<String, dynamic> json) => _Order(
   id: json['id'] as String,
   storeId: json['store_id'] as String,
-  orderNumber: json['order_number'] as String,
+  orderNumber: json['order_number'] as String? ?? '',
   employeeId: json['employee_id'] as String?,
   terminalId: json['terminal_id'] as String?,
   tableId: json['table_id'] as String?,
@@ -59,10 +59,10 @@ Map<String, dynamic> _$OrderToJson(_Order instance) => <String, dynamic>{
 _OrderItem _$OrderItemFromJson(Map<String, dynamic> json) => _OrderItem(
   id: json['id'] as String,
   orderId: json['order_id'] as String,
-  productId: json['product_id'] as String,
-  productName: json['product_name'] as String,
+  productId: json['product_id'] as String? ?? '',
+  productName: json['product_name'] as String? ?? 'Unknown',
   quantity: (json['quantity'] as num?)?.toInt() ?? 1,
-  price: (json['price'] as num).toDouble(),
+  price: (json['price'] as num?)?.toDouble() ?? 0,
   taxAmount: (json['tax_amount'] as num?)?.toDouble() ?? 0,
   total: (json['total'] as num?)?.toDouble() ?? 0,
   notes: json['notes'] as String?,

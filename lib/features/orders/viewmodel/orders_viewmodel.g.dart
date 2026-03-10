@@ -9,6 +9,58 @@ part of 'orders_viewmodel.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
+@ProviderFor(OrderStatusFilter)
+final orderStatusFilterProvider = OrderStatusFilterProvider._();
+
+final class OrderStatusFilterProvider
+    extends $NotifierProvider<OrderStatusFilter, String?> {
+  OrderStatusFilterProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'orderStatusFilterProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$orderStatusFilterHash();
+
+  @$internal
+  @override
+  OrderStatusFilter create() => OrderStatusFilter();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(String? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<String?>(value),
+    );
+  }
+}
+
+String _$orderStatusFilterHash() => r'9a7cedf2f67889f58e7a4cfe5371415981496c54';
+
+abstract class _$OrderStatusFilter extends $Notifier<String?> {
+  String? build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<String?, String?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<String?, String?>,
+              String?,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}
+
 @ProviderFor(OrderTypeFilter)
 final orderTypeFilterProvider = OrderTypeFilterProvider._();
 
@@ -85,7 +137,7 @@ final class OrdersListProvider
   OrdersList create() => OrdersList();
 }
 
-String _$ordersListHash() => r'dae8c758b62d5ec5e61c2c6091484dc9f55948e8';
+String _$ordersListHash() => r'3345ff862c5af1c0513856f6bf9774b10ad5751e';
 
 abstract class _$OrdersList extends $AsyncNotifier<List<Order>> {
   FutureOr<List<Order>> build();
@@ -237,215 +289,6 @@ String _$ordersPageOperationsHash() =>
     r'f8c1464e572ab5af5e6b18200ccd2c7eedff03fc';
 
 abstract class _$OrdersPageOperations extends $Notifier<AsyncValue<void>> {
-  AsyncValue<void> build();
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    final ref = this.ref as $Ref<AsyncValue<void>, AsyncValue<void>>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<AsyncValue<void>, AsyncValue<void>>,
-              AsyncValue<void>,
-              Object?,
-              Object?
-            >;
-    element.handleCreate(ref, build);
-  }
-}
-
-@ProviderFor(NewOrderCart)
-final newOrderCartProvider = NewOrderCartProvider._();
-
-final class NewOrderCartProvider
-    extends $NotifierProvider<NewOrderCart, List<OrderItemCreate>> {
-  NewOrderCartProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'newOrderCartProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$newOrderCartHash();
-
-  @$internal
-  @override
-  NewOrderCart create() => NewOrderCart();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(List<OrderItemCreate> value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<List<OrderItemCreate>>(value),
-    );
-  }
-}
-
-String _$newOrderCartHash() => r'2a12fa12e6f247ebbfca025ada9d4c78da67c62d';
-
-abstract class _$NewOrderCart extends $Notifier<List<OrderItemCreate>> {
-  List<OrderItemCreate> build();
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    final ref = this.ref as $Ref<List<OrderItemCreate>, List<OrderItemCreate>>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<List<OrderItemCreate>, List<OrderItemCreate>>,
-              List<OrderItemCreate>,
-              Object?,
-              Object?
-            >;
-    element.handleCreate(ref, build);
-  }
-}
-
-@ProviderFor(NewOrderType)
-final newOrderTypeProvider = NewOrderTypeProvider._();
-
-final class NewOrderTypeProvider
-    extends $NotifierProvider<NewOrderType, String> {
-  NewOrderTypeProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'newOrderTypeProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$newOrderTypeHash();
-
-  @$internal
-  @override
-  NewOrderType create() => NewOrderType();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(String value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<String>(value),
-    );
-  }
-}
-
-String _$newOrderTypeHash() => r'320845dfd55dbb42b36373abb1ba274296ba7dcb';
-
-abstract class _$NewOrderType extends $Notifier<String> {
-  String build();
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    final ref = this.ref as $Ref<String, String>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<String, String>,
-              String,
-              Object?,
-              Object?
-            >;
-    element.handleCreate(ref, build);
-  }
-}
-
-@ProviderFor(NewOrderTableId)
-final newOrderTableIdProvider = NewOrderTableIdProvider._();
-
-final class NewOrderTableIdProvider
-    extends $NotifierProvider<NewOrderTableId, String?> {
-  NewOrderTableIdProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'newOrderTableIdProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$newOrderTableIdHash();
-
-  @$internal
-  @override
-  NewOrderTableId create() => NewOrderTableId();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(String? value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<String?>(value),
-    );
-  }
-}
-
-String _$newOrderTableIdHash() => r'ea992936821ae2cb68600e7c9f30b2ae89b64420';
-
-abstract class _$NewOrderTableId extends $Notifier<String?> {
-  String? build();
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    final ref = this.ref as $Ref<String?, String?>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<String?, String?>,
-              String?,
-              Object?,
-              Object?
-            >;
-    element.handleCreate(ref, build);
-  }
-}
-
-@ProviderFor(CreateOrderOperation)
-final createOrderOperationProvider = CreateOrderOperationProvider._();
-
-final class CreateOrderOperationProvider
-    extends $NotifierProvider<CreateOrderOperation, AsyncValue<void>> {
-  CreateOrderOperationProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'createOrderOperationProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$createOrderOperationHash();
-
-  @$internal
-  @override
-  CreateOrderOperation create() => CreateOrderOperation();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(AsyncValue<void> value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<AsyncValue<void>>(value),
-    );
-  }
-}
-
-String _$createOrderOperationHash() =>
-    r'c2ef4a088a3e7f8e69d01e643e74de65f5410f6f';
-
-abstract class _$CreateOrderOperation extends $Notifier<AsyncValue<void>> {
   AsyncValue<void> build();
   @$mustCallSuper
   @override

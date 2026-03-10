@@ -8,6 +8,18 @@ import '../../home/viewmodel/store_viewmodel.dart';
 part 'orders_viewmodel.g.dart';
 
 // ---------------------------------------------------------------------------
+// Order status filter
+// ---------------------------------------------------------------------------
+
+@riverpod
+class OrderStatusFilter extends _$OrderStatusFilter {
+  @override
+  String? build() => null; // null = All
+
+  void select(String? status) => state = status;
+}
+
+// ---------------------------------------------------------------------------
 // Order type filter (tab selection)
 // ---------------------------------------------------------------------------
 
@@ -30,10 +42,12 @@ class OrdersList extends _$OrdersList {
     final store = ref.watch(selectedStoreProvider);
     if (store == null) return [];
     final orderType = ref.watch(orderTypeFilterProvider);
+    final statusFilter = ref.watch(orderStatusFilterProvider);
     final repo = ref.read(orderRepositoryProvider);
     final result = await repo.getOrders(
       storeId: store.id,
       orderType: orderType,
+      status: statusFilter,
     );
     return result.fold(
       (failure) => throw Exception(failure.message),
@@ -150,129 +164,6 @@ class OrdersPageOperations extends _$OrdersPageOperations {
         ref.invalidate(ordersListProvider);
         ref.invalidate(activeOrdersProvider);
         ref.invalidate(orderDetailProvider);
-        state = const AsyncData(null);
-        return true;
-      },
-    );
-  }
-}
-
-// ---------------------------------------------------------------------------
-// New order creation cart (separate from POS homepage cart)
-// ---------------------------------------------------------------------------
-
-@riverpod
-class NewOrderCart extends _$NewOrderCart {
-  @override
-  List<OrderItemCreate> build() => [];
-
-  void addItem(OrderItemCreate item) {
-    final index = state.indexWhere((e) => e.productId == item.productId);
-    if (index >= 0) {
-      final existing = state[index];
-      state = [
-        ...state.sublist(0, index),
-        existing.copyWith(quantity: existing.quantity + 1),
-        ...state.sublist(index + 1),
-      ];
-    } else {
-      state = [...state, item];
-    }
-  }
-
-  void removeItem(String productId) {
-    state = state.where((e) => e.productId != productId).toList();
-  }
-
-  void updateQuantity(String productId, int quantity) {
-    if (quantity <= 0) {
-      removeItem(productId);
-      return;
-    }
-    final index = state.indexWhere((e) => e.productId == productId);
-    if (index >= 0) {
-      final existing = state[index];
-      state = [
-        ...state.sublist(0, index),
-        existing.copyWith(quantity: quantity),
-        ...state.sublist(index + 1),
-      ];
-    }
-  }
-
-  void clear() => state = [];
-}
-
-// ---------------------------------------------------------------------------
-// New order type selection
-// ---------------------------------------------------------------------------
-
-@riverpod
-class NewOrderType extends _$NewOrderType {
-  @override
-  String build() => 'dine_in';
-
-  void select(String type) => state = type;
-}
-
-// ---------------------------------------------------------------------------
-// New order table selection
-// ---------------------------------------------------------------------------
-
-@riverpod
-class NewOrderTableId extends _$NewOrderTableId {
-  @override
-  String? build() => null;
-
-  void select(String? id) => state = id;
-}
-
-// ---------------------------------------------------------------------------
-// Create new order operation
-// ---------------------------------------------------------------------------
-
-@riverpod
-class CreateOrderOperation extends _$CreateOrderOperation {
-  @override
-  AsyncValue<void> build() => const AsyncData(null);
-
-  Future<bool> createOrder() async {
-    final store = ref.read(selectedStoreProvider);
-    if (store == null) {
-      state = AsyncError('No store selected', StackTrace.current);
-      return false;
-    }
-
-    final cartItems = ref.read(newOrderCartProvider);
-    if (cartItems.isEmpty) {
-      state = AsyncError('Cart is empty', StackTrace.current);
-      return false;
-    }
-
-    state = const AsyncLoading();
-
-    final orderType = ref.read(newOrderTypeProvider);
-    final tableId = ref.read(newOrderTableIdProvider);
-
-    final orderCreate = OrderCreate(
-      storeId: store.id,
-      orderType: orderType,
-      tableId: orderType == 'dine_in' ? tableId : null,
-      items: cartItems,
-    );
-
-    final repo = ref.read(orderRepositoryProvider);
-    final result = await repo.createOrder(orderCreate);
-
-    return result.fold(
-      (failure) {
-        state = AsyncError(failure.message, StackTrace.current);
-        return false;
-      },
-      (order) {
-        ref.read(newOrderCartProvider.notifier).clear();
-        ref.invalidate(ordersListProvider);
-        ref.invalidate(activeOrdersProvider);
         state = const AsyncData(null);
         return true;
       },

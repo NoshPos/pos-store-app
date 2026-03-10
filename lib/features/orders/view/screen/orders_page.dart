@@ -5,7 +5,6 @@ import '../../../home/view/widgets/store_selector.dart';
 import '../../viewmodel/orders_viewmodel.dart';
 import '../widgets/order_card.dart';
 import '../widgets/order_filter_tabs.dart';
-import 'new_order_page.dart';
 import 'order_details_page.dart';
 
 class OrdersPage extends ConsumerWidget {
@@ -31,7 +30,7 @@ class OrdersPage extends ConsumerWidget {
           child: Row(
             children: [
               Text(
-                'Orders',
+                'Order Management',
                 style: textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -39,10 +38,10 @@ class OrdersPage extends ConsumerWidget {
               const SizedBox(width: 24),
               const StoreSelector(),
               const Spacer(),
-              FilledButton.icon(
-                onPressed: () => _openNewOrder(context),
-                icon: const Icon(Icons.add, size: 18),
-                label: const Text('New Order'),
+              IconButton(
+                onPressed: () => ref.invalidate(ordersListProvider),
+                icon: const Icon(Icons.refresh),
+                tooltip: 'Refresh',
               ),
             ],
           ),
@@ -84,7 +83,7 @@ class OrdersPage extends ConsumerWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'Create a new order to get started',
+                        'Orders will appear here once created',
                         style: textTheme.bodySmall?.copyWith(
                           color: colorScheme.onSurfaceVariant,
                         ),
@@ -114,10 +113,7 @@ class OrdersPage extends ConsumerWidget {
                     return OrderCard(
                       order: order,
                       onTap: () => _openOrderDetails(context, order),
-                      onDoubleTap: () {
-                        // Double-tap = send to POS billing (switch to home)
-                        // Handled by parent via callback if needed
-                      },
+                      onDoubleTap: () {},
                     );
                   },
                 ),
@@ -127,12 +123,6 @@ class OrdersPage extends ConsumerWidget {
         ),
       ],
     );
-  }
-
-  void _openNewOrder(BuildContext context) {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (_) => const NewOrderPage()));
   }
 
   void _openOrderDetails(BuildContext context, order) {

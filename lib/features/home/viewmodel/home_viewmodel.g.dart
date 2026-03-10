@@ -194,6 +194,116 @@ abstract class _$ActiveOrders extends $AsyncNotifier<List<Order>> {
   }
 }
 
+@ProviderFor(CurrentOrderId)
+final currentOrderIdProvider = CurrentOrderIdProvider._();
+
+final class CurrentOrderIdProvider
+    extends $NotifierProvider<CurrentOrderId, String?> {
+  CurrentOrderIdProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'currentOrderIdProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$currentOrderIdHash();
+
+  @$internal
+  @override
+  CurrentOrderId create() => CurrentOrderId();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(String? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<String?>(value),
+    );
+  }
+}
+
+String _$currentOrderIdHash() => r'45e5fa47faddf08d984383ebe17d029166d959cb';
+
+abstract class _$CurrentOrderId extends $Notifier<String?> {
+  String? build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<String?, String?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<String?, String?>,
+              String?,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}
+
+/// Holds the full current Order object after save / load.
+
+@ProviderFor(CurrentOrder)
+final currentOrderProvider = CurrentOrderProvider._();
+
+/// Holds the full current Order object after save / load.
+final class CurrentOrderProvider
+    extends $NotifierProvider<CurrentOrder, Order?> {
+  /// Holds the full current Order object after save / load.
+  CurrentOrderProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'currentOrderProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$currentOrderHash();
+
+  @$internal
+  @override
+  CurrentOrder create() => CurrentOrder();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Order? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Order?>(value),
+    );
+  }
+}
+
+String _$currentOrderHash() => r'1c5cf7d741d5bdf3e5a69e3dffd483ee92924fe9';
+
+/// Holds the full current Order object after save / load.
+
+abstract class _$CurrentOrder extends $Notifier<Order?> {
+  Order? build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<Order?, Order?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<Order?, Order?>,
+              Order?,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}
+
 @ProviderFor(Cart)
 final cartProvider = CartProvider._();
 
@@ -225,7 +335,7 @@ final class CartProvider extends $NotifierProvider<Cart, List<CartItem>> {
   }
 }
 
-String _$cartHash() => r'046d9389d67a39527b38368928e8e164d40dd41e';
+String _$cartHash() => r'2c2162647db913a218b00c957bde3c62fadca8c9';
 
 abstract class _$Cart extends $Notifier<List<CartItem>> {
   List<CartItem> build();
@@ -434,7 +544,7 @@ final class OrderOperationsProvider
   }
 }
 
-String _$orderOperationsHash() => r'bb70bca0120d4611ef81c8b5cbb64c8d314ea4c6';
+String _$orderOperationsHash() => r'8988d1d6666411c74ed22e0509ab961884940d8c';
 
 abstract class _$OrderOperations extends $Notifier<AsyncValue<void>> {
   AsyncValue<void> build();

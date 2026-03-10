@@ -8,7 +8,7 @@ abstract class Order with _$Order {
   const factory Order({
     required String id,
     @JsonKey(name: 'store_id') required String storeId,
-    @JsonKey(name: 'order_number') required String orderNumber,
+    @JsonKey(name: 'order_number') @Default('') String orderNumber,
     @JsonKey(name: 'employee_id') String? employeeId,
     @JsonKey(name: 'terminal_id') String? terminalId,
     @JsonKey(name: 'table_id') String? tableId,
@@ -34,10 +34,10 @@ abstract class OrderItem with _$OrderItem {
   const factory OrderItem({
     required String id,
     @JsonKey(name: 'order_id') required String orderId,
-    @JsonKey(name: 'product_id') required String productId,
-    @JsonKey(name: 'product_name') required String productName,
+    @JsonKey(name: 'product_id') @Default('') String productId,
+    @JsonKey(name: 'product_name') @Default('Unknown') String productName,
     @Default(1) int quantity,
-    required double price,
+    @Default(0) double price,
     @JsonKey(name: 'tax_amount') @Default(0) double taxAmount,
     @Default(0) double total,
     String? notes,

@@ -24,8 +24,7 @@ class KotPage extends ConsumerWidget {
           decoration: BoxDecoration(
             color: colorScheme.surface,
             border: Border(
-              bottom:
-                  BorderSide(color: colorScheme.outlineVariant, width: 0.5),
+              bottom: BorderSide(color: colorScheme.outlineVariant, width: 0.5),
             ),
           ),
           child: Row(
@@ -88,8 +87,9 @@ class KotPage extends ConsumerWidget {
                   label: 'Ready',
                   value: 'READY',
                   selected: statusFilter,
-                  onSelected: () =>
-                      ref.read(kotStatusFilterProvider.notifier).select('READY'),
+                  onSelected: () => ref
+                      .read(kotStatusFilterProvider.notifier)
+                      .select('READY'),
                 ),
               ],
             ),
@@ -104,14 +104,12 @@ class KotPage extends ConsumerWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.error_outline, size: 48,
-                      color: colorScheme.error),
+                  Icon(Icons.error_outline, size: 48, color: colorScheme.error),
                   const SizedBox(height: 12),
                   Text(e.toString(), style: textTheme.bodyMedium),
                   const SizedBox(height: 12),
                   FilledButton.tonal(
-                    onPressed: () =>
-                        ref.invalidate(kitchenOrdersListProvider),
+                    onPressed: () => ref.invalidate(kitchenOrdersListProvider),
                     child: const Text('Retry'),
                   ),
                 ],
@@ -122,10 +120,12 @@ class KotPage extends ConsumerWidget {
               final filtered = statusFilter == null
                   ? tickets
                   : tickets
-                      .where((t) =>
-                          t.status.toUpperCase() ==
-                          statusFilter.toUpperCase())
-                      .toList();
+                        .where(
+                          (t) =>
+                              t.status.toUpperCase() ==
+                              statusFilter.toUpperCase(),
+                        )
+                        .toList();
 
               if (filtered.isEmpty) {
                 return Center(
@@ -135,8 +135,9 @@ class KotPage extends ConsumerWidget {
                       Icon(
                         Icons.restaurant_menu,
                         size: 64,
-                        color: colorScheme.onSurfaceVariant
-                            .withValues(alpha: 0.35),
+                        color: colorScheme.onSurfaceVariant.withValues(
+                          alpha: 0.35,
+                        ),
                       ),
                       const SizedBox(height: 12),
                       Text(
@@ -159,8 +160,7 @@ class KotPage extends ConsumerWidget {
 
               return GridView.builder(
                 padding: const EdgeInsets.all(20),
-                gridDelegate:
-                    const SliverGridDelegateWithMaxCrossAxisExtent(
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 360,
                   mainAxisSpacing: 16,
                   crossAxisSpacing: 16,
@@ -201,9 +201,7 @@ class _KotCard extends ConsumerWidget {
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(16),
-        border: Border(
-          top: BorderSide(color: statusColor, width: 4),
-        ),
+        border: Border(top: BorderSide(color: statusColor, width: 4)),
         boxShadow: [
           BoxShadow(
             color: colorScheme.shadow.withValues(alpha: 0.06),
@@ -252,8 +250,9 @@ class _KotCard extends ConsumerWidget {
                           Text(
                             dateStr,
                             style: textTheme.bodySmall?.copyWith(
-                              color: colorScheme.onSurfaceVariant
-                                  .withValues(alpha: 0.7),
+                              color: colorScheme.onSurfaceVariant.withValues(
+                                alpha: 0.7,
+                              ),
                             ),
                           ),
                         ],
@@ -262,8 +261,10 @@ class _KotCard extends ConsumerWidget {
                   ),
                 ),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: statusColor.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(8),
@@ -294,8 +295,10 @@ class _KotCard extends ConsumerWidget {
                     ),
                   )
                 : ListView.separated(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
                     itemCount: ticket.items.length,
                     separatorBuilder: (_, _) => const SizedBox(height: 4),
                     itemBuilder: (context, index) {
@@ -357,8 +360,7 @@ class _KotCard extends ConsumerWidget {
                               if (!success && context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content:
-                                        Text('Failed to start preparing'),
+                                    content: Text('Failed to start preparing'),
                                   ),
                                 );
                               }
@@ -414,8 +416,11 @@ class _KotCard extends ConsumerWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.done_all,
-                              size: 18, color: Colors.green),
+                          const Icon(
+                            Icons.done_all,
+                            size: 18,
+                            color: Colors.green,
+                          ),
                           const SizedBox(width: 6),
                           Text(
                             'Ready to Serve',
@@ -501,9 +506,7 @@ class _KotFilterChip extends StatelessWidget {
             ? Colors.transparent
             : Theme.of(context).colorScheme.outlineVariant,
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     );
   }
 }

@@ -217,4 +217,131 @@ class OrderRepository {
       return Left(Failure('Failed to create payment: $e'));
     }
   }
+
+  // -------------------------------------------------------------------
+  // Order item CRUD
+  // -------------------------------------------------------------------
+
+  Future<Either<Failure, OrderItem>> addOrderItem({
+    required String orderId,
+    required OrderItemCreate item,
+  }) async {
+    try {
+      if (!await connectionChecker.isConnected) {
+        return const Left(Failure('No internet connection.'));
+      }
+
+      final uri = _buildUri(ApiEndpoints.orderItems(orderId));
+      final response = await client.post(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(item.toJson()),
+      );
+
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        final message = parsePydanticError(response.body);
+        return Left(Failure(message, response.statusCode));
+      }
+
+      final orderItem = OrderItem.fromJson(
+        jsonDecode(response.body) as Map<String, dynamic>,
+      );
+      return Right(orderItem);
+    } on SocketException {
+      return const Left(Failure('No internet connection.'));
+    } catch (e) {
+      return Left(Failure('Failed to add order item: $e'));
+    }
+  }
+
+  Future<Either<Failure, OrderItem>> updateOrderItem({
+    required String orderId,
+    required String itemId,
+    required int quantity,
+    String? notes,
+  }) async {
+    try {
+      if (!await connectionChecker.isConnected) {
+        return const Left(Failure('No internet connection.'));
+      }
+
+      final uri = _buildUri(ApiEndpoints.orderItem(orderId, itemId));
+      final body = <String, dynamic>{'quantity': quantity};
+      if (notes != null) body['notes'] = notes;
+
+      final response = await client.put(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(body),
+      );
+
+      if (response.statusCode != 200) {
+        final message = parsePydanticError(response.body);
+        return Left(Failure(message, response.statusCode));
+      }
+
+      final orderItem = OrderItem.fromJson(
+        jsonDecode(response.body) as Map<String, dynamic>,
+      );
+      return Right(orderItem);
+    } on SocketException {
+      return const Left(Failure('No internet connection.'));
+    } catch (e) {
+      return Left(Failure('Failed to update order item: $e'));
+    }
+  }
+
+  Future<Either<Failure, void>> deleteOrderItem({
+    required String orderId,
+    required String itemId,
+  }) async {
+    try {
+      if (!await connectionChecker.isConnected) {
+        return const Left(Failure('No internet connection.'));
+      }
+
+      final uri = _buildUri(ApiEndpoints.orderItem(orderId, itemId));
+      final response = await client.delete(uri);
+
+      if (response.statusCode != 200 && response.statusCode != 204) {
+        final message = parsePydanticError(response.body);
+        return Left(Failure(message, response.statusCode));
+      }
+
+      return const Right(null);
+    } on SocketException {
+      return const Left(Failure('No internet connection.'));
+    } catch (e) {
+      return Left(Failure('Failed to delete order item: $e'));
+    }
+  }
+
+  // -------------------------------------------------------------------
+  // KOT (Kitchen Order Ticket) – send to kitchen
+  // -------------------------------------------------------------------
+
+  Future<Either<Failure, void>> sendToKitchen(String orderId) async {
+    try {
+      if (!await connectionChecker.isConnected) {
+        return const Left(Failure('No internet connection.'));
+      }
+
+      final uri = _buildUri(ApiEndpoints.orderKot(orderId));
+      final response = await client.post(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        final message = parsePydanticError(response.body);
+        return Left(Failure(message, response.statusCode));
+      }
+
+      return const Right(null);
+    } on SocketException {
+      return const Left(Failure('No internet connection.'));
+    } catch (e) {
+      return Left(Failure('Failed to send order to kitchen: $e'));
+    }
+  }
 }

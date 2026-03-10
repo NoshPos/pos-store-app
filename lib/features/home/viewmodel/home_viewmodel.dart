@@ -63,7 +63,7 @@ class ProductList extends _$ProductList {
 }
 
 // ---------------------------------------------------------------------------
-// Active orders
+// Active orders (OPEN status only for live orders panel)
 // ---------------------------------------------------------------------------
 
 @riverpod
@@ -83,6 +83,27 @@ class ActiveOrders extends _$ActiveOrders {
   Future<void> refresh() async {
     ref.invalidateSelf();
   }
+}
+
+// ---------------------------------------------------------------------------
+// Current order ID – tracks a saved order being edited
+// ---------------------------------------------------------------------------
+
+@riverpod
+class CurrentOrderId extends _$CurrentOrderId {
+  @override
+  String? build() => null;
+
+  void set(String? id) => state = id;
+}
+
+/// Holds the full current Order object after save / load.
+@riverpod
+class CurrentOrder extends _$CurrentOrder {
+  @override
+  Order? build() => null;
+
+  void set(Order? order) => state = order;
 }
 
 // ---------------------------------------------------------------------------
@@ -129,6 +150,9 @@ class Cart extends _$Cart {
   }
 
   void clear() => state = [];
+
+  /// Replace the entire cart (e.g. when loading an existing order).
+  void replaceAll(List<CartItem> items) => state = items;
 
   double get subtotal =>
       state.fold(0, (sum, item) => sum + item.product.price * item.quantity);
@@ -178,7 +202,7 @@ class SelectedPaymentMethod extends _$SelectedPaymentMethod {
 }
 
 // ---------------------------------------------------------------------------
-// Order operations viewmodel
+// Order operations viewmodel – save, send to kitchen, complete
 // ---------------------------------------------------------------------------
 
 @riverpod
@@ -186,7 +210,8 @@ class OrderOperations extends _$OrderOperations {
   @override
   AsyncValue<void> build() => const AsyncData(null);
 
-  Future<bool> placeOrder() async {
+  /// Create (save) a new order on the backend and store it locally.
+  Future<bool> saveOrder() async {
     final store = ref.read(selectedStoreProvider);
     if (store == null) {
       state = AsyncError('No store selected', StackTrace.current);
@@ -203,7 +228,6 @@ class OrderOperations extends _$OrderOperations {
 
     final orderType = ref.read(selectedOrderTypeProvider);
     final table = ref.read(selectedTableProvider);
-    final paymentMethod = ref.read(selectedPaymentMethodProvider);
 
     final orderCreate = OrderCreate(
       storeId: store.id,
@@ -229,30 +253,139 @@ class OrderOperations extends _$OrderOperations {
         state = AsyncError(failure.message, StackTrace.current);
         return false;
       },
-      (order) async {
-        // Create payment
-        final cart = ref.read(cartProvider.notifier);
-        final paymentResult = await repo.createPayment(
-          PaymentCreate(
-            orderId: order.id,
-            paymentMethod: paymentMethod,
-            amount: order.grandTotal,
-          ),
-        );
-
-        return paymentResult.fold(
-          (failure) {
-            state = AsyncError(failure.message, StackTrace.current);
-            return false;
-          },
-          (_) {
-            cart.clear();
-            ref.invalidate(activeOrdersProvider);
-            state = const AsyncData(null);
-            return true;
-          },
-        );
+      (order) {
+        ref.read(currentOrderIdProvider.notifier).set(order.id);
+        ref.read(currentOrderProvider.notifier).set(order);
+        ref.invalidate(activeOrdersProvider);
+        state = const AsyncData(null);
+        return true;
       },
     );
+  }
+
+  /// Send the current order to kitchen (generate KOT).
+  Future<bool> sendToKitchen() async {
+    final orderId = ref.read(currentOrderIdProvider);
+    if (orderId == null) {
+      state = AsyncError('No order to send', StackTrace.current);
+      return false;
+    }
+
+    state = const AsyncLoading();
+
+    final repo = ref.read(orderRepositoryProvider);
+    final result = await repo.sendToKitchen(orderId);
+
+    return result.fold(
+      (failure) {
+        state = AsyncError(failure.message, StackTrace.current);
+        return false;
+      },
+      (_) {
+        ref.invalidate(activeOrdersProvider);
+        state = const AsyncData(null);
+        return true;
+      },
+    );
+  }
+
+  /// Complete payment (dummy billing) – marks order as COMPLETED.
+  Future<bool> completePayment() async {
+    final orderId = ref.read(currentOrderIdProvider);
+    if (orderId == null) {
+      state = AsyncError('No order to complete', StackTrace.current);
+      return false;
+    }
+
+    state = const AsyncLoading();
+
+    final paymentMethod = ref.read(selectedPaymentMethodProvider);
+    final currentOrder = ref.read(currentOrderProvider);
+    final grandTotal = currentOrder?.grandTotal ?? 0;
+
+    final repo = ref.read(orderRepositoryProvider);
+
+    // 1. Create payment
+    final payResult = await repo.createPayment(
+      PaymentCreate(
+        orderId: orderId,
+        paymentMethod: paymentMethod,
+        amount: grandTotal,
+      ),
+    );
+
+    if (payResult.isLeft()) {
+      final failure = payResult.getLeft().toNullable();
+      state = AsyncError(
+        failure?.message ?? 'Payment failed',
+        StackTrace.current,
+      );
+      return false;
+    }
+
+    // 2. Update status to COMPLETED
+    final statusResult = await repo.updateOrderStatus(
+      orderId: orderId,
+      status: 'completed',
+    );
+
+    return statusResult.fold(
+      (failure) {
+        state = AsyncError(failure.message, StackTrace.current);
+        return false;
+      },
+      (_) {
+        // Clear local state
+        ref.read(cartProvider.notifier).clear();
+        ref.read(currentOrderIdProvider.notifier).set(null);
+        ref.read(currentOrderProvider.notifier).set(null);
+        ref.invalidate(activeOrdersProvider);
+        state = const AsyncData(null);
+        return true;
+      },
+    );
+  }
+
+  /// Load an existing order into the cart for editing.
+  Future<bool> loadOrder(Order order) async {
+    state = const AsyncLoading();
+
+    ref.read(currentOrderIdProvider.notifier).set(order.id);
+    ref.read(currentOrderProvider.notifier).set(order);
+    ref.read(selectedOrderTypeProvider.notifier).select(order.orderType);
+
+    // Convert order items to cart items (use a placeholder Product).
+    final cartItems = order.items.map((item) {
+      final product = Product(
+        id: item.productId,
+        storeId: order.storeId,
+        categoryId: '',
+        name: item.productName,
+        price: item.price,
+      );
+      return CartItem(
+        product: product,
+        quantity: item.quantity,
+        notes: item.notes,
+      );
+    }).toList();
+
+    ref.read(cartProvider.notifier).replaceAll(cartItems);
+    state = const AsyncData(null);
+    return true;
+  }
+
+  /// Clear current order and reset cart.
+  void newOrder() {
+    ref.read(currentOrderIdProvider.notifier).set(null);
+    ref.read(currentOrderProvider.notifier).set(null);
+    ref.read(cartProvider.notifier).clear();
+  }
+
+  /// Legacy: place order + pay in one step (kept for backwards compat).
+  Future<bool> placeOrder() async {
+    final saved = await saveOrder();
+    if (!saved) return false;
+    return completePayment();
   }
 }

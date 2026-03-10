@@ -226,7 +226,7 @@ return $default(_that.id,_that.storeId,_that.orderNumber,_that.employeeId,_that.
 @JsonSerializable()
 
 class _Order implements Order {
-  const _Order({required this.id, @JsonKey(name: 'store_id') required this.storeId, @JsonKey(name: 'order_number') required this.orderNumber, @JsonKey(name: 'employee_id') this.employeeId, @JsonKey(name: 'terminal_id') this.terminalId, @JsonKey(name: 'table_id') this.tableId, @JsonKey(name: 'order_type') this.orderType = 'dine_in', this.status = 'pending', @JsonKey(name: 'discount_amount') this.discountAmount = 0, this.subtotal = 0, @JsonKey(name: 'tax_amount') this.taxAmount = 0, @JsonKey(name: 'service_charge') this.serviceCharge = 0, @JsonKey(name: 'grand_total') this.grandTotal = 0, @JsonKey(name: 'payment_status') this.paymentStatus = 'unpaid', this.notes, @JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'updated_at') this.updatedAt, final  List<OrderItem> items = const []}): _items = items;
+  const _Order({required this.id, @JsonKey(name: 'store_id') required this.storeId, @JsonKey(name: 'order_number') this.orderNumber = '', @JsonKey(name: 'employee_id') this.employeeId, @JsonKey(name: 'terminal_id') this.terminalId, @JsonKey(name: 'table_id') this.tableId, @JsonKey(name: 'order_type') this.orderType = 'dine_in', this.status = 'pending', @JsonKey(name: 'discount_amount') this.discountAmount = 0, this.subtotal = 0, @JsonKey(name: 'tax_amount') this.taxAmount = 0, @JsonKey(name: 'service_charge') this.serviceCharge = 0, @JsonKey(name: 'grand_total') this.grandTotal = 0, @JsonKey(name: 'payment_status') this.paymentStatus = 'unpaid', this.notes, @JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'updated_at') this.updatedAt, final  List<OrderItem> items = const []}): _items = items;
   factory _Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
 
 @override final  String id;
@@ -538,7 +538,7 @@ return $default(_that.id,_that.orderId,_that.productId,_that.productName,_that.q
 @JsonSerializable()
 
 class _OrderItem implements OrderItem {
-  const _OrderItem({required this.id, @JsonKey(name: 'order_id') required this.orderId, @JsonKey(name: 'product_id') required this.productId, @JsonKey(name: 'product_name') required this.productName, this.quantity = 1, required this.price, @JsonKey(name: 'tax_amount') this.taxAmount = 0, this.total = 0, this.notes, final  List<OrderItemModifier> modifiers = const []}): _modifiers = modifiers;
+  const _OrderItem({required this.id, @JsonKey(name: 'order_id') required this.orderId, @JsonKey(name: 'product_id') this.productId = '', @JsonKey(name: 'product_name') this.productName = 'Unknown', this.quantity = 1, this.price = 0, @JsonKey(name: 'tax_amount') this.taxAmount = 0, this.total = 0, this.notes, final  List<OrderItemModifier> modifiers = const []}): _modifiers = modifiers;
   factory _OrderItem.fromJson(Map<String, dynamic> json) => _$OrderItemFromJson(json);
 
 @override final  String id;
@@ -546,7 +546,7 @@ class _OrderItem implements OrderItem {
 @override@JsonKey(name: 'product_id') final  String productId;
 @override@JsonKey(name: 'product_name') final  String productName;
 @override@JsonKey() final  int quantity;
-@override final  double price;
+@override@JsonKey() final  double price;
 @override@JsonKey(name: 'tax_amount') final  double taxAmount;
 @override@JsonKey() final  double total;
 @override final  String? notes;
