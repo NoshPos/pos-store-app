@@ -11,6 +11,7 @@
 .svn/
 .swiftpm/
 migrate_working_dir/
+endpoints.json
 
 # IntelliJ related
 *.iml

@@ -8,7 +8,7 @@ abstract class Product with _$Product {
   const factory Product({
     required String id,
     @JsonKey(name: 'store_id') required String storeId,
-    @JsonKey(name: 'category_id') required String categoryId,
+    @JsonKey(name: 'category_id') String? categoryId,
     required String name,
     String? description,
     required double price,

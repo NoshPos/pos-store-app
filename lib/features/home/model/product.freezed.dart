@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Product {
 
- String get id;@JsonKey(name: 'store_id') String get storeId;@JsonKey(name: 'category_id') String get categoryId; String get name; String? get description; double get price;@JsonKey(name: 'tax_percent') double get taxPercent;@JsonKey(name: 'is_active') bool get isActive;@JsonKey(name: 'sort_order') int get sortOrder;@JsonKey(name: 'created_at') DateTime? get createdAt;
+ String get id;@JsonKey(name: 'store_id') String get storeId;@JsonKey(name: 'category_id') String? get categoryId; String get name; String? get description; double get price;@JsonKey(name: 'tax_percent') double get taxPercent;@JsonKey(name: 'is_active') bool get isActive;@JsonKey(name: 'sort_order') int get sortOrder;@JsonKey(name: 'created_at') DateTime? get createdAt;
 /// Create a copy of Product
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $ProductCopyWith<$Res>  {
   factory $ProductCopyWith(Product value, $Res Function(Product) _then) = _$ProductCopyWithImpl;
 @useResult
 $Res call({
- String id,@JsonKey(name: 'store_id') String storeId,@JsonKey(name: 'category_id') String categoryId, String name, String? description, double price,@JsonKey(name: 'tax_percent') double taxPercent,@JsonKey(name: 'is_active') bool isActive,@JsonKey(name: 'sort_order') int sortOrder,@JsonKey(name: 'created_at') DateTime? createdAt
+ String id,@JsonKey(name: 'store_id') String storeId,@JsonKey(name: 'category_id') String? categoryId, String name, String? description, double price,@JsonKey(name: 'tax_percent') double taxPercent,@JsonKey(name: 'is_active') bool isActive,@JsonKey(name: 'sort_order') int sortOrder,@JsonKey(name: 'created_at') DateTime? createdAt
 });
 
 
@@ -65,12 +65,12 @@ class _$ProductCopyWithImpl<$Res>
 
 /// Create a copy of Product
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? storeId = null,Object? categoryId = null,Object? name = null,Object? description = freezed,Object? price = null,Object? taxPercent = null,Object? isActive = null,Object? sortOrder = null,Object? createdAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? storeId = null,Object? categoryId = freezed,Object? name = null,Object? description = freezed,Object? price = null,Object? taxPercent = null,Object? isActive = null,Object? sortOrder = null,Object? createdAt = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,storeId: null == storeId ? _self.storeId : storeId // ignore: cast_nullable_to_non_nullable
-as String,categoryId: null == categoryId ? _self.categoryId : categoryId // ignore: cast_nullable_to_non_nullable
-as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,categoryId: freezed == categoryId ? _self.categoryId : categoryId // ignore: cast_nullable_to_non_nullable
+as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
 as double,taxPercent: null == taxPercent ? _self.taxPercent : taxPercent // ignore: cast_nullable_to_non_nullable
@@ -162,7 +162,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'store_id')  String storeId, @JsonKey(name: 'category_id')  String categoryId,  String name,  String? description,  double price, @JsonKey(name: 'tax_percent')  double taxPercent, @JsonKey(name: 'is_active')  bool isActive, @JsonKey(name: 'sort_order')  int sortOrder, @JsonKey(name: 'created_at')  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'store_id')  String storeId, @JsonKey(name: 'category_id')  String? categoryId,  String name,  String? description,  double price, @JsonKey(name: 'tax_percent')  double taxPercent, @JsonKey(name: 'is_active')  bool isActive, @JsonKey(name: 'sort_order')  int sortOrder, @JsonKey(name: 'created_at')  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Product() when $default != null:
 return $default(_that.id,_that.storeId,_that.categoryId,_that.name,_that.description,_that.price,_that.taxPercent,_that.isActive,_that.sortOrder,_that.createdAt);case _:
@@ -183,7 +183,7 @@ return $default(_that.id,_that.storeId,_that.categoryId,_that.name,_that.descrip
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'store_id')  String storeId, @JsonKey(name: 'category_id')  String categoryId,  String name,  String? description,  double price, @JsonKey(name: 'tax_percent')  double taxPercent, @JsonKey(name: 'is_active')  bool isActive, @JsonKey(name: 'sort_order')  int sortOrder, @JsonKey(name: 'created_at')  DateTime? createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'store_id')  String storeId, @JsonKey(name: 'category_id')  String? categoryId,  String name,  String? description,  double price, @JsonKey(name: 'tax_percent')  double taxPercent, @JsonKey(name: 'is_active')  bool isActive, @JsonKey(name: 'sort_order')  int sortOrder, @JsonKey(name: 'created_at')  DateTime? createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _Product():
 return $default(_that.id,_that.storeId,_that.categoryId,_that.name,_that.description,_that.price,_that.taxPercent,_that.isActive,_that.sortOrder,_that.createdAt);case _:
@@ -203,7 +203,7 @@ return $default(_that.id,_that.storeId,_that.categoryId,_that.name,_that.descrip
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'store_id')  String storeId, @JsonKey(name: 'category_id')  String categoryId,  String name,  String? description,  double price, @JsonKey(name: 'tax_percent')  double taxPercent, @JsonKey(name: 'is_active')  bool isActive, @JsonKey(name: 'sort_order')  int sortOrder, @JsonKey(name: 'created_at')  DateTime? createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'store_id')  String storeId, @JsonKey(name: 'category_id')  String? categoryId,  String name,  String? description,  double price, @JsonKey(name: 'tax_percent')  double taxPercent, @JsonKey(name: 'is_active')  bool isActive, @JsonKey(name: 'sort_order')  int sortOrder, @JsonKey(name: 'created_at')  DateTime? createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _Product() when $default != null:
 return $default(_that.id,_that.storeId,_that.categoryId,_that.name,_that.description,_that.price,_that.taxPercent,_that.isActive,_that.sortOrder,_that.createdAt);case _:
@@ -218,12 +218,12 @@ return $default(_that.id,_that.storeId,_that.categoryId,_that.name,_that.descrip
 @JsonSerializable()
 
 class _Product implements Product {
-  const _Product({required this.id, @JsonKey(name: 'store_id') required this.storeId, @JsonKey(name: 'category_id') required this.categoryId, required this.name, this.description, required this.price, @JsonKey(name: 'tax_percent') this.taxPercent = 0, @JsonKey(name: 'is_active') this.isActive = true, @JsonKey(name: 'sort_order') this.sortOrder = 0, @JsonKey(name: 'created_at') this.createdAt});
+  const _Product({required this.id, @JsonKey(name: 'store_id') required this.storeId, @JsonKey(name: 'category_id') this.categoryId, required this.name, this.description, required this.price, @JsonKey(name: 'tax_percent') this.taxPercent = 0, @JsonKey(name: 'is_active') this.isActive = true, @JsonKey(name: 'sort_order') this.sortOrder = 0, @JsonKey(name: 'created_at') this.createdAt});
   factory _Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);
 
 @override final  String id;
 @override@JsonKey(name: 'store_id') final  String storeId;
-@override@JsonKey(name: 'category_id') final  String categoryId;
+@override@JsonKey(name: 'category_id') final  String? categoryId;
 @override final  String name;
 @override final  String? description;
 @override final  double price;
@@ -265,7 +265,7 @@ abstract mixin class _$ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
   factory _$ProductCopyWith(_Product value, $Res Function(_Product) _then) = __$ProductCopyWithImpl;
 @override @useResult
 $Res call({
- String id,@JsonKey(name: 'store_id') String storeId,@JsonKey(name: 'category_id') String categoryId, String name, String? description, double price,@JsonKey(name: 'tax_percent') double taxPercent,@JsonKey(name: 'is_active') bool isActive,@JsonKey(name: 'sort_order') int sortOrder,@JsonKey(name: 'created_at') DateTime? createdAt
+ String id,@JsonKey(name: 'store_id') String storeId,@JsonKey(name: 'category_id') String? categoryId, String name, String? description, double price,@JsonKey(name: 'tax_percent') double taxPercent,@JsonKey(name: 'is_active') bool isActive,@JsonKey(name: 'sort_order') int sortOrder,@JsonKey(name: 'created_at') DateTime? createdAt
 });
 
 
@@ -282,12 +282,12 @@ class __$ProductCopyWithImpl<$Res>
 
 /// Create a copy of Product
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? storeId = null,Object? categoryId = null,Object? name = null,Object? description = freezed,Object? price = null,Object? taxPercent = null,Object? isActive = null,Object? sortOrder = null,Object? createdAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? storeId = null,Object? categoryId = freezed,Object? name = null,Object? description = freezed,Object? price = null,Object? taxPercent = null,Object? isActive = null,Object? sortOrder = null,Object? createdAt = freezed,}) {
   return _then(_Product(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,storeId: null == storeId ? _self.storeId : storeId // ignore: cast_nullable_to_non_nullable
-as String,categoryId: null == categoryId ? _self.categoryId : categoryId // ignore: cast_nullable_to_non_nullable
-as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,categoryId: freezed == categoryId ? _self.categoryId : categoryId // ignore: cast_nullable_to_non_nullable
+as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
 as double,taxPercent: null == taxPercent ? _self.taxPercent : taxPercent // ignore: cast_nullable_to_non_nullable
