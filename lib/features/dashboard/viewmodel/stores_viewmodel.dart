@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../home/model/store.dart';
+import '../../home/viewmodel/store_viewmodel.dart';
 import '../model/store_models.dart';
 import '../repository/dashboard_store_repository.dart';
 
@@ -45,9 +46,15 @@ class CreateStoreAction extends _$CreateStoreAction {
         state = AsyncError(failure.message, StackTrace.current);
         return false;
       },
-      (_) {
+      (created) {
         state = const AsyncData(null);
         ref.invalidate(dashboardStoreListProvider);
+        ref.invalidate(storeListProvider);
+        // Auto-select new store if none selected
+        final current = ref.read(selectedStoreProvider);
+        if (current == null) {
+          ref.read(selectedStoreProvider.notifier).select(created);
+        }
         return true;
       },
     );
@@ -72,9 +79,15 @@ class UpdateStoreAction extends _$UpdateStoreAction {
         state = AsyncError(failure.message, StackTrace.current);
         return false;
       },
-      (_) {
+      (updated) {
         state = const AsyncData(null);
         ref.invalidate(dashboardStoreListProvider);
+        ref.invalidate(storeListProvider);
+        // Re-select if the updated store was the selected one
+        final current = ref.read(selectedStoreProvider);
+        if (current?.id == storeId) {
+          ref.read(selectedStoreProvider.notifier).select(updated);
+        }
         return true;
       },
     );

@@ -86,7 +86,7 @@ final class CreateStoreActionProvider
   }
 }
 
-String _$createStoreActionHash() => r'd8367a04b68547950679eba88c9a5d2b644f2ac1';
+String _$createStoreActionHash() => r'feecd60c75bd2655f1043ec2b542fd5bf7baffe3';
 
 abstract class _$CreateStoreAction extends $Notifier<AsyncValue<void>> {
   AsyncValue<void> build();
@@ -138,7 +138,7 @@ final class UpdateStoreActionProvider
   }
 }
 
-String _$updateStoreActionHash() => r'567a23112230ccd802516a9bd510767e8b1a4b9d';
+String _$updateStoreActionHash() => r'dc5bcb770acb9100383b9c85f01bc47294051937';
 
 abstract class _$UpdateStoreAction extends $Notifier<AsyncValue<void>> {
   AsyncValue<void> build();
