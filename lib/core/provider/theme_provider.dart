@@ -3,7 +3,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../init_dependencies.dart';
 import '../database/app_database.dart';
-import '../theme/themes.dart';
 
 part 'theme_provider.g.dart';
 
@@ -11,34 +10,34 @@ part 'theme_provider.g.dart';
 @Riverpod(keepAlive: true)
 class IsDarkMode extends _$IsDarkMode {
   @override
-  Future<bool> build() async {
-    final db = serviceLocator<AppDatabase>();
-    final settings = await db.getSettings();
-    return settings.isDarkMode;
+  bool build() {
+    // Kick off the async load; when it completes it will update state.
+    _loadFromDb();
+    return false; // default to light until DB read finishes
   }
 
-  Future<void> setDarkMode(bool value) async {
+  Future<void> _loadFromDb() async {
     final db = serviceLocator<AppDatabase>();
-    await db.updateIsDarkMode(value);
-    ref.invalidateSelf();
+    final settings = await db.getSettings();
+    if (state != settings.isDarkMode) {
+      state = settings.isDarkMode;
+    }
+  }
+
+  Future<void> toggle() async {
+    final newValue = !state;
+    state = newValue; // immediate UI update
+    final db = serviceLocator<AppDatabase>();
+    await db.updateIsDarkMode(newValue);
   }
 }
 
-/// Provides the current theme based on isDarkMode setting
+/// Provides the current ThemeMode based on isDarkMode setting
 @Riverpod(keepAlive: true)
-class AppTheme extends _$AppTheme {
+class AppThemeMode extends _$AppThemeMode {
   @override
-  ThemeData build() {
-    final isDarkModeAsync = ref.watch(isDarkModeProvider);
-
-    return isDarkModeAsync.when(
-      data: (isDark) => isDark ? darkTheme : lightTheme,
-      loading: () => lightTheme,
-      error: (_, _) => lightTheme,
-    );
-  }
-
-  Future<void> toggleTheme(bool isDarkMode) async {
-    await ref.read(isDarkModeProvider.notifier).setDarkMode(isDarkMode);
+  ThemeMode build() {
+    final isDark = ref.watch(isDarkModeProvider);
+    return isDark ? ThemeMode.dark : ThemeMode.light;
   }
 }

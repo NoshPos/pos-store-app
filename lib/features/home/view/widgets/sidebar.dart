@@ -17,12 +17,7 @@ class AppSidebar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
-    final isDarkAsync = ref.watch(isDarkModeProvider);
-    final isDark = isDarkAsync.when(
-      data: (v) => v,
-      loading: () => false,
-      error: (e, st) => false,
-    );
+    final isDark = ref.watch(isDarkModeProvider);
 
     return Container(
       width: 72,
@@ -89,7 +84,7 @@ class AppSidebar extends ConsumerWidget {
             icon: isDark ? Icons.light_mode_outlined : Icons.dark_mode_outlined,
             tooltip: isDark ? 'Light Mode' : 'Dark Mode',
             onTap: () {
-              ref.read(appThemeProvider.notifier).toggleTheme(!isDark);
+              ref.read(isDarkModeProvider.notifier).toggle();
             },
           ),
           _SidebarActionItem(

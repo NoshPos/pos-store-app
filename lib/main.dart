@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/provider/current_user_provider.dart';
 import 'core/provider/theme_provider.dart';
+import 'core/theme/themes.dart';
 import 'features/auth/view/screen/login_page.dart';
 import 'features/home/view/screen/home_page.dart';
 import 'init_dependencies.dart';
@@ -20,11 +21,13 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userId = ref.watch(currentUserIdProvider);
     final isLoggedIn = userId != null;
-    final theme = ref.watch(appThemeProvider);
+    final themeMode = ref.watch(appThemeModeProvider);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Nosh POS',
-      theme: theme,
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: themeMode,
       home: isLoggedIn ? const HomePage() : const LoginPage(),
     );
   }
