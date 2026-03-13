@@ -109,15 +109,25 @@ class _SalesFilters extends ConsumerWidget {
   const _SalesFilters();
 
   static const _orderStatuses = [
-    'pending',
+    'open',
+    'sent_to_kitchen',
     'preparing',
     'ready',
     'served',
+    'handed_over',
+    'out_for_delivery',
+    'delivered',
     'completed',
+    'paid',
     'cancelled',
   ];
 
-  static const _paymentStatuses = ['unpaid', 'partial', 'paid', 'refunded'];
+  static const _paymentStatuses = [
+    'pending',
+    'partial',
+    'completed',
+    'refunded',
+  ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -132,7 +142,7 @@ class _SalesFilters extends ConsumerWidget {
         SizedBox(
           width: 180,
           child: DropdownButtonFormField<String>(
-            value: statusFilter,
+            initialValue: statusFilter,
             decoration: const InputDecoration(
               labelText: 'Order Status',
               border: OutlineInputBorder(),
@@ -152,7 +162,7 @@ class _SalesFilters extends ConsumerWidget {
         SizedBox(
           width: 180,
           child: DropdownButtonFormField<String>(
-            value: paymentFilter,
+            initialValue: paymentFilter,
             decoration: const InputDecoration(
               labelText: 'Payment Status',
               border: OutlineInputBorder(),
@@ -271,7 +281,7 @@ class _OrdersDataTable extends StatelessWidget {
 
   static Color _paymentColor(String status) {
     return switch (status) {
-      'paid' => Colors.green,
+      'completed' => Colors.green,
       'refunded' => Colors.red,
       'partial' => Colors.orange,
       _ => Colors.grey,
@@ -328,7 +338,7 @@ class _OrderDetailPanel extends ConsumerWidget {
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const Spacer(),
-            if (order.paymentStatus != 'paid')
+            if (order.paymentStatus != 'completed')
               FilledButton.icon(
                 onPressed: () => _showRecordPaymentDialog(context, ref, order),
                 icon: const Icon(Icons.payment),
@@ -417,7 +427,7 @@ class _OrderDetailPanel extends ConsumerWidget {
                         Expanded(
                           child: ListView.separated(
                             itemCount: order.items.length,
-                            separatorBuilder: (_, __) =>
+                            separatorBuilder: (_, _) =>
                                 const Divider(height: 1),
                             itemBuilder: (_, i) {
                               final item = order.items[i];
@@ -559,7 +569,7 @@ class _RecordPaymentDialogState extends ConsumerState<_RecordPaymentDialog> {
             mainAxisSize: MainAxisSize.min,
             children: [
               DropdownButtonFormField<String>(
-                value: _method,
+                initialValue: _method,
                 decoration: const InputDecoration(
                   labelText: 'Payment Method',
                   border: OutlineInputBorder(),

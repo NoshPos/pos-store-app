@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../home/model/order.dart';
+import '../../../home/repository/order_repository.dart';
 import '../../viewmodel/orders_viewmodel.dart';
 
 /// Full-screen dialog showing order details with actions.
@@ -17,11 +18,35 @@ class OrderDetailsPage extends ConsumerStatefulWidget {
 
 class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   late Order _order;
+  bool _isRefreshing = false;
 
   @override
   void initState() {
     super.initState();
     _order = widget.order;
+    _refreshOrder();
+  }
+
+  Future<void> _refreshOrder() async {
+    if (_isRefreshing) return;
+    setState(() {
+      _isRefreshing = true;
+    });
+
+    final latest = await ref
+        .read(orderRepositoryProvider)
+        .getOrderById(_order.id);
+
+    if (!mounted) return;
+    latest.fold((_) {}, (order) {
+      _order = order;
+    });
+
+    if (mounted) {
+      setState(() {
+        _isRefreshing = false;
+      });
+    }
   }
 
   @override
@@ -34,7 +59,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
         ? _order.grandTotal
         : _order.items.fold<double>(0, (s, i) => s + i.total);
     final dateStr = _order.createdAt != null
-        ? DateFormat('dd MMM yyyy, hh:mm a').format(_order.createdAt!)
+        ? DateFormat('dd MMM yyyy, hh:mm a').format(_order.createdAt!.toLocal())
         : '';
 
     return Scaffold(
@@ -42,22 +67,17 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
         title: Text('Order #${_order.orderNumber}'),
         centerTitle: false,
         actions: [
-          if (!_isTerminalState(_order.status)) ...[
-            _StatusActionButton(
-              label: _nextStatusLabel(_order.status),
-              icon: _nextStatusIcon(_order.status),
-              color: Colors.green,
-              onPressed: ops.isLoading ? null : () => _advanceStatus(),
-            ),
-            const SizedBox(width: 8),
-            _StatusActionButton(
-              label: 'Cancel',
-              icon: Icons.cancel_outlined,
-              color: colorScheme.error,
-              onPressed: ops.isLoading ? null : () => _showCancelDialog(),
-            ),
-            const SizedBox(width: 16),
-          ],
+          IconButton(
+            tooltip: 'Refresh',
+            onPressed: _isRefreshing ? null : _refreshOrder,
+            icon: _isRefreshing
+                ? const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.refresh),
+          ),
         ],
       ),
       body: Row(
@@ -178,8 +198,8 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                   const SizedBox(height: 16),
 
                   // Pay button
-                  if (_order.paymentStatus != 'paid' &&
-                      !_isTerminalState(_order.status))
+                  if (_order.paymentStatus != 'completed' &&
+                      _order.status != 'cancelled')
                     SizedBox(
                       width: double.infinity,
                       child: FilledButton.icon(
@@ -187,7 +207,29 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                             ? null
                             : () => _showPaymentDialog(total),
                         icon: const Icon(Icons.payment),
-                        label: const Text('Process Payment'),
+                        label: Text(
+                          _isPaymentUnlocked(_order)
+                              ? 'Process Payment'
+                              : 'Take Advance Payment',
+                        ),
+                      ),
+                    )
+                  else if (_order.paymentStatus != 'completed')
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        color: colorScheme.surfaceContainerHighest,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        'Payment will unlock once kitchen/service flow is done for this order type.',
+                        style: textTheme.bodySmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                        ),
                       ),
                     ),
                 ],
@@ -259,61 +301,11 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     );
   }
 
-  Future<void> _advanceStatus() async {
-    final nextStatus = _nextStatus(_order.status);
-    if (nextStatus == null) return;
-    final success = await ref
-        .read(ordersPageOperationsProvider.notifier)
-        .updateStatus(_order.id, nextStatus);
-    if (success && mounted) {
-      setState(() {
-        _order = _order.copyWith(status: nextStatus);
-      });
-    }
-  }
-
-  void _showCancelDialog() {
-    final controller = TextEditingController();
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Cancel Order'),
-        content: TextField(
-          controller: controller,
-          decoration: const InputDecoration(
-            labelText: 'Reason for cancellation',
-            border: OutlineInputBorder(),
-          ),
-          maxLines: 3,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Back'),
-          ),
-          FilledButton(
-            onPressed: () async {
-              final reason = controller.text.trim();
-              if (reason.isEmpty) return;
-              Navigator.pop(ctx);
-              final success = await ref
-                  .read(ordersPageOperationsProvider.notifier)
-                  .cancelOrder(_order.id, reason);
-              if (success && mounted) {
-                setState(() {
-                  _order = _order.copyWith(status: 'cancelled');
-                });
-              }
-            },
-            child: const Text('Cancel Order'),
-          ),
-        ],
-      ),
-    );
-  }
-
   void _showPaymentDialog(double total) {
     String method = 'cash';
+    final amountController = TextEditingController(
+      text: total.toStringAsFixed(2),
+    );
     showDialog(
       context: context,
       builder: (ctx) => StatefulBuilder(
@@ -323,12 +315,24 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Total: \u20B9${total.toStringAsFixed(2)}',
+                'Order Total: \u20B9${total.toStringAsFixed(2)}',
                 style: Theme.of(ctx).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 16),
+              TextField(
+                controller: amountController,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                decoration: const InputDecoration(
+                  labelText: 'Amount',
+                  border: OutlineInputBorder(),
+                  prefixText: '\u20B9 ',
+                ),
+              ),
+              const SizedBox(height: 12),
               SegmentedButton<String>(
                 segments: const [
                   ButtonSegment(value: 'cash', label: Text('Cash')),
@@ -349,17 +353,34 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
             ),
             FilledButton(
               onPressed: () async {
+                final amount = double.tryParse(amountController.text.trim());
+                if (amount == null || amount <= 0) {
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Enter a valid payment amount'),
+                    ),
+                  );
+                  return;
+                }
                 Navigator.pop(ctx);
                 final success = await ref
                     .read(ordersPageOperationsProvider.notifier)
                     .processPayment(
                       orderId: _order.id,
                       paymentMethod: method,
-                      amount: total,
+                      amount: amount,
                     );
                 if (success && mounted) {
-                  setState(() {
-                    _order = _order.copyWith(paymentStatus: 'paid');
+                  final latest = await ref
+                      .read(orderRepositoryProvider)
+                      .getOrderById(_order.id);
+                  latest.fold((_) {}, (order) {
+                    if (mounted) {
+                      setState(() {
+                        _order = order;
+                      });
+                    }
                   });
                 }
               },
@@ -373,41 +394,21 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
 
   // ---- Helpers ----
 
-  bool _isTerminalState(String status) =>
-      status == 'completed' || status == 'cancelled';
+  bool _isPaymentUnlocked(Order order) {
+    final status = order.status.toLowerCase();
+    final type = order.orderType.toLowerCase();
 
-  String? _nextStatus(String status) {
-    return switch (status) {
-      'pending' => 'confirmed',
-      'confirmed' => 'preparing',
-      'preparing' || 'in_kitchen' => 'ready',
-      'ready' => 'served',
-      'served' || 'delivered' => 'completed',
-      _ => null,
-    };
-  }
-
-  String _nextStatusLabel(String status) {
-    final next = _nextStatus(status);
-    return switch (next) {
-      'confirmed' => 'Confirm',
-      'preparing' => 'Start Prep',
-      'ready' => 'Mark Ready',
-      'served' => 'Serve',
-      'completed' => 'Complete',
-      _ => 'Advance',
-    };
-  }
-
-  IconData _nextStatusIcon(String status) {
-    return switch (status) {
-      'pending' => Icons.check_circle_outline,
-      'confirmed' => Icons.soup_kitchen_outlined,
-      'preparing' || 'in_kitchen' => Icons.done_all,
-      'ready' => Icons.room_service_outlined,
-      'served' || 'delivered' => Icons.task_alt,
-      _ => Icons.arrow_forward,
-    };
+    if (status == 'paid' || status == 'completed') return true;
+    if (type == 'dine_in') return status == 'served' || status == 'ready';
+    if (type == 'takeaway' || type == 'take_away') {
+      return status == 'ready' || status == 'handed_over';
+    }
+    if (type == 'delivery' || type == 'aggregator') {
+      return status == 'ready' ||
+          status == 'out_for_delivery' ||
+          status == 'delivered';
+    }
+    return false;
   }
 
   String _orderTypeLabel(String type) {
@@ -423,33 +424,6 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
 // ---------------------------------------------------------------------------
 // Small reusable widgets
 // ---------------------------------------------------------------------------
-
-class _StatusActionButton extends StatelessWidget {
-  final String label;
-  final IconData icon;
-  final Color color;
-  final VoidCallback? onPressed;
-
-  const _StatusActionButton({
-    required this.label,
-    required this.icon,
-    required this.color,
-    this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return FilledButton.tonalIcon(
-      onPressed: onPressed,
-      icon: Icon(icon, size: 18),
-      label: Text(label),
-      style: FilledButton.styleFrom(
-        foregroundColor: color,
-        backgroundColor: color.withValues(alpha: 0.12),
-      ),
-    );
-  }
-}
 
 class _InfoRow extends StatelessWidget {
   final String label;
@@ -502,24 +476,29 @@ class _StatusBadge extends StatelessWidget {
   }
 
   String _statusLabel(String s) => switch (s) {
-    'pending' => 'Pending',
-    'confirmed' => 'Confirmed',
-    'preparing' || 'in_kitchen' => 'Preparing',
+    'open' => 'Open',
+    'sent_to_kitchen' => 'Sent to Kitchen',
+    'preparing' => 'Preparing',
     'ready' => 'Ready',
     'served' => 'Served',
+    'handed_over' => 'Handed Over',
+    'out_for_delivery' => 'Out for Delivery',
     'delivered' => 'Delivered',
     'completed' => 'Completed',
+    'paid' => 'Paid',
     'cancelled' => 'Cancelled',
     _ => s,
   };
 
   Color _statusColor(String s, ColorScheme cs) => switch (s) {
-    'pending' => Colors.orange,
-    'confirmed' => Colors.blue,
-    'preparing' || 'in_kitchen' => Colors.amber.shade700,
+    'open' => Colors.blue,
+    'sent_to_kitchen' => Colors.orange,
+    'preparing' => Colors.amber.shade700,
     'ready' => Colors.green,
-    'served' || 'delivered' => Colors.teal,
-    'completed' => Colors.grey,
+    'served' || 'handed_over' || 'delivered' => Colors.teal,
+    'out_for_delivery' => Colors.deepOrange,
+    'completed' => Colors.teal,
+    'paid' => Colors.grey,
     'cancelled' => cs.error,
     _ => cs.onSurfaceVariant,
   };
@@ -533,8 +512,8 @@ class _PaymentBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = switch (status) {
-      'unpaid' => Colors.orange,
-      'paid' => Colors.green,
+      'pending' => Colors.orange,
+      'completed' => Colors.green,
       'partial' => Colors.blue,
       'refunded' => Theme.of(context).colorScheme.error,
       _ => Theme.of(context).colorScheme.onSurfaceVariant,

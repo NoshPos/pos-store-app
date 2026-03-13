@@ -27,6 +27,10 @@ class ApiEndpoints {
   static String orderStatus(String orderId) => 'orders/$orderId/status';
   static String orderCancel(String orderId) => 'orders/$orderId/cancel';
   static const String orderPayments = 'orders/payments';
+  static String orderPaymentsByOrder(String orderId) =>
+      'orders/$orderId/payments';
+  static String orderPaymentById(String paymentId) =>
+      'orders/payments/$paymentId';
   static const String payments = 'orders/payments';
 
   // Employees

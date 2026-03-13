@@ -358,8 +358,20 @@ class OrderOperations extends _$OrderOperations {
     final paymentMethod = ref.read(selectedPaymentMethodProvider);
     final currentOrder = ref.read(currentOrderProvider);
 
+    if (currentOrder == null) {
+      state = AsyncError('No active order found', StackTrace.current);
+      return false;
+    }
+    if (currentOrder.status == 'cancelled') {
+      state = AsyncError(
+        'Cannot take payment for a cancelled order',
+        StackTrace.current,
+      );
+      return false;
+    }
+
     // Use grandTotal from the order (mapped from net_amount), or compute from cart
-    double amount = currentOrder?.grandTotal ?? 0;
+    double amount = currentOrder.grandTotal;
     if (amount == 0) {
       final cartItems = ref.read(cartProvider);
       amount = cartItems.fold<double>(
@@ -393,10 +405,79 @@ class OrderOperations extends _$OrderOperations {
       return false;
     }
 
-    // Clear local state and refresh orders list
-    ref.read(cartProvider.notifier).clear();
-    ref.read(currentOrderIdProvider.notifier).set(null);
-    ref.read(currentOrderProvider.notifier).set(null);
+    // Refresh from backend and keep order active unless it is fully closed.
+    final refreshed = await repo.getOrderById(orderId);
+    refreshed.fold((_) {}, (order) {
+      ref.read(currentOrderProvider.notifier).set(order);
+      // Only reset local context when order is fully settled/closed.
+      if (order.status == 'paid' || order.status == 'cancelled') {
+        ref.read(cartProvider.notifier).clear();
+        ref.read(currentOrderIdProvider.notifier).set(null);
+        ref.read(currentOrderProvider.notifier).set(null);
+      }
+    });
+
+    ref.invalidate(activeOrdersProvider);
+    state = const AsyncData(null);
+    return true;
+  }
+
+  Future<bool> editLatestPayment({
+    required double amount,
+    required String paymentMethod,
+  }) async {
+    final orderId = ref.read(currentOrderIdProvider);
+    if (orderId == null) {
+      state = AsyncError('No active order found', StackTrace.current);
+      return false;
+    }
+    if (amount <= 0) {
+      state = AsyncError(
+        'Amount must be greater than zero',
+        StackTrace.current,
+      );
+      return false;
+    }
+
+    state = const AsyncLoading();
+    final repo = ref.read(orderRepositoryProvider);
+
+    final paymentsResult = await repo.getOrderPayments(orderId);
+    if (paymentsResult.isLeft()) {
+      final failure = paymentsResult.getLeft().toNullable();
+      state = AsyncError(
+        failure?.message ?? 'Failed to fetch payments',
+        StackTrace.current,
+      );
+      return false;
+    }
+
+    final payments = paymentsResult.getRight().toNullable() ?? const [];
+    final editable = payments.firstWhere(
+      (p) => (p['is_refund'] as bool? ?? false) == false,
+      orElse: () => const <String, dynamic>{},
+    );
+    final paymentId = editable['id'] as String?;
+    if (paymentId == null || paymentId.isEmpty) {
+      state = AsyncError('No editable payment found', StackTrace.current);
+      return false;
+    }
+
+    final updateResult = await repo.updatePayment(
+      paymentId: paymentId,
+      amount: amount,
+      paymentMethod: paymentMethod,
+    );
+    if (updateResult.isLeft()) {
+      final failure = updateResult.getLeft().toNullable();
+      state = AsyncError(
+        failure?.message ?? 'Failed to update payment',
+        StackTrace.current,
+      );
+      return false;
+    }
+
+    await _refreshCurrentOrder(orderId);
     ref.invalidate(activeOrdersProvider);
     state = const AsyncData(null);
     return true;
@@ -449,8 +530,6 @@ class OrderOperations extends _$OrderOperations {
 
   /// Legacy: place order + pay in one step (kept for backwards compat).
   Future<bool> placeOrder() async {
-    final saved = await saveOrder();
-    if (!saved) return false;
-    return completePayment();
+    return saveOrder();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../home/model/order.dart';
 import '../../../home/view/widgets/store_selector.dart';
 import '../../viewmodel/orders_viewmodel.dart';
 import '../widgets/order_card.dart';
@@ -112,7 +113,7 @@ class OrdersPage extends ConsumerWidget {
                     final order = orders[index];
                     return OrderCard(
                       order: order,
-                      onTap: () => _openOrderDetails(context, order),
+                      onTap: () => _openOrderDetails(context, ref, order),
                       onDoubleTap: () {},
                     );
                   },
@@ -125,10 +126,15 @@ class OrdersPage extends ConsumerWidget {
     );
   }
 
-  void _openOrderDetails(BuildContext context, order) {
-    Navigator.of(
+  Future<void> _openOrderDetails(
+    BuildContext context,
+    WidgetRef ref,
+    Order order,
+  ) async {
+    await Navigator.of(
       context,
     ).push(MaterialPageRoute(builder: (_) => OrderDetailsPage(order: order)));
+    ref.invalidate(ordersListProvider);
   }
 }
 

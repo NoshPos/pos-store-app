@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../home/view/widgets/store_selector.dart';
 import 'employees_page.dart';
 import 'inventory_page.dart';
 import 'products_page.dart';
@@ -59,6 +60,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           ] else
             Text('Dashboard', style: Theme.of(context).textTheme.titleLarge),
           const Spacer(),
+          const StoreSelector(),
         ],
       ),
     );

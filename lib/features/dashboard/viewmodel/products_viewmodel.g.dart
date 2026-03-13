@@ -34,7 +34,7 @@ final class DashboardProductListProvider
 }
 
 String _$dashboardProductListHash() =>
-    r'82eefb117fff68821f37dbcbceb2eebc0f1cda65';
+    r'9bc1e0ceed1f7dc798840f290a8476a675292b83';
 
 abstract class _$DashboardProductList extends $AsyncNotifier<List<Product>> {
   FutureOr<List<Product>> build();
@@ -239,7 +239,7 @@ final class UpdateProductActionProvider
 }
 
 String _$updateProductActionHash() =>
-    r'd7d7939b5f8edf5ae2cfd9696f205ed8c3834c12';
+    r'f251f5e86aa6274d01af6493f0ee343073730841';
 
 abstract class _$UpdateProductAction extends $Notifier<AsyncValue<void>> {
   AsyncValue<void> build();
@@ -292,7 +292,7 @@ final class DeleteProductActionProvider
 }
 
 String _$deleteProductActionHash() =>
-    r'c525991e6d19de5dda159c8f772defc04c73f85c';
+    r'7c65e53bbe72bb19602c307329d8b619a0d57368';
 
 abstract class _$DeleteProductAction extends $Notifier<AsyncValue<void>> {
   AsyncValue<void> build();
@@ -398,7 +398,7 @@ final class DeleteCategoryActionProvider
 }
 
 String _$deleteCategoryActionHash() =>
-    r'835f2c7112fa0b61754783ba51e50c20869e0920';
+    r'5d557ca90b39f58a2f6988d18b3c795a0c374e82';
 
 abstract class _$DeleteCategoryAction extends $Notifier<AsyncValue<void>> {
   AsyncValue<void> build();

@@ -91,6 +91,15 @@ class KotPage extends ConsumerWidget {
                       .read(kotStatusFilterProvider.notifier)
                       .select('READY'),
                 ),
+                const SizedBox(width: 8),
+                _KotFilterChip(
+                  label: 'Completed',
+                  value: 'COMPLETED',
+                  selected: statusFilter,
+                  onSelected: () => ref
+                      .read(kotStatusFilterProvider.notifier)
+                      .select('COMPLETED'),
+                ),
               ],
             ),
           ),
@@ -120,11 +129,7 @@ class KotPage extends ConsumerWidget {
               final filtered = statusFilter == null
                   ? tickets
                   : tickets
-                        .where(
-                          (t) =>
-                              t.status.toUpperCase() ==
-                              statusFilter.toUpperCase(),
-                        )
+                        .where((t) => _ticketFilterStatus(t) == statusFilter)
                         .toList();
 
               if (filtered.isEmpty) {
@@ -194,7 +199,7 @@ class _KotCard extends ConsumerWidget {
     final ops = ref.watch(kotOperationsProvider);
     final statusColor = _statusColor(ticket.status, colorScheme);
     final dateStr = ticket.createdAt != null
-        ? DateFormat('hh:mm a').format(ticket.createdAt!)
+        ? DateFormat('hh:mm a').format(ticket.createdAt!.toLocal())
         : '';
 
     return Container(
@@ -272,7 +277,7 @@ class _KotCard extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    ticket.status.toUpperCase(),
+                    _displayStatusLabel(ticket.status),
                     style: textTheme.labelSmall?.copyWith(
                       color: statusColor,
                       fontWeight: FontWeight.w700,
@@ -358,7 +363,7 @@ class _KotCard extends ConsumerWidget {
                           : () async {
                               final success = await ref
                                   .read(kotOperationsProvider.notifier)
-                                  .updateStatus(ticket.id, 'PREPARING');
+                                  .updateStatus(ticket.id, 'preparing');
                               if (!success && context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
@@ -386,7 +391,7 @@ class _KotCard extends ConsumerWidget {
                           : () async {
                               final success = await ref
                                   .read(kotOperationsProvider.notifier)
-                                  .updateStatus(ticket.id, 'READY');
+                                  .updateStatus(ticket.id, 'ready');
                               if (!success && context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
@@ -408,11 +413,39 @@ class _KotCard extends ConsumerWidget {
                   ),
                 if (ticket.status.toUpperCase() == 'READY')
                   Expanded(
+                    child: FilledButton.icon(
+                      onPressed: ops.isLoading
+                          ? null
+                          : () async {
+                              final success = await ref
+                                  .read(kotOperationsProvider.notifier)
+                                  .updateStatus(ticket.id, 'served');
+                              if (!success && context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Failed to mark completed'),
+                                  ),
+                                );
+                              }
+                            },
+                      icon: const Icon(Icons.task_alt, size: 18),
+                      label: const Text('Mark Completed'),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: Colors.teal,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ),
+                if (ticket.status.toUpperCase() == 'SERVED')
+                  Expanded(
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: Colors.green.withValues(alpha: 0.1),
+                        color: Colors.grey.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Row(
@@ -421,13 +454,13 @@ class _KotCard extends ConsumerWidget {
                           const Icon(
                             Icons.done_all,
                             size: 18,
-                            color: Colors.green,
+                            color: Colors.grey,
                           ),
                           const SizedBox(width: 6),
                           Text(
-                            'Ready to Serve',
+                            'Completed',
                             style: textTheme.labelLarge?.copyWith(
-                              color: Colors.green,
+                              color: Colors.grey,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -448,9 +481,21 @@ class _KotCard extends ConsumerWidget {
       'PENDING' => Colors.orange,
       'PREPARING' => Colors.amber.shade700,
       'READY' => Colors.green,
+      'SERVED' => Colors.grey,
       _ => cs.onSurfaceVariant,
     };
   }
+
+  String _displayStatusLabel(String rawStatus) {
+    final s = rawStatus.toUpperCase();
+    if (s == 'SERVED') return 'COMPLETED';
+    return s;
+  }
+}
+
+String _ticketFilterStatus(KitchenOrderTicket ticket) {
+  final s = ticket.status.toUpperCase();
+  return s == 'SERVED' ? 'COMPLETED' : s;
 }
 
 // ---------------------------------------------------------------------------

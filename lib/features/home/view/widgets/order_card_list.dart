@@ -62,10 +62,17 @@ class _OrderCard extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
-    final progress = _statusProgress(order.status);
-    final statusColor = _statusColor(order.status, colorScheme);
+    final progress = _overallProgress(
+      status: order.status,
+      paymentStatus: order.paymentStatus,
+    );
+    final statusColor = _statusColor(
+      order.status,
+      order.paymentStatus,
+      colorScheme,
+    );
     final dateStr = order.createdAt != null
-        ? DateFormat('dd MMM, hh:mm a').format(order.createdAt!)
+        ? DateFormat('dd MMM, hh:mm a').format(order.createdAt!.toLocal())
         : '';
 
     return GestureDetector(
@@ -107,7 +114,7 @@ class _OrderCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    _statusLabel(order.status),
+                    _statusLabel(order.status, order.paymentStatus),
                     style: textTheme.labelSmall?.copyWith(color: statusColor),
                   ),
                 ),
@@ -163,34 +170,77 @@ class _OrderCard extends StatelessWidget {
       'confirmed' || 'sent_to_kitchen' => 0.3,
       'preparing' => 0.5,
       'ready' => 0.8,
+      'out_for_delivery' => 0.9,
+      'handed_over' => 0.95,
       'served' || 'delivered' => 0.95,
       'completed' => 1.0,
+      'paid' => 1.0,
       _ => 0.0,
     };
   }
 
-  String _statusLabel(String status) {
+  double _overallProgress({
+    required String status,
+    required String paymentStatus,
+  }) {
+    final base = _statusProgress(status);
+    final s = status.toLowerCase();
+    final p = paymentStatus.toLowerCase();
+
+    // If fulfillment is done and payment is completed, the order is truly 100%.
+    if (p == 'completed' &&
+        {
+          'ready',
+          'served',
+          'handed_over',
+          'delivered',
+          'completed',
+          'paid',
+        }.contains(s)) {
+      return 1.0;
+    }
+
+    final adjusted = switch (p) {
+      'completed' => base + 0.20, // prepaid/full paid before final service
+      'partial' => base + 0.10, // advance/partial payment progress
+      'refunded' => (base - 0.10),
+      _ => base,
+    };
+
+    if (adjusted < 0) return 0;
+    if (adjusted > 1) return 1;
+    return adjusted;
+  }
+
+  String _statusLabel(String status, String paymentStatus) {
+    if (paymentStatus.toLowerCase() == 'completed') return 'Paid';
     return switch (status) {
       'pending' || 'open' => 'Open',
       'confirmed' => 'Confirmed',
       'sent_to_kitchen' => 'In Kitchen',
       'preparing' => 'Cooking',
       'ready' => 'Ready',
+      'handed_over' => 'Given to Customer',
+      'out_for_delivery' => 'Out for Delivery',
       'served' => 'Served',
       'delivered' => 'Delivered',
       'completed' => 'Done',
+      'paid' => 'Paid',
       'cancelled' => 'Cancelled',
       _ => status,
     };
   }
 
-  Color _statusColor(String status, ColorScheme cs) {
+  Color _statusColor(String status, String paymentStatus, ColorScheme cs) {
+    if (paymentStatus.toLowerCase() == 'completed') return Colors.grey;
     return switch (status) {
       'pending' || 'open' => Colors.orange,
       'confirmed' => Colors.blue,
       'sent_to_kitchen' || 'preparing' => cs.primary,
       'ready' => Colors.green,
+      'out_for_delivery' => Colors.deepOrange,
       'served' || 'delivered' || 'completed' => Colors.teal,
+      'paid' => Colors.grey,
       'cancelled' => cs.error,
       _ => cs.onSurfaceVariant,
     };
