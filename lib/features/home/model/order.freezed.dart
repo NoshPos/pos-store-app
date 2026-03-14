@@ -930,7 +930,7 @@ as double,
 /// @nodoc
 mixin _$OrderCreate {
 
-@JsonKey(name: 'store_id') String get storeId;@JsonKey(name: 'employee_id') String? get employeeId;@JsonKey(name: 'terminal_id') String? get terminalId;@JsonKey(name: 'table_number') int? get tableNumber;@JsonKey(name: 'order_type') String get orderType; String get channel;@JsonKey(name: 'discount_amount') double get discountAmount;@JsonKey(name: 'service_charge') double get serviceCharge; String? get notes; List<OrderItemCreate> get items;
+@JsonKey(name: 'store_id') String get storeId;@JsonKey(name: 'employee_id') String? get employeeId;@JsonKey(name: 'terminal_id') String? get terminalId;@JsonKey(name: 'table_number') int? get tableNumber;@JsonKey(name: 'shift_id') String? get shiftId;@JsonKey(name: 'order_type') String get orderType; String get channel;@JsonKey(name: 'discount_amount') double get discountAmount;@JsonKey(name: 'service_charge') double get serviceCharge; String? get notes; List<OrderItemCreate> get items;
 /// Create a copy of OrderCreate
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -943,16 +943,16 @@ $OrderCreateCopyWith<OrderCreate> get copyWith => _$OrderCreateCopyWithImpl<Orde
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderCreate&&(identical(other.storeId, storeId) || other.storeId == storeId)&&(identical(other.employeeId, employeeId) || other.employeeId == employeeId)&&(identical(other.terminalId, terminalId) || other.terminalId == terminalId)&&(identical(other.tableNumber, tableNumber) || other.tableNumber == tableNumber)&&(identical(other.orderType, orderType) || other.orderType == orderType)&&(identical(other.channel, channel) || other.channel == channel)&&(identical(other.discountAmount, discountAmount) || other.discountAmount == discountAmount)&&(identical(other.serviceCharge, serviceCharge) || other.serviceCharge == serviceCharge)&&(identical(other.notes, notes) || other.notes == notes)&&const DeepCollectionEquality().equals(other.items, items));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderCreate&&(identical(other.storeId, storeId) || other.storeId == storeId)&&(identical(other.employeeId, employeeId) || other.employeeId == employeeId)&&(identical(other.terminalId, terminalId) || other.terminalId == terminalId)&&(identical(other.tableNumber, tableNumber) || other.tableNumber == tableNumber)&&(identical(other.shiftId, shiftId) || other.shiftId == shiftId)&&(identical(other.orderType, orderType) || other.orderType == orderType)&&(identical(other.channel, channel) || other.channel == channel)&&(identical(other.discountAmount, discountAmount) || other.discountAmount == discountAmount)&&(identical(other.serviceCharge, serviceCharge) || other.serviceCharge == serviceCharge)&&(identical(other.notes, notes) || other.notes == notes)&&const DeepCollectionEquality().equals(other.items, items));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,storeId,employeeId,terminalId,tableNumber,orderType,channel,discountAmount,serviceCharge,notes,const DeepCollectionEquality().hash(items));
+int get hashCode => Object.hash(runtimeType,storeId,employeeId,terminalId,tableNumber,shiftId,orderType,channel,discountAmount,serviceCharge,notes,const DeepCollectionEquality().hash(items));
 
 @override
 String toString() {
-  return 'OrderCreate(storeId: $storeId, employeeId: $employeeId, terminalId: $terminalId, tableNumber: $tableNumber, orderType: $orderType, channel: $channel, discountAmount: $discountAmount, serviceCharge: $serviceCharge, notes: $notes, items: $items)';
+  return 'OrderCreate(storeId: $storeId, employeeId: $employeeId, terminalId: $terminalId, tableNumber: $tableNumber, shiftId: $shiftId, orderType: $orderType, channel: $channel, discountAmount: $discountAmount, serviceCharge: $serviceCharge, notes: $notes, items: $items)';
 }
 
 
@@ -963,7 +963,7 @@ abstract mixin class $OrderCreateCopyWith<$Res>  {
   factory $OrderCreateCopyWith(OrderCreate value, $Res Function(OrderCreate) _then) = _$OrderCreateCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'store_id') String storeId,@JsonKey(name: 'employee_id') String? employeeId,@JsonKey(name: 'terminal_id') String? terminalId,@JsonKey(name: 'table_number') int? tableNumber,@JsonKey(name: 'order_type') String orderType, String channel,@JsonKey(name: 'discount_amount') double discountAmount,@JsonKey(name: 'service_charge') double serviceCharge, String? notes, List<OrderItemCreate> items
+@JsonKey(name: 'store_id') String storeId,@JsonKey(name: 'employee_id') String? employeeId,@JsonKey(name: 'terminal_id') String? terminalId,@JsonKey(name: 'table_number') int? tableNumber,@JsonKey(name: 'shift_id') String? shiftId,@JsonKey(name: 'order_type') String orderType, String channel,@JsonKey(name: 'discount_amount') double discountAmount,@JsonKey(name: 'service_charge') double serviceCharge, String? notes, List<OrderItemCreate> items
 });
 
 
@@ -980,13 +980,14 @@ class _$OrderCreateCopyWithImpl<$Res>
 
 /// Create a copy of OrderCreate
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? storeId = null,Object? employeeId = freezed,Object? terminalId = freezed,Object? tableNumber = freezed,Object? orderType = null,Object? channel = null,Object? discountAmount = null,Object? serviceCharge = null,Object? notes = freezed,Object? items = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? storeId = null,Object? employeeId = freezed,Object? terminalId = freezed,Object? tableNumber = freezed,Object? shiftId = freezed,Object? orderType = null,Object? channel = null,Object? discountAmount = null,Object? serviceCharge = null,Object? notes = freezed,Object? items = null,}) {
   return _then(_self.copyWith(
 storeId: null == storeId ? _self.storeId : storeId // ignore: cast_nullable_to_non_nullable
 as String,employeeId: freezed == employeeId ? _self.employeeId : employeeId // ignore: cast_nullable_to_non_nullable
 as String?,terminalId: freezed == terminalId ? _self.terminalId : terminalId // ignore: cast_nullable_to_non_nullable
 as String?,tableNumber: freezed == tableNumber ? _self.tableNumber : tableNumber // ignore: cast_nullable_to_non_nullable
-as int?,orderType: null == orderType ? _self.orderType : orderType // ignore: cast_nullable_to_non_nullable
+as int?,shiftId: freezed == shiftId ? _self.shiftId : shiftId // ignore: cast_nullable_to_non_nullable
+as String?,orderType: null == orderType ? _self.orderType : orderType // ignore: cast_nullable_to_non_nullable
 as String,channel: null == channel ? _self.channel : channel // ignore: cast_nullable_to_non_nullable
 as String,discountAmount: null == discountAmount ? _self.discountAmount : discountAmount // ignore: cast_nullable_to_non_nullable
 as double,serviceCharge: null == serviceCharge ? _self.serviceCharge : serviceCharge // ignore: cast_nullable_to_non_nullable
@@ -1077,10 +1078,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'store_id')  String storeId, @JsonKey(name: 'employee_id')  String? employeeId, @JsonKey(name: 'terminal_id')  String? terminalId, @JsonKey(name: 'table_number')  int? tableNumber, @JsonKey(name: 'order_type')  String orderType,  String channel, @JsonKey(name: 'discount_amount')  double discountAmount, @JsonKey(name: 'service_charge')  double serviceCharge,  String? notes,  List<OrderItemCreate> items)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'store_id')  String storeId, @JsonKey(name: 'employee_id')  String? employeeId, @JsonKey(name: 'terminal_id')  String? terminalId, @JsonKey(name: 'table_number')  int? tableNumber, @JsonKey(name: 'shift_id')  String? shiftId, @JsonKey(name: 'order_type')  String orderType,  String channel, @JsonKey(name: 'discount_amount')  double discountAmount, @JsonKey(name: 'service_charge')  double serviceCharge,  String? notes,  List<OrderItemCreate> items)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OrderCreate() when $default != null:
-return $default(_that.storeId,_that.employeeId,_that.terminalId,_that.tableNumber,_that.orderType,_that.channel,_that.discountAmount,_that.serviceCharge,_that.notes,_that.items);case _:
+return $default(_that.storeId,_that.employeeId,_that.terminalId,_that.tableNumber,_that.shiftId,_that.orderType,_that.channel,_that.discountAmount,_that.serviceCharge,_that.notes,_that.items);case _:
   return orElse();
 
 }
@@ -1098,10 +1099,10 @@ return $default(_that.storeId,_that.employeeId,_that.terminalId,_that.tableNumbe
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'store_id')  String storeId, @JsonKey(name: 'employee_id')  String? employeeId, @JsonKey(name: 'terminal_id')  String? terminalId, @JsonKey(name: 'table_number')  int? tableNumber, @JsonKey(name: 'order_type')  String orderType,  String channel, @JsonKey(name: 'discount_amount')  double discountAmount, @JsonKey(name: 'service_charge')  double serviceCharge,  String? notes,  List<OrderItemCreate> items)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'store_id')  String storeId, @JsonKey(name: 'employee_id')  String? employeeId, @JsonKey(name: 'terminal_id')  String? terminalId, @JsonKey(name: 'table_number')  int? tableNumber, @JsonKey(name: 'shift_id')  String? shiftId, @JsonKey(name: 'order_type')  String orderType,  String channel, @JsonKey(name: 'discount_amount')  double discountAmount, @JsonKey(name: 'service_charge')  double serviceCharge,  String? notes,  List<OrderItemCreate> items)  $default,) {final _that = this;
 switch (_that) {
 case _OrderCreate():
-return $default(_that.storeId,_that.employeeId,_that.terminalId,_that.tableNumber,_that.orderType,_that.channel,_that.discountAmount,_that.serviceCharge,_that.notes,_that.items);case _:
+return $default(_that.storeId,_that.employeeId,_that.terminalId,_that.tableNumber,_that.shiftId,_that.orderType,_that.channel,_that.discountAmount,_that.serviceCharge,_that.notes,_that.items);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1118,10 +1119,10 @@ return $default(_that.storeId,_that.employeeId,_that.terminalId,_that.tableNumbe
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'store_id')  String storeId, @JsonKey(name: 'employee_id')  String? employeeId, @JsonKey(name: 'terminal_id')  String? terminalId, @JsonKey(name: 'table_number')  int? tableNumber, @JsonKey(name: 'order_type')  String orderType,  String channel, @JsonKey(name: 'discount_amount')  double discountAmount, @JsonKey(name: 'service_charge')  double serviceCharge,  String? notes,  List<OrderItemCreate> items)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'store_id')  String storeId, @JsonKey(name: 'employee_id')  String? employeeId, @JsonKey(name: 'terminal_id')  String? terminalId, @JsonKey(name: 'table_number')  int? tableNumber, @JsonKey(name: 'shift_id')  String? shiftId, @JsonKey(name: 'order_type')  String orderType,  String channel, @JsonKey(name: 'discount_amount')  double discountAmount, @JsonKey(name: 'service_charge')  double serviceCharge,  String? notes,  List<OrderItemCreate> items)?  $default,) {final _that = this;
 switch (_that) {
 case _OrderCreate() when $default != null:
-return $default(_that.storeId,_that.employeeId,_that.terminalId,_that.tableNumber,_that.orderType,_that.channel,_that.discountAmount,_that.serviceCharge,_that.notes,_that.items);case _:
+return $default(_that.storeId,_that.employeeId,_that.terminalId,_that.tableNumber,_that.shiftId,_that.orderType,_that.channel,_that.discountAmount,_that.serviceCharge,_that.notes,_that.items);case _:
   return null;
 
 }
@@ -1133,13 +1134,14 @@ return $default(_that.storeId,_that.employeeId,_that.terminalId,_that.tableNumbe
 @JsonSerializable()
 
 class _OrderCreate implements OrderCreate {
-  const _OrderCreate({@JsonKey(name: 'store_id') required this.storeId, @JsonKey(name: 'employee_id') this.employeeId, @JsonKey(name: 'terminal_id') this.terminalId, @JsonKey(name: 'table_number') this.tableNumber, @JsonKey(name: 'order_type') this.orderType = 'dine_in', this.channel = 'pos', @JsonKey(name: 'discount_amount') this.discountAmount = 0, @JsonKey(name: 'service_charge') this.serviceCharge = 0, this.notes, required final  List<OrderItemCreate> items}): _items = items;
+  const _OrderCreate({@JsonKey(name: 'store_id') required this.storeId, @JsonKey(name: 'employee_id') this.employeeId, @JsonKey(name: 'terminal_id') this.terminalId, @JsonKey(name: 'table_number') this.tableNumber, @JsonKey(name: 'shift_id') this.shiftId, @JsonKey(name: 'order_type') this.orderType = 'dine_in', this.channel = 'pos', @JsonKey(name: 'discount_amount') this.discountAmount = 0, @JsonKey(name: 'service_charge') this.serviceCharge = 0, this.notes, required final  List<OrderItemCreate> items}): _items = items;
   factory _OrderCreate.fromJson(Map<String, dynamic> json) => _$OrderCreateFromJson(json);
 
 @override@JsonKey(name: 'store_id') final  String storeId;
 @override@JsonKey(name: 'employee_id') final  String? employeeId;
 @override@JsonKey(name: 'terminal_id') final  String? terminalId;
 @override@JsonKey(name: 'table_number') final  int? tableNumber;
+@override@JsonKey(name: 'shift_id') final  String? shiftId;
 @override@JsonKey(name: 'order_type') final  String orderType;
 @override@JsonKey() final  String channel;
 @override@JsonKey(name: 'discount_amount') final  double discountAmount;
@@ -1166,16 +1168,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderCreate&&(identical(other.storeId, storeId) || other.storeId == storeId)&&(identical(other.employeeId, employeeId) || other.employeeId == employeeId)&&(identical(other.terminalId, terminalId) || other.terminalId == terminalId)&&(identical(other.tableNumber, tableNumber) || other.tableNumber == tableNumber)&&(identical(other.orderType, orderType) || other.orderType == orderType)&&(identical(other.channel, channel) || other.channel == channel)&&(identical(other.discountAmount, discountAmount) || other.discountAmount == discountAmount)&&(identical(other.serviceCharge, serviceCharge) || other.serviceCharge == serviceCharge)&&(identical(other.notes, notes) || other.notes == notes)&&const DeepCollectionEquality().equals(other._items, _items));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderCreate&&(identical(other.storeId, storeId) || other.storeId == storeId)&&(identical(other.employeeId, employeeId) || other.employeeId == employeeId)&&(identical(other.terminalId, terminalId) || other.terminalId == terminalId)&&(identical(other.tableNumber, tableNumber) || other.tableNumber == tableNumber)&&(identical(other.shiftId, shiftId) || other.shiftId == shiftId)&&(identical(other.orderType, orderType) || other.orderType == orderType)&&(identical(other.channel, channel) || other.channel == channel)&&(identical(other.discountAmount, discountAmount) || other.discountAmount == discountAmount)&&(identical(other.serviceCharge, serviceCharge) || other.serviceCharge == serviceCharge)&&(identical(other.notes, notes) || other.notes == notes)&&const DeepCollectionEquality().equals(other._items, _items));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,storeId,employeeId,terminalId,tableNumber,orderType,channel,discountAmount,serviceCharge,notes,const DeepCollectionEquality().hash(_items));
+int get hashCode => Object.hash(runtimeType,storeId,employeeId,terminalId,tableNumber,shiftId,orderType,channel,discountAmount,serviceCharge,notes,const DeepCollectionEquality().hash(_items));
 
 @override
 String toString() {
-  return 'OrderCreate(storeId: $storeId, employeeId: $employeeId, terminalId: $terminalId, tableNumber: $tableNumber, orderType: $orderType, channel: $channel, discountAmount: $discountAmount, serviceCharge: $serviceCharge, notes: $notes, items: $items)';
+  return 'OrderCreate(storeId: $storeId, employeeId: $employeeId, terminalId: $terminalId, tableNumber: $tableNumber, shiftId: $shiftId, orderType: $orderType, channel: $channel, discountAmount: $discountAmount, serviceCharge: $serviceCharge, notes: $notes, items: $items)';
 }
 
 
@@ -1186,7 +1188,7 @@ abstract mixin class _$OrderCreateCopyWith<$Res> implements $OrderCreateCopyWith
   factory _$OrderCreateCopyWith(_OrderCreate value, $Res Function(_OrderCreate) _then) = __$OrderCreateCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'store_id') String storeId,@JsonKey(name: 'employee_id') String? employeeId,@JsonKey(name: 'terminal_id') String? terminalId,@JsonKey(name: 'table_number') int? tableNumber,@JsonKey(name: 'order_type') String orderType, String channel,@JsonKey(name: 'discount_amount') double discountAmount,@JsonKey(name: 'service_charge') double serviceCharge, String? notes, List<OrderItemCreate> items
+@JsonKey(name: 'store_id') String storeId,@JsonKey(name: 'employee_id') String? employeeId,@JsonKey(name: 'terminal_id') String? terminalId,@JsonKey(name: 'table_number') int? tableNumber,@JsonKey(name: 'shift_id') String? shiftId,@JsonKey(name: 'order_type') String orderType, String channel,@JsonKey(name: 'discount_amount') double discountAmount,@JsonKey(name: 'service_charge') double serviceCharge, String? notes, List<OrderItemCreate> items
 });
 
 
@@ -1203,13 +1205,14 @@ class __$OrderCreateCopyWithImpl<$Res>
 
 /// Create a copy of OrderCreate
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? storeId = null,Object? employeeId = freezed,Object? terminalId = freezed,Object? tableNumber = freezed,Object? orderType = null,Object? channel = null,Object? discountAmount = null,Object? serviceCharge = null,Object? notes = freezed,Object? items = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? storeId = null,Object? employeeId = freezed,Object? terminalId = freezed,Object? tableNumber = freezed,Object? shiftId = freezed,Object? orderType = null,Object? channel = null,Object? discountAmount = null,Object? serviceCharge = null,Object? notes = freezed,Object? items = null,}) {
   return _then(_OrderCreate(
 storeId: null == storeId ? _self.storeId : storeId // ignore: cast_nullable_to_non_nullable
 as String,employeeId: freezed == employeeId ? _self.employeeId : employeeId // ignore: cast_nullable_to_non_nullable
 as String?,terminalId: freezed == terminalId ? _self.terminalId : terminalId // ignore: cast_nullable_to_non_nullable
 as String?,tableNumber: freezed == tableNumber ? _self.tableNumber : tableNumber // ignore: cast_nullable_to_non_nullable
-as int?,orderType: null == orderType ? _self.orderType : orderType // ignore: cast_nullable_to_non_nullable
+as int?,shiftId: freezed == shiftId ? _self.shiftId : shiftId // ignore: cast_nullable_to_non_nullable
+as String?,orderType: null == orderType ? _self.orderType : orderType // ignore: cast_nullable_to_non_nullable
 as String,channel: null == channel ? _self.channel : channel // ignore: cast_nullable_to_non_nullable
 as String,discountAmount: null == discountAmount ? _self.discountAmount : discountAmount // ignore: cast_nullable_to_non_nullable
 as double,serviceCharge: null == serviceCharge ? _self.serviceCharge : serviceCharge // ignore: cast_nullable_to_non_nullable

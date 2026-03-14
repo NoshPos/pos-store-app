@@ -27,6 +27,18 @@ class EmployeeList extends _$EmployeeList {
   Future<void> refresh() async {
     ref.invalidateSelf();
   }
+
+  /// Optimistically toggle an employee's active status in the list.
+  void optimisticToggle(String employeeId, bool isActive) {
+    final current = state;
+    if (current is AsyncData<List<Employee>>) {
+      state = AsyncData(
+        current.value
+            .map((e) => e.id == employeeId ? e.copyWith(isActive: isActive) : e)
+            .toList(),
+      );
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------

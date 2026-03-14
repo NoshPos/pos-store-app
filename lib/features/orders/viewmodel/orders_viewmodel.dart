@@ -44,15 +44,29 @@ class OrdersList extends _$OrdersList {
     final orderType = ref.watch(orderTypeFilterProvider);
     final statusFilter = ref.watch(orderStatusFilterProvider);
     final repo = ref.read(orderRepositoryProvider);
+
+    // Map composite UI filters to server-side status values
+    String? serverStatus;
+    if (statusFilter != null &&
+        statusFilter != 'in_kitchen' &&
+        statusFilter != 'ready') {
+      serverStatus = statusFilter;
+    }
+
     final result = await repo.getOrders(
       storeId: store.id,
       orderType: orderType,
+      status: serverStatus,
     );
     return result.fold((failure) => throw Exception(failure.message), (orders) {
       if (statusFilter == null) return orders;
-      return orders
-          .where((o) => _matchesStatusFilter(o, statusFilter))
-          .toList(growable: false);
+      // Client-side filtering only needed for composite filters
+      if (statusFilter == 'in_kitchen' || statusFilter == 'ready') {
+        return orders
+            .where((o) => _matchesStatusFilter(o, statusFilter))
+            .toList(growable: false);
+      }
+      return orders;
     });
   }
 

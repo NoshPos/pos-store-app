@@ -100,7 +100,9 @@ class ActiveOrders extends _$ActiveOrders {
     final result = await repo.getOrders(storeId: store.id);
     return result.fold(
       (failure) => throw Exception(failure.message),
-      (orders) => orders,
+      (orders) => orders
+          .where((o) => !{'cancelled', 'paid'}.contains(o.status))
+          .toList(),
     );
   }
 

@@ -29,8 +29,14 @@ class _HomePageState extends ConsumerState<HomePage> {
       ref.invalidate(productListProvider);
       ref.invalidate(categoryListProvider);
       ref.invalidate(storeListProvider);
-      // Also refresh KOT if needed
-      // ref.invalidate(kitchenOrdersListProvider);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Refreshing data…'),
+            duration: Duration(seconds: 1),
+          ),
+        );
+      }
       return;
     }
     setState(() => _selectedIndex = index);

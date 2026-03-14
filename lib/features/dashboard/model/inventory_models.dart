@@ -215,7 +215,7 @@ abstract class ItemAvailabilityUpdate with _$ItemAvailabilityUpdate {
 }
 
 // ---------------------------------------------------------------------------
-// Recipe Ingredient
+// Recipe Line (matches backend RecipeLineResponse)
 // ---------------------------------------------------------------------------
 
 @freezed
@@ -223,11 +223,9 @@ abstract class RecipeIngredient with _$RecipeIngredient {
   const factory RecipeIngredient({
     required String id,
     @JsonKey(name: 'recipe_id') required String recipeId,
-    @JsonKey(name: 'item_id') required String itemId,
-    @JsonKey(name: 'item_name') String? itemName,
-    @JsonKey(name: 'unit_name') String? unitName,
+    @JsonKey(name: 'ingredient_id') required String ingredientId,
     required double quantity,
-    String? notes,
+    @JsonKey(name: 'unit_id') String? unitId,
   }) = _RecipeIngredient;
 
   factory RecipeIngredient.fromJson(Map<String, dynamic> json) =>
@@ -235,15 +233,15 @@ abstract class RecipeIngredient with _$RecipeIngredient {
 }
 
 // ---------------------------------------------------------------------------
-// Recipe Ingredient Create
+// Recipe Line Create (matches backend RecipeLineCreate)
 // ---------------------------------------------------------------------------
 
 @freezed
 abstract class RecipeIngredientCreate with _$RecipeIngredientCreate {
   const factory RecipeIngredientCreate({
-    @JsonKey(name: 'item_id') required String itemId,
+    @JsonKey(name: 'ingredient_id') required String ingredientId,
     required double quantity,
-    String? notes,
+    @JsonKey(name: 'unit_id') String? unitId,
   }) = _RecipeIngredientCreate;
 
   factory RecipeIngredientCreate.fromJson(Map<String, dynamic> json) =>
@@ -258,12 +256,15 @@ abstract class RecipeIngredientCreate with _$RecipeIngredientCreate {
 abstract class Recipe with _$Recipe {
   const factory Recipe({
     required String id,
+    @JsonKey(name: 'store_id') String? storeId,
+    @JsonKey(name: 'product_id') String? productId,
     required String name,
     String? description,
-    @JsonKey(name: 'product_id') String? productId,
-    @Default([]) List<RecipeIngredient> ingredients,
+    @JsonKey(name: 'yield_quantity') @Default(1.0) double yieldQuantity,
+    @JsonKey(name: 'wastage_percent') @Default(0) double wastagePercent,
+    @JsonKey(name: 'is_active') @Default(true) bool isActive,
+    @Default([]) List<RecipeIngredient> lines,
     @JsonKey(name: 'created_at') DateTime? createdAt,
-    @JsonKey(name: 'updated_at') DateTime? updatedAt,
   }) = _Recipe;
 
   factory Recipe.fromJson(Map<String, dynamic> json) => _$RecipeFromJson(json);
@@ -276,10 +277,14 @@ abstract class Recipe with _$Recipe {
 @freezed
 abstract class RecipeCreate with _$RecipeCreate {
   const factory RecipeCreate({
+    @JsonKey(name: 'store_id') required String storeId,
+    @JsonKey(name: 'product_id') required String productId,
     required String name,
     String? description,
-    @JsonKey(name: 'product_id') String? productId,
-    @Default([]) List<RecipeIngredientCreate> ingredients,
+    @JsonKey(name: 'yield_quantity') @Default(1.0) double yieldQuantity,
+    @JsonKey(name: 'wastage_percent') @Default(0) double wastagePercent,
+    @JsonKey(name: 'is_active') @Default(true) bool isActive,
+    @Default([]) List<RecipeIngredientCreate> lines,
   }) = _RecipeCreate;
 
   factory RecipeCreate.fromJson(Map<String, dynamic> json) =>
@@ -295,8 +300,10 @@ abstract class RecipeUpdate with _$RecipeUpdate {
   const factory RecipeUpdate({
     String? name,
     String? description,
-    @JsonKey(name: 'product_id') String? productId,
-    List<RecipeIngredientCreate>? ingredients,
+    @JsonKey(name: 'yield_quantity') double? yieldQuantity,
+    @JsonKey(name: 'wastage_percent') double? wastagePercent,
+    @JsonKey(name: 'is_active') bool? isActive,
+    List<RecipeIngredientCreate>? lines,
   }) = _RecipeUpdate;
 
   factory RecipeUpdate.fromJson(Map<String, dynamic> json) =>
@@ -368,12 +375,11 @@ abstract class TransferStatusUpdate with _$TransferStatusUpdate {
 abstract class OutOfStockItem with _$OutOfStockItem {
   const factory OutOfStockItem({
     required String id,
-    @JsonKey(name: 'item_id') required String itemId,
-    @JsonKey(name: 'item_name') required String itemName,
-    @JsonKey(name: 'unit_name') String? unitName,
-    @JsonKey(name: 'location_name') String? locationName,
-    String? reason,
-    @JsonKey(name: 'reported_at') DateTime? reportedAt,
+    @JsonKey(name: 'store_id') required String storeId,
+    required String name,
+    String? sku,
+    String? category,
+    @JsonKey(name: 'is_active') @Default(false) bool isActive,
   }) = _OutOfStockItem;
 
   factory OutOfStockItem.fromJson(Map<String, dynamic> json) =>

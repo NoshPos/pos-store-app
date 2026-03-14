@@ -91,10 +91,32 @@ Map<String, dynamic> _$ShiftOpenToJson(_ShiftOpen instance) =>
 _ShiftClose _$ShiftCloseFromJson(Map<String, dynamic> json) => _ShiftClose(
   closingCash: (json['closing_cash'] as num).toDouble(),
   notes: json['notes'] as String?,
+  paymentSummaries: (json['payment_summaries'] as List<dynamic>?)
+      ?.map(
+        (e) => ShiftPaymentSummaryCreate.fromJson(e as Map<String, dynamic>),
+      )
+      .toList(),
 );
 
 Map<String, dynamic> _$ShiftCloseToJson(_ShiftClose instance) =>
     <String, dynamic>{
       'closing_cash': instance.closingCash,
       'notes': instance.notes,
+      'payment_summaries': instance.paymentSummaries,
     };
+
+_ShiftPaymentSummaryCreate _$ShiftPaymentSummaryCreateFromJson(
+  Map<String, dynamic> json,
+) => _ShiftPaymentSummaryCreate(
+  paymentMethod: json['payment_method'] as String,
+  expectedAmount: (json['expected_amount'] as num?)?.toDouble() ?? 0,
+  actualAmount: (json['actual_amount'] as num?)?.toDouble() ?? 0,
+);
+
+Map<String, dynamic> _$ShiftPaymentSummaryCreateToJson(
+  _ShiftPaymentSummaryCreate instance,
+) => <String, dynamic>{
+  'payment_method': instance.paymentMethod,
+  'expected_amount': instance.expectedAmount,
+  'actual_amount': instance.actualAmount,
+};

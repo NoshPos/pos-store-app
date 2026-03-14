@@ -879,7 +879,7 @@ as String?,
 /// @nodoc
 mixin _$ShiftClose {
 
-@JsonKey(name: 'closing_cash') double get closingCash; String? get notes;
+@JsonKey(name: 'closing_cash') double get closingCash; String? get notes;@JsonKey(name: 'payment_summaries') List<ShiftPaymentSummaryCreate>? get paymentSummaries;
 /// Create a copy of ShiftClose
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -892,16 +892,16 @@ $ShiftCloseCopyWith<ShiftClose> get copyWith => _$ShiftCloseCopyWithImpl<ShiftCl
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShiftClose&&(identical(other.closingCash, closingCash) || other.closingCash == closingCash)&&(identical(other.notes, notes) || other.notes == notes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShiftClose&&(identical(other.closingCash, closingCash) || other.closingCash == closingCash)&&(identical(other.notes, notes) || other.notes == notes)&&const DeepCollectionEquality().equals(other.paymentSummaries, paymentSummaries));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,closingCash,notes);
+int get hashCode => Object.hash(runtimeType,closingCash,notes,const DeepCollectionEquality().hash(paymentSummaries));
 
 @override
 String toString() {
-  return 'ShiftClose(closingCash: $closingCash, notes: $notes)';
+  return 'ShiftClose(closingCash: $closingCash, notes: $notes, paymentSummaries: $paymentSummaries)';
 }
 
 
@@ -912,7 +912,7 @@ abstract mixin class $ShiftCloseCopyWith<$Res>  {
   factory $ShiftCloseCopyWith(ShiftClose value, $Res Function(ShiftClose) _then) = _$ShiftCloseCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'closing_cash') double closingCash, String? notes
+@JsonKey(name: 'closing_cash') double closingCash, String? notes,@JsonKey(name: 'payment_summaries') List<ShiftPaymentSummaryCreate>? paymentSummaries
 });
 
 
@@ -929,11 +929,12 @@ class _$ShiftCloseCopyWithImpl<$Res>
 
 /// Create a copy of ShiftClose
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? closingCash = null,Object? notes = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? closingCash = null,Object? notes = freezed,Object? paymentSummaries = freezed,}) {
   return _then(_self.copyWith(
 closingCash: null == closingCash ? _self.closingCash : closingCash // ignore: cast_nullable_to_non_nullable
 as double,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,paymentSummaries: freezed == paymentSummaries ? _self.paymentSummaries : paymentSummaries // ignore: cast_nullable_to_non_nullable
+as List<ShiftPaymentSummaryCreate>?,
   ));
 }
 
@@ -1018,10 +1019,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'closing_cash')  double closingCash,  String? notes)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'closing_cash')  double closingCash,  String? notes, @JsonKey(name: 'payment_summaries')  List<ShiftPaymentSummaryCreate>? paymentSummaries)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ShiftClose() when $default != null:
-return $default(_that.closingCash,_that.notes);case _:
+return $default(_that.closingCash,_that.notes,_that.paymentSummaries);case _:
   return orElse();
 
 }
@@ -1039,10 +1040,10 @@ return $default(_that.closingCash,_that.notes);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'closing_cash')  double closingCash,  String? notes)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'closing_cash')  double closingCash,  String? notes, @JsonKey(name: 'payment_summaries')  List<ShiftPaymentSummaryCreate>? paymentSummaries)  $default,) {final _that = this;
 switch (_that) {
 case _ShiftClose():
-return $default(_that.closingCash,_that.notes);case _:
+return $default(_that.closingCash,_that.notes,_that.paymentSummaries);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1059,10 +1060,10 @@ return $default(_that.closingCash,_that.notes);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'closing_cash')  double closingCash,  String? notes)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'closing_cash')  double closingCash,  String? notes, @JsonKey(name: 'payment_summaries')  List<ShiftPaymentSummaryCreate>? paymentSummaries)?  $default,) {final _that = this;
 switch (_that) {
 case _ShiftClose() when $default != null:
-return $default(_that.closingCash,_that.notes);case _:
+return $default(_that.closingCash,_that.notes,_that.paymentSummaries);case _:
   return null;
 
 }
@@ -1074,11 +1075,20 @@ return $default(_that.closingCash,_that.notes);case _:
 @JsonSerializable()
 
 class _ShiftClose implements ShiftClose {
-  const _ShiftClose({@JsonKey(name: 'closing_cash') required this.closingCash, this.notes});
+  const _ShiftClose({@JsonKey(name: 'closing_cash') required this.closingCash, this.notes, @JsonKey(name: 'payment_summaries') final  List<ShiftPaymentSummaryCreate>? paymentSummaries}): _paymentSummaries = paymentSummaries;
   factory _ShiftClose.fromJson(Map<String, dynamic> json) => _$ShiftCloseFromJson(json);
 
 @override@JsonKey(name: 'closing_cash') final  double closingCash;
 @override final  String? notes;
+ final  List<ShiftPaymentSummaryCreate>? _paymentSummaries;
+@override@JsonKey(name: 'payment_summaries') List<ShiftPaymentSummaryCreate>? get paymentSummaries {
+  final value = _paymentSummaries;
+  if (value == null) return null;
+  if (_paymentSummaries is EqualUnmodifiableListView) return _paymentSummaries;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
 
 /// Create a copy of ShiftClose
 /// with the given fields replaced by the non-null parameter values.
@@ -1093,16 +1103,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShiftClose&&(identical(other.closingCash, closingCash) || other.closingCash == closingCash)&&(identical(other.notes, notes) || other.notes == notes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShiftClose&&(identical(other.closingCash, closingCash) || other.closingCash == closingCash)&&(identical(other.notes, notes) || other.notes == notes)&&const DeepCollectionEquality().equals(other._paymentSummaries, _paymentSummaries));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,closingCash,notes);
+int get hashCode => Object.hash(runtimeType,closingCash,notes,const DeepCollectionEquality().hash(_paymentSummaries));
 
 @override
 String toString() {
-  return 'ShiftClose(closingCash: $closingCash, notes: $notes)';
+  return 'ShiftClose(closingCash: $closingCash, notes: $notes, paymentSummaries: $paymentSummaries)';
 }
 
 
@@ -1113,7 +1123,7 @@ abstract mixin class _$ShiftCloseCopyWith<$Res> implements $ShiftCloseCopyWith<$
   factory _$ShiftCloseCopyWith(_ShiftClose value, $Res Function(_ShiftClose) _then) = __$ShiftCloseCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'closing_cash') double closingCash, String? notes
+@JsonKey(name: 'closing_cash') double closingCash, String? notes,@JsonKey(name: 'payment_summaries') List<ShiftPaymentSummaryCreate>? paymentSummaries
 });
 
 
@@ -1130,11 +1140,281 @@ class __$ShiftCloseCopyWithImpl<$Res>
 
 /// Create a copy of ShiftClose
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? closingCash = null,Object? notes = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? closingCash = null,Object? notes = freezed,Object? paymentSummaries = freezed,}) {
   return _then(_ShiftClose(
 closingCash: null == closingCash ? _self.closingCash : closingCash // ignore: cast_nullable_to_non_nullable
 as double,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,paymentSummaries: freezed == paymentSummaries ? _self._paymentSummaries : paymentSummaries // ignore: cast_nullable_to_non_nullable
+as List<ShiftPaymentSummaryCreate>?,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$ShiftPaymentSummaryCreate {
+
+@JsonKey(name: 'payment_method') String get paymentMethod;@JsonKey(name: 'expected_amount') double get expectedAmount;@JsonKey(name: 'actual_amount') double get actualAmount;
+/// Create a copy of ShiftPaymentSummaryCreate
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ShiftPaymentSummaryCreateCopyWith<ShiftPaymentSummaryCreate> get copyWith => _$ShiftPaymentSummaryCreateCopyWithImpl<ShiftPaymentSummaryCreate>(this as ShiftPaymentSummaryCreate, _$identity);
+
+  /// Serializes this ShiftPaymentSummaryCreate to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShiftPaymentSummaryCreate&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.expectedAmount, expectedAmount) || other.expectedAmount == expectedAmount)&&(identical(other.actualAmount, actualAmount) || other.actualAmount == actualAmount));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,paymentMethod,expectedAmount,actualAmount);
+
+@override
+String toString() {
+  return 'ShiftPaymentSummaryCreate(paymentMethod: $paymentMethod, expectedAmount: $expectedAmount, actualAmount: $actualAmount)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ShiftPaymentSummaryCreateCopyWith<$Res>  {
+  factory $ShiftPaymentSummaryCreateCopyWith(ShiftPaymentSummaryCreate value, $Res Function(ShiftPaymentSummaryCreate) _then) = _$ShiftPaymentSummaryCreateCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: 'payment_method') String paymentMethod,@JsonKey(name: 'expected_amount') double expectedAmount,@JsonKey(name: 'actual_amount') double actualAmount
+});
+
+
+
+
+}
+/// @nodoc
+class _$ShiftPaymentSummaryCreateCopyWithImpl<$Res>
+    implements $ShiftPaymentSummaryCreateCopyWith<$Res> {
+  _$ShiftPaymentSummaryCreateCopyWithImpl(this._self, this._then);
+
+  final ShiftPaymentSummaryCreate _self;
+  final $Res Function(ShiftPaymentSummaryCreate) _then;
+
+/// Create a copy of ShiftPaymentSummaryCreate
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? paymentMethod = null,Object? expectedAmount = null,Object? actualAmount = null,}) {
+  return _then(_self.copyWith(
+paymentMethod: null == paymentMethod ? _self.paymentMethod : paymentMethod // ignore: cast_nullable_to_non_nullable
+as String,expectedAmount: null == expectedAmount ? _self.expectedAmount : expectedAmount // ignore: cast_nullable_to_non_nullable
+as double,actualAmount: null == actualAmount ? _self.actualAmount : actualAmount // ignore: cast_nullable_to_non_nullable
+as double,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [ShiftPaymentSummaryCreate].
+extension ShiftPaymentSummaryCreatePatterns on ShiftPaymentSummaryCreate {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ShiftPaymentSummaryCreate value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ShiftPaymentSummaryCreate() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ShiftPaymentSummaryCreate value)  $default,){
+final _that = this;
+switch (_that) {
+case _ShiftPaymentSummaryCreate():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ShiftPaymentSummaryCreate value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ShiftPaymentSummaryCreate() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'payment_method')  String paymentMethod, @JsonKey(name: 'expected_amount')  double expectedAmount, @JsonKey(name: 'actual_amount')  double actualAmount)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ShiftPaymentSummaryCreate() when $default != null:
+return $default(_that.paymentMethod,_that.expectedAmount,_that.actualAmount);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'payment_method')  String paymentMethod, @JsonKey(name: 'expected_amount')  double expectedAmount, @JsonKey(name: 'actual_amount')  double actualAmount)  $default,) {final _that = this;
+switch (_that) {
+case _ShiftPaymentSummaryCreate():
+return $default(_that.paymentMethod,_that.expectedAmount,_that.actualAmount);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'payment_method')  String paymentMethod, @JsonKey(name: 'expected_amount')  double expectedAmount, @JsonKey(name: 'actual_amount')  double actualAmount)?  $default,) {final _that = this;
+switch (_that) {
+case _ShiftPaymentSummaryCreate() when $default != null:
+return $default(_that.paymentMethod,_that.expectedAmount,_that.actualAmount);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _ShiftPaymentSummaryCreate implements ShiftPaymentSummaryCreate {
+  const _ShiftPaymentSummaryCreate({@JsonKey(name: 'payment_method') required this.paymentMethod, @JsonKey(name: 'expected_amount') this.expectedAmount = 0, @JsonKey(name: 'actual_amount') this.actualAmount = 0});
+  factory _ShiftPaymentSummaryCreate.fromJson(Map<String, dynamic> json) => _$ShiftPaymentSummaryCreateFromJson(json);
+
+@override@JsonKey(name: 'payment_method') final  String paymentMethod;
+@override@JsonKey(name: 'expected_amount') final  double expectedAmount;
+@override@JsonKey(name: 'actual_amount') final  double actualAmount;
+
+/// Create a copy of ShiftPaymentSummaryCreate
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ShiftPaymentSummaryCreateCopyWith<_ShiftPaymentSummaryCreate> get copyWith => __$ShiftPaymentSummaryCreateCopyWithImpl<_ShiftPaymentSummaryCreate>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ShiftPaymentSummaryCreateToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShiftPaymentSummaryCreate&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.expectedAmount, expectedAmount) || other.expectedAmount == expectedAmount)&&(identical(other.actualAmount, actualAmount) || other.actualAmount == actualAmount));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,paymentMethod,expectedAmount,actualAmount);
+
+@override
+String toString() {
+  return 'ShiftPaymentSummaryCreate(paymentMethod: $paymentMethod, expectedAmount: $expectedAmount, actualAmount: $actualAmount)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ShiftPaymentSummaryCreateCopyWith<$Res> implements $ShiftPaymentSummaryCreateCopyWith<$Res> {
+  factory _$ShiftPaymentSummaryCreateCopyWith(_ShiftPaymentSummaryCreate value, $Res Function(_ShiftPaymentSummaryCreate) _then) = __$ShiftPaymentSummaryCreateCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(name: 'payment_method') String paymentMethod,@JsonKey(name: 'expected_amount') double expectedAmount,@JsonKey(name: 'actual_amount') double actualAmount
+});
+
+
+
+
+}
+/// @nodoc
+class __$ShiftPaymentSummaryCreateCopyWithImpl<$Res>
+    implements _$ShiftPaymentSummaryCreateCopyWith<$Res> {
+  __$ShiftPaymentSummaryCreateCopyWithImpl(this._self, this._then);
+
+  final _ShiftPaymentSummaryCreate _self;
+  final $Res Function(_ShiftPaymentSummaryCreate) _then;
+
+/// Create a copy of ShiftPaymentSummaryCreate
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? paymentMethod = null,Object? expectedAmount = null,Object? actualAmount = null,}) {
+  return _then(_ShiftPaymentSummaryCreate(
+paymentMethod: null == paymentMethod ? _self.paymentMethod : paymentMethod // ignore: cast_nullable_to_non_nullable
+as String,expectedAmount: null == expectedAmount ? _self.expectedAmount : expectedAmount // ignore: cast_nullable_to_non_nullable
+as double,actualAmount: null == actualAmount ? _self.actualAmount : actualAmount // ignore: cast_nullable_to_non_nullable
+as double,
   ));
 }
 

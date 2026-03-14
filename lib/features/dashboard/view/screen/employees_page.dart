@@ -225,13 +225,18 @@ class _EmployeeDataTable extends ConsumerWidget {
                           ),
                           tooltip: emp.isActive ? 'Deactivate' : 'Activate',
                           onPressed: () async {
+                            final newStatus = !emp.isActive;
+                            // Optimistic instant UI update
+                            ref
+                                .read(employeeListProvider.notifier)
+                                .optimisticToggle(emp.id, newStatus);
                             final success = await ref
                                 .read(
                                   toggleEmployeeStatusActionProvider.notifier,
                                 )
                                 .setActive(
                                   employeeId: emp.id,
-                                  isActive: !emp.isActive,
+                                  isActive: newStatus,
                                 );
                             if (!success && context.mounted) {
                               final err = ref

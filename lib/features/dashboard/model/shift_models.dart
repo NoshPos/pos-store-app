@@ -78,8 +78,26 @@ abstract class ShiftClose with _$ShiftClose {
   const factory ShiftClose({
     @JsonKey(name: 'closing_cash') required double closingCash,
     String? notes,
+    @JsonKey(name: 'payment_summaries')
+    List<ShiftPaymentSummaryCreate>? paymentSummaries,
   }) = _ShiftClose;
 
   factory ShiftClose.fromJson(Map<String, dynamic> json) =>
       _$ShiftCloseFromJson(json);
+}
+
+// ---------------------------------------------------------------------------
+// Shift Payment Summary Create (for closing a shift)
+// ---------------------------------------------------------------------------
+
+@freezed
+abstract class ShiftPaymentSummaryCreate with _$ShiftPaymentSummaryCreate {
+  const factory ShiftPaymentSummaryCreate({
+    @JsonKey(name: 'payment_method') required String paymentMethod,
+    @JsonKey(name: 'expected_amount') @Default(0) double expectedAmount,
+    @JsonKey(name: 'actual_amount') @Default(0) double actualAmount,
+  }) = _ShiftPaymentSummaryCreate;
+
+  factory ShiftPaymentSummaryCreate.fromJson(Map<String, dynamic> json) =>
+      _$ShiftPaymentSummaryCreateFromJson(json);
 }

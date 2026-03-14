@@ -237,6 +237,8 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                     ),
 
                   if (_order.status != 'cancelled' &&
+                      _order.status != 'completed' &&
+                      _order.status != 'paid' &&
                       _order.paymentStatus != 'completed') ...[
                     const SizedBox(height: 10),
                     SizedBox(

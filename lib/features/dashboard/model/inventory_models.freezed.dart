@@ -3079,7 +3079,7 @@ as bool,
 /// @nodoc
 mixin _$RecipeIngredient {
 
- String get id;@JsonKey(name: 'recipe_id') String get recipeId;@JsonKey(name: 'item_id') String get itemId;@JsonKey(name: 'item_name') String? get itemName;@JsonKey(name: 'unit_name') String? get unitName; double get quantity; String? get notes;
+ String get id;@JsonKey(name: 'recipe_id') String get recipeId;@JsonKey(name: 'ingredient_id') String get ingredientId; double get quantity;@JsonKey(name: 'unit_id') String? get unitId;
 /// Create a copy of RecipeIngredient
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -3092,16 +3092,16 @@ $RecipeIngredientCopyWith<RecipeIngredient> get copyWith => _$RecipeIngredientCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RecipeIngredient&&(identical(other.id, id) || other.id == id)&&(identical(other.recipeId, recipeId) || other.recipeId == recipeId)&&(identical(other.itemId, itemId) || other.itemId == itemId)&&(identical(other.itemName, itemName) || other.itemName == itemName)&&(identical(other.unitName, unitName) || other.unitName == unitName)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.notes, notes) || other.notes == notes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RecipeIngredient&&(identical(other.id, id) || other.id == id)&&(identical(other.recipeId, recipeId) || other.recipeId == recipeId)&&(identical(other.ingredientId, ingredientId) || other.ingredientId == ingredientId)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.unitId, unitId) || other.unitId == unitId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,recipeId,itemId,itemName,unitName,quantity,notes);
+int get hashCode => Object.hash(runtimeType,id,recipeId,ingredientId,quantity,unitId);
 
 @override
 String toString() {
-  return 'RecipeIngredient(id: $id, recipeId: $recipeId, itemId: $itemId, itemName: $itemName, unitName: $unitName, quantity: $quantity, notes: $notes)';
+  return 'RecipeIngredient(id: $id, recipeId: $recipeId, ingredientId: $ingredientId, quantity: $quantity, unitId: $unitId)';
 }
 
 
@@ -3112,7 +3112,7 @@ abstract mixin class $RecipeIngredientCopyWith<$Res>  {
   factory $RecipeIngredientCopyWith(RecipeIngredient value, $Res Function(RecipeIngredient) _then) = _$RecipeIngredientCopyWithImpl;
 @useResult
 $Res call({
- String id,@JsonKey(name: 'recipe_id') String recipeId,@JsonKey(name: 'item_id') String itemId,@JsonKey(name: 'item_name') String? itemName,@JsonKey(name: 'unit_name') String? unitName, double quantity, String? notes
+ String id,@JsonKey(name: 'recipe_id') String recipeId,@JsonKey(name: 'ingredient_id') String ingredientId, double quantity,@JsonKey(name: 'unit_id') String? unitId
 });
 
 
@@ -3129,15 +3129,13 @@ class _$RecipeIngredientCopyWithImpl<$Res>
 
 /// Create a copy of RecipeIngredient
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? recipeId = null,Object? itemId = null,Object? itemName = freezed,Object? unitName = freezed,Object? quantity = null,Object? notes = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? recipeId = null,Object? ingredientId = null,Object? quantity = null,Object? unitId = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,recipeId: null == recipeId ? _self.recipeId : recipeId // ignore: cast_nullable_to_non_nullable
-as String,itemId: null == itemId ? _self.itemId : itemId // ignore: cast_nullable_to_non_nullable
-as String,itemName: freezed == itemName ? _self.itemName : itemName // ignore: cast_nullable_to_non_nullable
-as String?,unitName: freezed == unitName ? _self.unitName : unitName // ignore: cast_nullable_to_non_nullable
-as String?,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
-as double,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
+as String,ingredientId: null == ingredientId ? _self.ingredientId : ingredientId // ignore: cast_nullable_to_non_nullable
+as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
+as double,unitId: freezed == unitId ? _self.unitId : unitId // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -3223,10 +3221,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'recipe_id')  String recipeId, @JsonKey(name: 'item_id')  String itemId, @JsonKey(name: 'item_name')  String? itemName, @JsonKey(name: 'unit_name')  String? unitName,  double quantity,  String? notes)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'recipe_id')  String recipeId, @JsonKey(name: 'ingredient_id')  String ingredientId,  double quantity, @JsonKey(name: 'unit_id')  String? unitId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RecipeIngredient() when $default != null:
-return $default(_that.id,_that.recipeId,_that.itemId,_that.itemName,_that.unitName,_that.quantity,_that.notes);case _:
+return $default(_that.id,_that.recipeId,_that.ingredientId,_that.quantity,_that.unitId);case _:
   return orElse();
 
 }
@@ -3244,10 +3242,10 @@ return $default(_that.id,_that.recipeId,_that.itemId,_that.itemName,_that.unitNa
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'recipe_id')  String recipeId, @JsonKey(name: 'item_id')  String itemId, @JsonKey(name: 'item_name')  String? itemName, @JsonKey(name: 'unit_name')  String? unitName,  double quantity,  String? notes)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'recipe_id')  String recipeId, @JsonKey(name: 'ingredient_id')  String ingredientId,  double quantity, @JsonKey(name: 'unit_id')  String? unitId)  $default,) {final _that = this;
 switch (_that) {
 case _RecipeIngredient():
-return $default(_that.id,_that.recipeId,_that.itemId,_that.itemName,_that.unitName,_that.quantity,_that.notes);case _:
+return $default(_that.id,_that.recipeId,_that.ingredientId,_that.quantity,_that.unitId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -3264,10 +3262,10 @@ return $default(_that.id,_that.recipeId,_that.itemId,_that.itemName,_that.unitNa
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'recipe_id')  String recipeId, @JsonKey(name: 'item_id')  String itemId, @JsonKey(name: 'item_name')  String? itemName, @JsonKey(name: 'unit_name')  String? unitName,  double quantity,  String? notes)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'recipe_id')  String recipeId, @JsonKey(name: 'ingredient_id')  String ingredientId,  double quantity, @JsonKey(name: 'unit_id')  String? unitId)?  $default,) {final _that = this;
 switch (_that) {
 case _RecipeIngredient() when $default != null:
-return $default(_that.id,_that.recipeId,_that.itemId,_that.itemName,_that.unitName,_that.quantity,_that.notes);case _:
+return $default(_that.id,_that.recipeId,_that.ingredientId,_that.quantity,_that.unitId);case _:
   return null;
 
 }
@@ -3279,16 +3277,14 @@ return $default(_that.id,_that.recipeId,_that.itemId,_that.itemName,_that.unitNa
 @JsonSerializable()
 
 class _RecipeIngredient implements RecipeIngredient {
-  const _RecipeIngredient({required this.id, @JsonKey(name: 'recipe_id') required this.recipeId, @JsonKey(name: 'item_id') required this.itemId, @JsonKey(name: 'item_name') this.itemName, @JsonKey(name: 'unit_name') this.unitName, required this.quantity, this.notes});
+  const _RecipeIngredient({required this.id, @JsonKey(name: 'recipe_id') required this.recipeId, @JsonKey(name: 'ingredient_id') required this.ingredientId, required this.quantity, @JsonKey(name: 'unit_id') this.unitId});
   factory _RecipeIngredient.fromJson(Map<String, dynamic> json) => _$RecipeIngredientFromJson(json);
 
 @override final  String id;
 @override@JsonKey(name: 'recipe_id') final  String recipeId;
-@override@JsonKey(name: 'item_id') final  String itemId;
-@override@JsonKey(name: 'item_name') final  String? itemName;
-@override@JsonKey(name: 'unit_name') final  String? unitName;
+@override@JsonKey(name: 'ingredient_id') final  String ingredientId;
 @override final  double quantity;
-@override final  String? notes;
+@override@JsonKey(name: 'unit_id') final  String? unitId;
 
 /// Create a copy of RecipeIngredient
 /// with the given fields replaced by the non-null parameter values.
@@ -3303,16 +3299,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecipeIngredient&&(identical(other.id, id) || other.id == id)&&(identical(other.recipeId, recipeId) || other.recipeId == recipeId)&&(identical(other.itemId, itemId) || other.itemId == itemId)&&(identical(other.itemName, itemName) || other.itemName == itemName)&&(identical(other.unitName, unitName) || other.unitName == unitName)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.notes, notes) || other.notes == notes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecipeIngredient&&(identical(other.id, id) || other.id == id)&&(identical(other.recipeId, recipeId) || other.recipeId == recipeId)&&(identical(other.ingredientId, ingredientId) || other.ingredientId == ingredientId)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.unitId, unitId) || other.unitId == unitId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,recipeId,itemId,itemName,unitName,quantity,notes);
+int get hashCode => Object.hash(runtimeType,id,recipeId,ingredientId,quantity,unitId);
 
 @override
 String toString() {
-  return 'RecipeIngredient(id: $id, recipeId: $recipeId, itemId: $itemId, itemName: $itemName, unitName: $unitName, quantity: $quantity, notes: $notes)';
+  return 'RecipeIngredient(id: $id, recipeId: $recipeId, ingredientId: $ingredientId, quantity: $quantity, unitId: $unitId)';
 }
 
 
@@ -3323,7 +3319,7 @@ abstract mixin class _$RecipeIngredientCopyWith<$Res> implements $RecipeIngredie
   factory _$RecipeIngredientCopyWith(_RecipeIngredient value, $Res Function(_RecipeIngredient) _then) = __$RecipeIngredientCopyWithImpl;
 @override @useResult
 $Res call({
- String id,@JsonKey(name: 'recipe_id') String recipeId,@JsonKey(name: 'item_id') String itemId,@JsonKey(name: 'item_name') String? itemName,@JsonKey(name: 'unit_name') String? unitName, double quantity, String? notes
+ String id,@JsonKey(name: 'recipe_id') String recipeId,@JsonKey(name: 'ingredient_id') String ingredientId, double quantity,@JsonKey(name: 'unit_id') String? unitId
 });
 
 
@@ -3340,15 +3336,13 @@ class __$RecipeIngredientCopyWithImpl<$Res>
 
 /// Create a copy of RecipeIngredient
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? recipeId = null,Object? itemId = null,Object? itemName = freezed,Object? unitName = freezed,Object? quantity = null,Object? notes = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? recipeId = null,Object? ingredientId = null,Object? quantity = null,Object? unitId = freezed,}) {
   return _then(_RecipeIngredient(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,recipeId: null == recipeId ? _self.recipeId : recipeId // ignore: cast_nullable_to_non_nullable
-as String,itemId: null == itemId ? _self.itemId : itemId // ignore: cast_nullable_to_non_nullable
-as String,itemName: freezed == itemName ? _self.itemName : itemName // ignore: cast_nullable_to_non_nullable
-as String?,unitName: freezed == unitName ? _self.unitName : unitName // ignore: cast_nullable_to_non_nullable
-as String?,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
-as double,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
+as String,ingredientId: null == ingredientId ? _self.ingredientId : ingredientId // ignore: cast_nullable_to_non_nullable
+as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
+as double,unitId: freezed == unitId ? _self.unitId : unitId // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -3360,7 +3354,7 @@ as String?,
 /// @nodoc
 mixin _$RecipeIngredientCreate {
 
-@JsonKey(name: 'item_id') String get itemId; double get quantity; String? get notes;
+@JsonKey(name: 'ingredient_id') String get ingredientId; double get quantity;@JsonKey(name: 'unit_id') String? get unitId;
 /// Create a copy of RecipeIngredientCreate
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -3373,16 +3367,16 @@ $RecipeIngredientCreateCopyWith<RecipeIngredientCreate> get copyWith => _$Recipe
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RecipeIngredientCreate&&(identical(other.itemId, itemId) || other.itemId == itemId)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.notes, notes) || other.notes == notes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RecipeIngredientCreate&&(identical(other.ingredientId, ingredientId) || other.ingredientId == ingredientId)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.unitId, unitId) || other.unitId == unitId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,itemId,quantity,notes);
+int get hashCode => Object.hash(runtimeType,ingredientId,quantity,unitId);
 
 @override
 String toString() {
-  return 'RecipeIngredientCreate(itemId: $itemId, quantity: $quantity, notes: $notes)';
+  return 'RecipeIngredientCreate(ingredientId: $ingredientId, quantity: $quantity, unitId: $unitId)';
 }
 
 
@@ -3393,7 +3387,7 @@ abstract mixin class $RecipeIngredientCreateCopyWith<$Res>  {
   factory $RecipeIngredientCreateCopyWith(RecipeIngredientCreate value, $Res Function(RecipeIngredientCreate) _then) = _$RecipeIngredientCreateCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'item_id') String itemId, double quantity, String? notes
+@JsonKey(name: 'ingredient_id') String ingredientId, double quantity,@JsonKey(name: 'unit_id') String? unitId
 });
 
 
@@ -3410,11 +3404,11 @@ class _$RecipeIngredientCreateCopyWithImpl<$Res>
 
 /// Create a copy of RecipeIngredientCreate
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? itemId = null,Object? quantity = null,Object? notes = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? ingredientId = null,Object? quantity = null,Object? unitId = freezed,}) {
   return _then(_self.copyWith(
-itemId: null == itemId ? _self.itemId : itemId // ignore: cast_nullable_to_non_nullable
+ingredientId: null == ingredientId ? _self.ingredientId : ingredientId // ignore: cast_nullable_to_non_nullable
 as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
-as double,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
+as double,unitId: freezed == unitId ? _self.unitId : unitId // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -3500,10 +3494,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'item_id')  String itemId,  double quantity,  String? notes)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'ingredient_id')  String ingredientId,  double quantity, @JsonKey(name: 'unit_id')  String? unitId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RecipeIngredientCreate() when $default != null:
-return $default(_that.itemId,_that.quantity,_that.notes);case _:
+return $default(_that.ingredientId,_that.quantity,_that.unitId);case _:
   return orElse();
 
 }
@@ -3521,10 +3515,10 @@ return $default(_that.itemId,_that.quantity,_that.notes);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'item_id')  String itemId,  double quantity,  String? notes)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'ingredient_id')  String ingredientId,  double quantity, @JsonKey(name: 'unit_id')  String? unitId)  $default,) {final _that = this;
 switch (_that) {
 case _RecipeIngredientCreate():
-return $default(_that.itemId,_that.quantity,_that.notes);case _:
+return $default(_that.ingredientId,_that.quantity,_that.unitId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -3541,10 +3535,10 @@ return $default(_that.itemId,_that.quantity,_that.notes);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'item_id')  String itemId,  double quantity,  String? notes)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'ingredient_id')  String ingredientId,  double quantity, @JsonKey(name: 'unit_id')  String? unitId)?  $default,) {final _that = this;
 switch (_that) {
 case _RecipeIngredientCreate() when $default != null:
-return $default(_that.itemId,_that.quantity,_that.notes);case _:
+return $default(_that.ingredientId,_that.quantity,_that.unitId);case _:
   return null;
 
 }
@@ -3556,12 +3550,12 @@ return $default(_that.itemId,_that.quantity,_that.notes);case _:
 @JsonSerializable()
 
 class _RecipeIngredientCreate implements RecipeIngredientCreate {
-  const _RecipeIngredientCreate({@JsonKey(name: 'item_id') required this.itemId, required this.quantity, this.notes});
+  const _RecipeIngredientCreate({@JsonKey(name: 'ingredient_id') required this.ingredientId, required this.quantity, @JsonKey(name: 'unit_id') this.unitId});
   factory _RecipeIngredientCreate.fromJson(Map<String, dynamic> json) => _$RecipeIngredientCreateFromJson(json);
 
-@override@JsonKey(name: 'item_id') final  String itemId;
+@override@JsonKey(name: 'ingredient_id') final  String ingredientId;
 @override final  double quantity;
-@override final  String? notes;
+@override@JsonKey(name: 'unit_id') final  String? unitId;
 
 /// Create a copy of RecipeIngredientCreate
 /// with the given fields replaced by the non-null parameter values.
@@ -3576,16 +3570,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecipeIngredientCreate&&(identical(other.itemId, itemId) || other.itemId == itemId)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.notes, notes) || other.notes == notes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecipeIngredientCreate&&(identical(other.ingredientId, ingredientId) || other.ingredientId == ingredientId)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.unitId, unitId) || other.unitId == unitId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,itemId,quantity,notes);
+int get hashCode => Object.hash(runtimeType,ingredientId,quantity,unitId);
 
 @override
 String toString() {
-  return 'RecipeIngredientCreate(itemId: $itemId, quantity: $quantity, notes: $notes)';
+  return 'RecipeIngredientCreate(ingredientId: $ingredientId, quantity: $quantity, unitId: $unitId)';
 }
 
 
@@ -3596,7 +3590,7 @@ abstract mixin class _$RecipeIngredientCreateCopyWith<$Res> implements $RecipeIn
   factory _$RecipeIngredientCreateCopyWith(_RecipeIngredientCreate value, $Res Function(_RecipeIngredientCreate) _then) = __$RecipeIngredientCreateCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'item_id') String itemId, double quantity, String? notes
+@JsonKey(name: 'ingredient_id') String ingredientId, double quantity,@JsonKey(name: 'unit_id') String? unitId
 });
 
 
@@ -3613,11 +3607,11 @@ class __$RecipeIngredientCreateCopyWithImpl<$Res>
 
 /// Create a copy of RecipeIngredientCreate
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? itemId = null,Object? quantity = null,Object? notes = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? ingredientId = null,Object? quantity = null,Object? unitId = freezed,}) {
   return _then(_RecipeIngredientCreate(
-itemId: null == itemId ? _self.itemId : itemId // ignore: cast_nullable_to_non_nullable
+ingredientId: null == ingredientId ? _self.ingredientId : ingredientId // ignore: cast_nullable_to_non_nullable
 as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
-as double,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
+as double,unitId: freezed == unitId ? _self.unitId : unitId // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -3629,7 +3623,7 @@ as String?,
 /// @nodoc
 mixin _$Recipe {
 
- String get id; String get name; String? get description;@JsonKey(name: 'product_id') String? get productId; List<RecipeIngredient> get ingredients;@JsonKey(name: 'created_at') DateTime? get createdAt;@JsonKey(name: 'updated_at') DateTime? get updatedAt;
+ String get id;@JsonKey(name: 'store_id') String? get storeId;@JsonKey(name: 'product_id') String? get productId; String get name; String? get description;@JsonKey(name: 'yield_quantity') double get yieldQuantity;@JsonKey(name: 'wastage_percent') double get wastagePercent;@JsonKey(name: 'is_active') bool get isActive; List<RecipeIngredient> get lines;@JsonKey(name: 'created_at') DateTime? get createdAt;
 /// Create a copy of Recipe
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -3642,16 +3636,16 @@ $RecipeCopyWith<Recipe> get copyWith => _$RecipeCopyWithImpl<Recipe>(this as Rec
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Recipe&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.productId, productId) || other.productId == productId)&&const DeepCollectionEquality().equals(other.ingredients, ingredients)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Recipe&&(identical(other.id, id) || other.id == id)&&(identical(other.storeId, storeId) || other.storeId == storeId)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.yieldQuantity, yieldQuantity) || other.yieldQuantity == yieldQuantity)&&(identical(other.wastagePercent, wastagePercent) || other.wastagePercent == wastagePercent)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&const DeepCollectionEquality().equals(other.lines, lines)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,description,productId,const DeepCollectionEquality().hash(ingredients),createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,storeId,productId,name,description,yieldQuantity,wastagePercent,isActive,const DeepCollectionEquality().hash(lines),createdAt);
 
 @override
 String toString() {
-  return 'Recipe(id: $id, name: $name, description: $description, productId: $productId, ingredients: $ingredients, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'Recipe(id: $id, storeId: $storeId, productId: $productId, name: $name, description: $description, yieldQuantity: $yieldQuantity, wastagePercent: $wastagePercent, isActive: $isActive, lines: $lines, createdAt: $createdAt)';
 }
 
 
@@ -3662,7 +3656,7 @@ abstract mixin class $RecipeCopyWith<$Res>  {
   factory $RecipeCopyWith(Recipe value, $Res Function(Recipe) _then) = _$RecipeCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String? description,@JsonKey(name: 'product_id') String? productId, List<RecipeIngredient> ingredients,@JsonKey(name: 'created_at') DateTime? createdAt,@JsonKey(name: 'updated_at') DateTime? updatedAt
+ String id,@JsonKey(name: 'store_id') String? storeId,@JsonKey(name: 'product_id') String? productId, String name, String? description,@JsonKey(name: 'yield_quantity') double yieldQuantity,@JsonKey(name: 'wastage_percent') double wastagePercent,@JsonKey(name: 'is_active') bool isActive, List<RecipeIngredient> lines,@JsonKey(name: 'created_at') DateTime? createdAt
 });
 
 
@@ -3679,15 +3673,18 @@ class _$RecipeCopyWithImpl<$Res>
 
 /// Create a copy of Recipe
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? description = freezed,Object? productId = freezed,Object? ingredients = null,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? storeId = freezed,Object? productId = freezed,Object? name = null,Object? description = freezed,Object? yieldQuantity = null,Object? wastagePercent = null,Object? isActive = null,Object? lines = null,Object? createdAt = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String,storeId: freezed == storeId ? _self.storeId : storeId // ignore: cast_nullable_to_non_nullable
 as String?,productId: freezed == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
-as String?,ingredients: null == ingredients ? _self.ingredients : ingredients // ignore: cast_nullable_to_non_nullable
+as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,yieldQuantity: null == yieldQuantity ? _self.yieldQuantity : yieldQuantity // ignore: cast_nullable_to_non_nullable
+as double,wastagePercent: null == wastagePercent ? _self.wastagePercent : wastagePercent // ignore: cast_nullable_to_non_nullable
+as double,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
+as bool,lines: null == lines ? _self.lines : lines // ignore: cast_nullable_to_non_nullable
 as List<RecipeIngredient>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));
 }
@@ -3773,10 +3770,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String? description, @JsonKey(name: 'product_id')  String? productId,  List<RecipeIngredient> ingredients, @JsonKey(name: 'created_at')  DateTime? createdAt, @JsonKey(name: 'updated_at')  DateTime? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'store_id')  String? storeId, @JsonKey(name: 'product_id')  String? productId,  String name,  String? description, @JsonKey(name: 'yield_quantity')  double yieldQuantity, @JsonKey(name: 'wastage_percent')  double wastagePercent, @JsonKey(name: 'is_active')  bool isActive,  List<RecipeIngredient> lines, @JsonKey(name: 'created_at')  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Recipe() when $default != null:
-return $default(_that.id,_that.name,_that.description,_that.productId,_that.ingredients,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.storeId,_that.productId,_that.name,_that.description,_that.yieldQuantity,_that.wastagePercent,_that.isActive,_that.lines,_that.createdAt);case _:
   return orElse();
 
 }
@@ -3794,10 +3791,10 @@ return $default(_that.id,_that.name,_that.description,_that.productId,_that.ingr
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String? description, @JsonKey(name: 'product_id')  String? productId,  List<RecipeIngredient> ingredients, @JsonKey(name: 'created_at')  DateTime? createdAt, @JsonKey(name: 'updated_at')  DateTime? updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'store_id')  String? storeId, @JsonKey(name: 'product_id')  String? productId,  String name,  String? description, @JsonKey(name: 'yield_quantity')  double yieldQuantity, @JsonKey(name: 'wastage_percent')  double wastagePercent, @JsonKey(name: 'is_active')  bool isActive,  List<RecipeIngredient> lines, @JsonKey(name: 'created_at')  DateTime? createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _Recipe():
-return $default(_that.id,_that.name,_that.description,_that.productId,_that.ingredients,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.storeId,_that.productId,_that.name,_that.description,_that.yieldQuantity,_that.wastagePercent,_that.isActive,_that.lines,_that.createdAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -3814,10 +3811,10 @@ return $default(_that.id,_that.name,_that.description,_that.productId,_that.ingr
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String? description, @JsonKey(name: 'product_id')  String? productId,  List<RecipeIngredient> ingredients, @JsonKey(name: 'created_at')  DateTime? createdAt, @JsonKey(name: 'updated_at')  DateTime? updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'store_id')  String? storeId, @JsonKey(name: 'product_id')  String? productId,  String name,  String? description, @JsonKey(name: 'yield_quantity')  double yieldQuantity, @JsonKey(name: 'wastage_percent')  double wastagePercent, @JsonKey(name: 'is_active')  bool isActive,  List<RecipeIngredient> lines, @JsonKey(name: 'created_at')  DateTime? createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _Recipe() when $default != null:
-return $default(_that.id,_that.name,_that.description,_that.productId,_that.ingredients,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.storeId,_that.productId,_that.name,_that.description,_that.yieldQuantity,_that.wastagePercent,_that.isActive,_that.lines,_that.createdAt);case _:
   return null;
 
 }
@@ -3829,22 +3826,25 @@ return $default(_that.id,_that.name,_that.description,_that.productId,_that.ingr
 @JsonSerializable()
 
 class _Recipe implements Recipe {
-  const _Recipe({required this.id, required this.name, this.description, @JsonKey(name: 'product_id') this.productId, final  List<RecipeIngredient> ingredients = const [], @JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'updated_at') this.updatedAt}): _ingredients = ingredients;
+  const _Recipe({required this.id, @JsonKey(name: 'store_id') this.storeId, @JsonKey(name: 'product_id') this.productId, required this.name, this.description, @JsonKey(name: 'yield_quantity') this.yieldQuantity = 1.0, @JsonKey(name: 'wastage_percent') this.wastagePercent = 0, @JsonKey(name: 'is_active') this.isActive = true, final  List<RecipeIngredient> lines = const [], @JsonKey(name: 'created_at') this.createdAt}): _lines = lines;
   factory _Recipe.fromJson(Map<String, dynamic> json) => _$RecipeFromJson(json);
 
 @override final  String id;
+@override@JsonKey(name: 'store_id') final  String? storeId;
+@override@JsonKey(name: 'product_id') final  String? productId;
 @override final  String name;
 @override final  String? description;
-@override@JsonKey(name: 'product_id') final  String? productId;
- final  List<RecipeIngredient> _ingredients;
-@override@JsonKey() List<RecipeIngredient> get ingredients {
-  if (_ingredients is EqualUnmodifiableListView) return _ingredients;
+@override@JsonKey(name: 'yield_quantity') final  double yieldQuantity;
+@override@JsonKey(name: 'wastage_percent') final  double wastagePercent;
+@override@JsonKey(name: 'is_active') final  bool isActive;
+ final  List<RecipeIngredient> _lines;
+@override@JsonKey() List<RecipeIngredient> get lines {
+  if (_lines is EqualUnmodifiableListView) return _lines;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_ingredients);
+  return EqualUnmodifiableListView(_lines);
 }
 
 @override@JsonKey(name: 'created_at') final  DateTime? createdAt;
-@override@JsonKey(name: 'updated_at') final  DateTime? updatedAt;
 
 /// Create a copy of Recipe
 /// with the given fields replaced by the non-null parameter values.
@@ -3859,16 +3859,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Recipe&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.productId, productId) || other.productId == productId)&&const DeepCollectionEquality().equals(other._ingredients, _ingredients)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Recipe&&(identical(other.id, id) || other.id == id)&&(identical(other.storeId, storeId) || other.storeId == storeId)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.yieldQuantity, yieldQuantity) || other.yieldQuantity == yieldQuantity)&&(identical(other.wastagePercent, wastagePercent) || other.wastagePercent == wastagePercent)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&const DeepCollectionEquality().equals(other._lines, _lines)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,description,productId,const DeepCollectionEquality().hash(_ingredients),createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,storeId,productId,name,description,yieldQuantity,wastagePercent,isActive,const DeepCollectionEquality().hash(_lines),createdAt);
 
 @override
 String toString() {
-  return 'Recipe(id: $id, name: $name, description: $description, productId: $productId, ingredients: $ingredients, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'Recipe(id: $id, storeId: $storeId, productId: $productId, name: $name, description: $description, yieldQuantity: $yieldQuantity, wastagePercent: $wastagePercent, isActive: $isActive, lines: $lines, createdAt: $createdAt)';
 }
 
 
@@ -3879,7 +3879,7 @@ abstract mixin class _$RecipeCopyWith<$Res> implements $RecipeCopyWith<$Res> {
   factory _$RecipeCopyWith(_Recipe value, $Res Function(_Recipe) _then) = __$RecipeCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String? description,@JsonKey(name: 'product_id') String? productId, List<RecipeIngredient> ingredients,@JsonKey(name: 'created_at') DateTime? createdAt,@JsonKey(name: 'updated_at') DateTime? updatedAt
+ String id,@JsonKey(name: 'store_id') String? storeId,@JsonKey(name: 'product_id') String? productId, String name, String? description,@JsonKey(name: 'yield_quantity') double yieldQuantity,@JsonKey(name: 'wastage_percent') double wastagePercent,@JsonKey(name: 'is_active') bool isActive, List<RecipeIngredient> lines,@JsonKey(name: 'created_at') DateTime? createdAt
 });
 
 
@@ -3896,15 +3896,18 @@ class __$RecipeCopyWithImpl<$Res>
 
 /// Create a copy of Recipe
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? description = freezed,Object? productId = freezed,Object? ingredients = null,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? storeId = freezed,Object? productId = freezed,Object? name = null,Object? description = freezed,Object? yieldQuantity = null,Object? wastagePercent = null,Object? isActive = null,Object? lines = null,Object? createdAt = freezed,}) {
   return _then(_Recipe(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String,storeId: freezed == storeId ? _self.storeId : storeId // ignore: cast_nullable_to_non_nullable
 as String?,productId: freezed == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
-as String?,ingredients: null == ingredients ? _self._ingredients : ingredients // ignore: cast_nullable_to_non_nullable
+as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,yieldQuantity: null == yieldQuantity ? _self.yieldQuantity : yieldQuantity // ignore: cast_nullable_to_non_nullable
+as double,wastagePercent: null == wastagePercent ? _self.wastagePercent : wastagePercent // ignore: cast_nullable_to_non_nullable
+as double,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
+as bool,lines: null == lines ? _self._lines : lines // ignore: cast_nullable_to_non_nullable
 as List<RecipeIngredient>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));
 }
@@ -3916,7 +3919,7 @@ as DateTime?,
 /// @nodoc
 mixin _$RecipeCreate {
 
- String get name; String? get description;@JsonKey(name: 'product_id') String? get productId; List<RecipeIngredientCreate> get ingredients;
+@JsonKey(name: 'store_id') String get storeId;@JsonKey(name: 'product_id') String get productId; String get name; String? get description;@JsonKey(name: 'yield_quantity') double get yieldQuantity;@JsonKey(name: 'wastage_percent') double get wastagePercent;@JsonKey(name: 'is_active') bool get isActive; List<RecipeIngredientCreate> get lines;
 /// Create a copy of RecipeCreate
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -3929,16 +3932,16 @@ $RecipeCreateCopyWith<RecipeCreate> get copyWith => _$RecipeCreateCopyWithImpl<R
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RecipeCreate&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.productId, productId) || other.productId == productId)&&const DeepCollectionEquality().equals(other.ingredients, ingredients));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RecipeCreate&&(identical(other.storeId, storeId) || other.storeId == storeId)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.yieldQuantity, yieldQuantity) || other.yieldQuantity == yieldQuantity)&&(identical(other.wastagePercent, wastagePercent) || other.wastagePercent == wastagePercent)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&const DeepCollectionEquality().equals(other.lines, lines));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,description,productId,const DeepCollectionEquality().hash(ingredients));
+int get hashCode => Object.hash(runtimeType,storeId,productId,name,description,yieldQuantity,wastagePercent,isActive,const DeepCollectionEquality().hash(lines));
 
 @override
 String toString() {
-  return 'RecipeCreate(name: $name, description: $description, productId: $productId, ingredients: $ingredients)';
+  return 'RecipeCreate(storeId: $storeId, productId: $productId, name: $name, description: $description, yieldQuantity: $yieldQuantity, wastagePercent: $wastagePercent, isActive: $isActive, lines: $lines)';
 }
 
 
@@ -3949,7 +3952,7 @@ abstract mixin class $RecipeCreateCopyWith<$Res>  {
   factory $RecipeCreateCopyWith(RecipeCreate value, $Res Function(RecipeCreate) _then) = _$RecipeCreateCopyWithImpl;
 @useResult
 $Res call({
- String name, String? description,@JsonKey(name: 'product_id') String? productId, List<RecipeIngredientCreate> ingredients
+@JsonKey(name: 'store_id') String storeId,@JsonKey(name: 'product_id') String productId, String name, String? description,@JsonKey(name: 'yield_quantity') double yieldQuantity,@JsonKey(name: 'wastage_percent') double wastagePercent,@JsonKey(name: 'is_active') bool isActive, List<RecipeIngredientCreate> lines
 });
 
 
@@ -3966,12 +3969,16 @@ class _$RecipeCreateCopyWithImpl<$Res>
 
 /// Create a copy of RecipeCreate
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? description = freezed,Object? productId = freezed,Object? ingredients = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? storeId = null,Object? productId = null,Object? name = null,Object? description = freezed,Object? yieldQuantity = null,Object? wastagePercent = null,Object? isActive = null,Object? lines = null,}) {
   return _then(_self.copyWith(
-name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+storeId: null == storeId ? _self.storeId : storeId // ignore: cast_nullable_to_non_nullable
+as String,productId: null == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String?,productId: freezed == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
-as String?,ingredients: null == ingredients ? _self.ingredients : ingredients // ignore: cast_nullable_to_non_nullable
+as String?,yieldQuantity: null == yieldQuantity ? _self.yieldQuantity : yieldQuantity // ignore: cast_nullable_to_non_nullable
+as double,wastagePercent: null == wastagePercent ? _self.wastagePercent : wastagePercent // ignore: cast_nullable_to_non_nullable
+as double,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
+as bool,lines: null == lines ? _self.lines : lines // ignore: cast_nullable_to_non_nullable
 as List<RecipeIngredientCreate>,
   ));
 }
@@ -4057,10 +4064,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  String? description, @JsonKey(name: 'product_id')  String? productId,  List<RecipeIngredientCreate> ingredients)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'store_id')  String storeId, @JsonKey(name: 'product_id')  String productId,  String name,  String? description, @JsonKey(name: 'yield_quantity')  double yieldQuantity, @JsonKey(name: 'wastage_percent')  double wastagePercent, @JsonKey(name: 'is_active')  bool isActive,  List<RecipeIngredientCreate> lines)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RecipeCreate() when $default != null:
-return $default(_that.name,_that.description,_that.productId,_that.ingredients);case _:
+return $default(_that.storeId,_that.productId,_that.name,_that.description,_that.yieldQuantity,_that.wastagePercent,_that.isActive,_that.lines);case _:
   return orElse();
 
 }
@@ -4078,10 +4085,10 @@ return $default(_that.name,_that.description,_that.productId,_that.ingredients);
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String? description, @JsonKey(name: 'product_id')  String? productId,  List<RecipeIngredientCreate> ingredients)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'store_id')  String storeId, @JsonKey(name: 'product_id')  String productId,  String name,  String? description, @JsonKey(name: 'yield_quantity')  double yieldQuantity, @JsonKey(name: 'wastage_percent')  double wastagePercent, @JsonKey(name: 'is_active')  bool isActive,  List<RecipeIngredientCreate> lines)  $default,) {final _that = this;
 switch (_that) {
 case _RecipeCreate():
-return $default(_that.name,_that.description,_that.productId,_that.ingredients);case _:
+return $default(_that.storeId,_that.productId,_that.name,_that.description,_that.yieldQuantity,_that.wastagePercent,_that.isActive,_that.lines);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -4098,10 +4105,10 @@ return $default(_that.name,_that.description,_that.productId,_that.ingredients);
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  String? description, @JsonKey(name: 'product_id')  String? productId,  List<RecipeIngredientCreate> ingredients)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'store_id')  String storeId, @JsonKey(name: 'product_id')  String productId,  String name,  String? description, @JsonKey(name: 'yield_quantity')  double yieldQuantity, @JsonKey(name: 'wastage_percent')  double wastagePercent, @JsonKey(name: 'is_active')  bool isActive,  List<RecipeIngredientCreate> lines)?  $default,) {final _that = this;
 switch (_that) {
 case _RecipeCreate() when $default != null:
-return $default(_that.name,_that.description,_that.productId,_that.ingredients);case _:
+return $default(_that.storeId,_that.productId,_that.name,_that.description,_that.yieldQuantity,_that.wastagePercent,_that.isActive,_that.lines);case _:
   return null;
 
 }
@@ -4113,17 +4120,21 @@ return $default(_that.name,_that.description,_that.productId,_that.ingredients);
 @JsonSerializable()
 
 class _RecipeCreate implements RecipeCreate {
-  const _RecipeCreate({required this.name, this.description, @JsonKey(name: 'product_id') this.productId, final  List<RecipeIngredientCreate> ingredients = const []}): _ingredients = ingredients;
+  const _RecipeCreate({@JsonKey(name: 'store_id') required this.storeId, @JsonKey(name: 'product_id') required this.productId, required this.name, this.description, @JsonKey(name: 'yield_quantity') this.yieldQuantity = 1.0, @JsonKey(name: 'wastage_percent') this.wastagePercent = 0, @JsonKey(name: 'is_active') this.isActive = true, final  List<RecipeIngredientCreate> lines = const []}): _lines = lines;
   factory _RecipeCreate.fromJson(Map<String, dynamic> json) => _$RecipeCreateFromJson(json);
 
+@override@JsonKey(name: 'store_id') final  String storeId;
+@override@JsonKey(name: 'product_id') final  String productId;
 @override final  String name;
 @override final  String? description;
-@override@JsonKey(name: 'product_id') final  String? productId;
- final  List<RecipeIngredientCreate> _ingredients;
-@override@JsonKey() List<RecipeIngredientCreate> get ingredients {
-  if (_ingredients is EqualUnmodifiableListView) return _ingredients;
+@override@JsonKey(name: 'yield_quantity') final  double yieldQuantity;
+@override@JsonKey(name: 'wastage_percent') final  double wastagePercent;
+@override@JsonKey(name: 'is_active') final  bool isActive;
+ final  List<RecipeIngredientCreate> _lines;
+@override@JsonKey() List<RecipeIngredientCreate> get lines {
+  if (_lines is EqualUnmodifiableListView) return _lines;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_ingredients);
+  return EqualUnmodifiableListView(_lines);
 }
 
 
@@ -4140,16 +4151,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecipeCreate&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.productId, productId) || other.productId == productId)&&const DeepCollectionEquality().equals(other._ingredients, _ingredients));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecipeCreate&&(identical(other.storeId, storeId) || other.storeId == storeId)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.yieldQuantity, yieldQuantity) || other.yieldQuantity == yieldQuantity)&&(identical(other.wastagePercent, wastagePercent) || other.wastagePercent == wastagePercent)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&const DeepCollectionEquality().equals(other._lines, _lines));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,description,productId,const DeepCollectionEquality().hash(_ingredients));
+int get hashCode => Object.hash(runtimeType,storeId,productId,name,description,yieldQuantity,wastagePercent,isActive,const DeepCollectionEquality().hash(_lines));
 
 @override
 String toString() {
-  return 'RecipeCreate(name: $name, description: $description, productId: $productId, ingredients: $ingredients)';
+  return 'RecipeCreate(storeId: $storeId, productId: $productId, name: $name, description: $description, yieldQuantity: $yieldQuantity, wastagePercent: $wastagePercent, isActive: $isActive, lines: $lines)';
 }
 
 
@@ -4160,7 +4171,7 @@ abstract mixin class _$RecipeCreateCopyWith<$Res> implements $RecipeCreateCopyWi
   factory _$RecipeCreateCopyWith(_RecipeCreate value, $Res Function(_RecipeCreate) _then) = __$RecipeCreateCopyWithImpl;
 @override @useResult
 $Res call({
- String name, String? description,@JsonKey(name: 'product_id') String? productId, List<RecipeIngredientCreate> ingredients
+@JsonKey(name: 'store_id') String storeId,@JsonKey(name: 'product_id') String productId, String name, String? description,@JsonKey(name: 'yield_quantity') double yieldQuantity,@JsonKey(name: 'wastage_percent') double wastagePercent,@JsonKey(name: 'is_active') bool isActive, List<RecipeIngredientCreate> lines
 });
 
 
@@ -4177,12 +4188,16 @@ class __$RecipeCreateCopyWithImpl<$Res>
 
 /// Create a copy of RecipeCreate
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? description = freezed,Object? productId = freezed,Object? ingredients = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? storeId = null,Object? productId = null,Object? name = null,Object? description = freezed,Object? yieldQuantity = null,Object? wastagePercent = null,Object? isActive = null,Object? lines = null,}) {
   return _then(_RecipeCreate(
-name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+storeId: null == storeId ? _self.storeId : storeId // ignore: cast_nullable_to_non_nullable
+as String,productId: null == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String?,productId: freezed == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
-as String?,ingredients: null == ingredients ? _self._ingredients : ingredients // ignore: cast_nullable_to_non_nullable
+as String?,yieldQuantity: null == yieldQuantity ? _self.yieldQuantity : yieldQuantity // ignore: cast_nullable_to_non_nullable
+as double,wastagePercent: null == wastagePercent ? _self.wastagePercent : wastagePercent // ignore: cast_nullable_to_non_nullable
+as double,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
+as bool,lines: null == lines ? _self._lines : lines // ignore: cast_nullable_to_non_nullable
 as List<RecipeIngredientCreate>,
   ));
 }
@@ -4194,7 +4209,7 @@ as List<RecipeIngredientCreate>,
 /// @nodoc
 mixin _$RecipeUpdate {
 
- String? get name; String? get description;@JsonKey(name: 'product_id') String? get productId; List<RecipeIngredientCreate>? get ingredients;
+ String? get name; String? get description;@JsonKey(name: 'yield_quantity') double? get yieldQuantity;@JsonKey(name: 'wastage_percent') double? get wastagePercent;@JsonKey(name: 'is_active') bool? get isActive; List<RecipeIngredientCreate>? get lines;
 /// Create a copy of RecipeUpdate
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -4207,16 +4222,16 @@ $RecipeUpdateCopyWith<RecipeUpdate> get copyWith => _$RecipeUpdateCopyWithImpl<R
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RecipeUpdate&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.productId, productId) || other.productId == productId)&&const DeepCollectionEquality().equals(other.ingredients, ingredients));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RecipeUpdate&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.yieldQuantity, yieldQuantity) || other.yieldQuantity == yieldQuantity)&&(identical(other.wastagePercent, wastagePercent) || other.wastagePercent == wastagePercent)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&const DeepCollectionEquality().equals(other.lines, lines));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,description,productId,const DeepCollectionEquality().hash(ingredients));
+int get hashCode => Object.hash(runtimeType,name,description,yieldQuantity,wastagePercent,isActive,const DeepCollectionEquality().hash(lines));
 
 @override
 String toString() {
-  return 'RecipeUpdate(name: $name, description: $description, productId: $productId, ingredients: $ingredients)';
+  return 'RecipeUpdate(name: $name, description: $description, yieldQuantity: $yieldQuantity, wastagePercent: $wastagePercent, isActive: $isActive, lines: $lines)';
 }
 
 
@@ -4227,7 +4242,7 @@ abstract mixin class $RecipeUpdateCopyWith<$Res>  {
   factory $RecipeUpdateCopyWith(RecipeUpdate value, $Res Function(RecipeUpdate) _then) = _$RecipeUpdateCopyWithImpl;
 @useResult
 $Res call({
- String? name, String? description,@JsonKey(name: 'product_id') String? productId, List<RecipeIngredientCreate>? ingredients
+ String? name, String? description,@JsonKey(name: 'yield_quantity') double? yieldQuantity,@JsonKey(name: 'wastage_percent') double? wastagePercent,@JsonKey(name: 'is_active') bool? isActive, List<RecipeIngredientCreate>? lines
 });
 
 
@@ -4244,12 +4259,14 @@ class _$RecipeUpdateCopyWithImpl<$Res>
 
 /// Create a copy of RecipeUpdate
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = freezed,Object? description = freezed,Object? productId = freezed,Object? ingredients = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? name = freezed,Object? description = freezed,Object? yieldQuantity = freezed,Object? wastagePercent = freezed,Object? isActive = freezed,Object? lines = freezed,}) {
   return _then(_self.copyWith(
 name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String?,productId: freezed == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
-as String?,ingredients: freezed == ingredients ? _self.ingredients : ingredients // ignore: cast_nullable_to_non_nullable
+as String?,yieldQuantity: freezed == yieldQuantity ? _self.yieldQuantity : yieldQuantity // ignore: cast_nullable_to_non_nullable
+as double?,wastagePercent: freezed == wastagePercent ? _self.wastagePercent : wastagePercent // ignore: cast_nullable_to_non_nullable
+as double?,isActive: freezed == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
+as bool?,lines: freezed == lines ? _self.lines : lines // ignore: cast_nullable_to_non_nullable
 as List<RecipeIngredientCreate>?,
   ));
 }
@@ -4335,10 +4352,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? name,  String? description, @JsonKey(name: 'product_id')  String? productId,  List<RecipeIngredientCreate>? ingredients)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? name,  String? description, @JsonKey(name: 'yield_quantity')  double? yieldQuantity, @JsonKey(name: 'wastage_percent')  double? wastagePercent, @JsonKey(name: 'is_active')  bool? isActive,  List<RecipeIngredientCreate>? lines)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RecipeUpdate() when $default != null:
-return $default(_that.name,_that.description,_that.productId,_that.ingredients);case _:
+return $default(_that.name,_that.description,_that.yieldQuantity,_that.wastagePercent,_that.isActive,_that.lines);case _:
   return orElse();
 
 }
@@ -4356,10 +4373,10 @@ return $default(_that.name,_that.description,_that.productId,_that.ingredients);
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? name,  String? description, @JsonKey(name: 'product_id')  String? productId,  List<RecipeIngredientCreate>? ingredients)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? name,  String? description, @JsonKey(name: 'yield_quantity')  double? yieldQuantity, @JsonKey(name: 'wastage_percent')  double? wastagePercent, @JsonKey(name: 'is_active')  bool? isActive,  List<RecipeIngredientCreate>? lines)  $default,) {final _that = this;
 switch (_that) {
 case _RecipeUpdate():
-return $default(_that.name,_that.description,_that.productId,_that.ingredients);case _:
+return $default(_that.name,_that.description,_that.yieldQuantity,_that.wastagePercent,_that.isActive,_that.lines);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -4376,10 +4393,10 @@ return $default(_that.name,_that.description,_that.productId,_that.ingredients);
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? name,  String? description, @JsonKey(name: 'product_id')  String? productId,  List<RecipeIngredientCreate>? ingredients)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? name,  String? description, @JsonKey(name: 'yield_quantity')  double? yieldQuantity, @JsonKey(name: 'wastage_percent')  double? wastagePercent, @JsonKey(name: 'is_active')  bool? isActive,  List<RecipeIngredientCreate>? lines)?  $default,) {final _that = this;
 switch (_that) {
 case _RecipeUpdate() when $default != null:
-return $default(_that.name,_that.description,_that.productId,_that.ingredients);case _:
+return $default(_that.name,_that.description,_that.yieldQuantity,_that.wastagePercent,_that.isActive,_that.lines);case _:
   return null;
 
 }
@@ -4391,17 +4408,19 @@ return $default(_that.name,_that.description,_that.productId,_that.ingredients);
 @JsonSerializable()
 
 class _RecipeUpdate implements RecipeUpdate {
-  const _RecipeUpdate({this.name, this.description, @JsonKey(name: 'product_id') this.productId, final  List<RecipeIngredientCreate>? ingredients}): _ingredients = ingredients;
+  const _RecipeUpdate({this.name, this.description, @JsonKey(name: 'yield_quantity') this.yieldQuantity, @JsonKey(name: 'wastage_percent') this.wastagePercent, @JsonKey(name: 'is_active') this.isActive, final  List<RecipeIngredientCreate>? lines}): _lines = lines;
   factory _RecipeUpdate.fromJson(Map<String, dynamic> json) => _$RecipeUpdateFromJson(json);
 
 @override final  String? name;
 @override final  String? description;
-@override@JsonKey(name: 'product_id') final  String? productId;
- final  List<RecipeIngredientCreate>? _ingredients;
-@override List<RecipeIngredientCreate>? get ingredients {
-  final value = _ingredients;
+@override@JsonKey(name: 'yield_quantity') final  double? yieldQuantity;
+@override@JsonKey(name: 'wastage_percent') final  double? wastagePercent;
+@override@JsonKey(name: 'is_active') final  bool? isActive;
+ final  List<RecipeIngredientCreate>? _lines;
+@override List<RecipeIngredientCreate>? get lines {
+  final value = _lines;
   if (value == null) return null;
-  if (_ingredients is EqualUnmodifiableListView) return _ingredients;
+  if (_lines is EqualUnmodifiableListView) return _lines;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(value);
 }
@@ -4420,16 +4439,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecipeUpdate&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.productId, productId) || other.productId == productId)&&const DeepCollectionEquality().equals(other._ingredients, _ingredients));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecipeUpdate&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.yieldQuantity, yieldQuantity) || other.yieldQuantity == yieldQuantity)&&(identical(other.wastagePercent, wastagePercent) || other.wastagePercent == wastagePercent)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&const DeepCollectionEquality().equals(other._lines, _lines));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,description,productId,const DeepCollectionEquality().hash(_ingredients));
+int get hashCode => Object.hash(runtimeType,name,description,yieldQuantity,wastagePercent,isActive,const DeepCollectionEquality().hash(_lines));
 
 @override
 String toString() {
-  return 'RecipeUpdate(name: $name, description: $description, productId: $productId, ingredients: $ingredients)';
+  return 'RecipeUpdate(name: $name, description: $description, yieldQuantity: $yieldQuantity, wastagePercent: $wastagePercent, isActive: $isActive, lines: $lines)';
 }
 
 
@@ -4440,7 +4459,7 @@ abstract mixin class _$RecipeUpdateCopyWith<$Res> implements $RecipeUpdateCopyWi
   factory _$RecipeUpdateCopyWith(_RecipeUpdate value, $Res Function(_RecipeUpdate) _then) = __$RecipeUpdateCopyWithImpl;
 @override @useResult
 $Res call({
- String? name, String? description,@JsonKey(name: 'product_id') String? productId, List<RecipeIngredientCreate>? ingredients
+ String? name, String? description,@JsonKey(name: 'yield_quantity') double? yieldQuantity,@JsonKey(name: 'wastage_percent') double? wastagePercent,@JsonKey(name: 'is_active') bool? isActive, List<RecipeIngredientCreate>? lines
 });
 
 
@@ -4457,12 +4476,14 @@ class __$RecipeUpdateCopyWithImpl<$Res>
 
 /// Create a copy of RecipeUpdate
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = freezed,Object? description = freezed,Object? productId = freezed,Object? ingredients = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? name = freezed,Object? description = freezed,Object? yieldQuantity = freezed,Object? wastagePercent = freezed,Object? isActive = freezed,Object? lines = freezed,}) {
   return _then(_RecipeUpdate(
 name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String?,productId: freezed == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
-as String?,ingredients: freezed == ingredients ? _self._ingredients : ingredients // ignore: cast_nullable_to_non_nullable
+as String?,yieldQuantity: freezed == yieldQuantity ? _self.yieldQuantity : yieldQuantity // ignore: cast_nullable_to_non_nullable
+as double?,wastagePercent: freezed == wastagePercent ? _self.wastagePercent : wastagePercent // ignore: cast_nullable_to_non_nullable
+as double?,isActive: freezed == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
+as bool?,lines: freezed == lines ? _self._lines : lines // ignore: cast_nullable_to_non_nullable
 as List<RecipeIngredientCreate>?,
   ));
 }
@@ -5311,7 +5332,7 @@ as String,
 /// @nodoc
 mixin _$OutOfStockItem {
 
- String get id;@JsonKey(name: 'item_id') String get itemId;@JsonKey(name: 'item_name') String get itemName;@JsonKey(name: 'unit_name') String? get unitName;@JsonKey(name: 'location_name') String? get locationName; String? get reason;@JsonKey(name: 'reported_at') DateTime? get reportedAt;
+ String get id;@JsonKey(name: 'store_id') String get storeId; String get name; String? get sku; String? get category;@JsonKey(name: 'is_active') bool get isActive;
 /// Create a copy of OutOfStockItem
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -5324,16 +5345,16 @@ $OutOfStockItemCopyWith<OutOfStockItem> get copyWith => _$OutOfStockItemCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OutOfStockItem&&(identical(other.id, id) || other.id == id)&&(identical(other.itemId, itemId) || other.itemId == itemId)&&(identical(other.itemName, itemName) || other.itemName == itemName)&&(identical(other.unitName, unitName) || other.unitName == unitName)&&(identical(other.locationName, locationName) || other.locationName == locationName)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.reportedAt, reportedAt) || other.reportedAt == reportedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OutOfStockItem&&(identical(other.id, id) || other.id == id)&&(identical(other.storeId, storeId) || other.storeId == storeId)&&(identical(other.name, name) || other.name == name)&&(identical(other.sku, sku) || other.sku == sku)&&(identical(other.category, category) || other.category == category)&&(identical(other.isActive, isActive) || other.isActive == isActive));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,itemId,itemName,unitName,locationName,reason,reportedAt);
+int get hashCode => Object.hash(runtimeType,id,storeId,name,sku,category,isActive);
 
 @override
 String toString() {
-  return 'OutOfStockItem(id: $id, itemId: $itemId, itemName: $itemName, unitName: $unitName, locationName: $locationName, reason: $reason, reportedAt: $reportedAt)';
+  return 'OutOfStockItem(id: $id, storeId: $storeId, name: $name, sku: $sku, category: $category, isActive: $isActive)';
 }
 
 
@@ -5344,7 +5365,7 @@ abstract mixin class $OutOfStockItemCopyWith<$Res>  {
   factory $OutOfStockItemCopyWith(OutOfStockItem value, $Res Function(OutOfStockItem) _then) = _$OutOfStockItemCopyWithImpl;
 @useResult
 $Res call({
- String id,@JsonKey(name: 'item_id') String itemId,@JsonKey(name: 'item_name') String itemName,@JsonKey(name: 'unit_name') String? unitName,@JsonKey(name: 'location_name') String? locationName, String? reason,@JsonKey(name: 'reported_at') DateTime? reportedAt
+ String id,@JsonKey(name: 'store_id') String storeId, String name, String? sku, String? category,@JsonKey(name: 'is_active') bool isActive
 });
 
 
@@ -5361,16 +5382,15 @@ class _$OutOfStockItemCopyWithImpl<$Res>
 
 /// Create a copy of OutOfStockItem
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? itemId = null,Object? itemName = null,Object? unitName = freezed,Object? locationName = freezed,Object? reason = freezed,Object? reportedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? storeId = null,Object? name = null,Object? sku = freezed,Object? category = freezed,Object? isActive = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,itemId: null == itemId ? _self.itemId : itemId // ignore: cast_nullable_to_non_nullable
-as String,itemName: null == itemName ? _self.itemName : itemName // ignore: cast_nullable_to_non_nullable
-as String,unitName: freezed == unitName ? _self.unitName : unitName // ignore: cast_nullable_to_non_nullable
-as String?,locationName: freezed == locationName ? _self.locationName : locationName // ignore: cast_nullable_to_non_nullable
-as String?,reason: freezed == reason ? _self.reason : reason // ignore: cast_nullable_to_non_nullable
-as String?,reportedAt: freezed == reportedAt ? _self.reportedAt : reportedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as String,storeId: null == storeId ? _self.storeId : storeId // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,sku: freezed == sku ? _self.sku : sku // ignore: cast_nullable_to_non_nullable
+as String?,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String?,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -5455,10 +5475,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'item_id')  String itemId, @JsonKey(name: 'item_name')  String itemName, @JsonKey(name: 'unit_name')  String? unitName, @JsonKey(name: 'location_name')  String? locationName,  String? reason, @JsonKey(name: 'reported_at')  DateTime? reportedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'store_id')  String storeId,  String name,  String? sku,  String? category, @JsonKey(name: 'is_active')  bool isActive)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OutOfStockItem() when $default != null:
-return $default(_that.id,_that.itemId,_that.itemName,_that.unitName,_that.locationName,_that.reason,_that.reportedAt);case _:
+return $default(_that.id,_that.storeId,_that.name,_that.sku,_that.category,_that.isActive);case _:
   return orElse();
 
 }
@@ -5476,10 +5496,10 @@ return $default(_that.id,_that.itemId,_that.itemName,_that.unitName,_that.locati
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'item_id')  String itemId, @JsonKey(name: 'item_name')  String itemName, @JsonKey(name: 'unit_name')  String? unitName, @JsonKey(name: 'location_name')  String? locationName,  String? reason, @JsonKey(name: 'reported_at')  DateTime? reportedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'store_id')  String storeId,  String name,  String? sku,  String? category, @JsonKey(name: 'is_active')  bool isActive)  $default,) {final _that = this;
 switch (_that) {
 case _OutOfStockItem():
-return $default(_that.id,_that.itemId,_that.itemName,_that.unitName,_that.locationName,_that.reason,_that.reportedAt);case _:
+return $default(_that.id,_that.storeId,_that.name,_that.sku,_that.category,_that.isActive);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -5496,10 +5516,10 @@ return $default(_that.id,_that.itemId,_that.itemName,_that.unitName,_that.locati
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'item_id')  String itemId, @JsonKey(name: 'item_name')  String itemName, @JsonKey(name: 'unit_name')  String? unitName, @JsonKey(name: 'location_name')  String? locationName,  String? reason, @JsonKey(name: 'reported_at')  DateTime? reportedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'store_id')  String storeId,  String name,  String? sku,  String? category, @JsonKey(name: 'is_active')  bool isActive)?  $default,) {final _that = this;
 switch (_that) {
 case _OutOfStockItem() when $default != null:
-return $default(_that.id,_that.itemId,_that.itemName,_that.unitName,_that.locationName,_that.reason,_that.reportedAt);case _:
+return $default(_that.id,_that.storeId,_that.name,_that.sku,_that.category,_that.isActive);case _:
   return null;
 
 }
@@ -5511,16 +5531,15 @@ return $default(_that.id,_that.itemId,_that.itemName,_that.unitName,_that.locati
 @JsonSerializable()
 
 class _OutOfStockItem implements OutOfStockItem {
-  const _OutOfStockItem({required this.id, @JsonKey(name: 'item_id') required this.itemId, @JsonKey(name: 'item_name') required this.itemName, @JsonKey(name: 'unit_name') this.unitName, @JsonKey(name: 'location_name') this.locationName, this.reason, @JsonKey(name: 'reported_at') this.reportedAt});
+  const _OutOfStockItem({required this.id, @JsonKey(name: 'store_id') required this.storeId, required this.name, this.sku, this.category, @JsonKey(name: 'is_active') this.isActive = false});
   factory _OutOfStockItem.fromJson(Map<String, dynamic> json) => _$OutOfStockItemFromJson(json);
 
 @override final  String id;
-@override@JsonKey(name: 'item_id') final  String itemId;
-@override@JsonKey(name: 'item_name') final  String itemName;
-@override@JsonKey(name: 'unit_name') final  String? unitName;
-@override@JsonKey(name: 'location_name') final  String? locationName;
-@override final  String? reason;
-@override@JsonKey(name: 'reported_at') final  DateTime? reportedAt;
+@override@JsonKey(name: 'store_id') final  String storeId;
+@override final  String name;
+@override final  String? sku;
+@override final  String? category;
+@override@JsonKey(name: 'is_active') final  bool isActive;
 
 /// Create a copy of OutOfStockItem
 /// with the given fields replaced by the non-null parameter values.
@@ -5535,16 +5554,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OutOfStockItem&&(identical(other.id, id) || other.id == id)&&(identical(other.itemId, itemId) || other.itemId == itemId)&&(identical(other.itemName, itemName) || other.itemName == itemName)&&(identical(other.unitName, unitName) || other.unitName == unitName)&&(identical(other.locationName, locationName) || other.locationName == locationName)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.reportedAt, reportedAt) || other.reportedAt == reportedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OutOfStockItem&&(identical(other.id, id) || other.id == id)&&(identical(other.storeId, storeId) || other.storeId == storeId)&&(identical(other.name, name) || other.name == name)&&(identical(other.sku, sku) || other.sku == sku)&&(identical(other.category, category) || other.category == category)&&(identical(other.isActive, isActive) || other.isActive == isActive));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,itemId,itemName,unitName,locationName,reason,reportedAt);
+int get hashCode => Object.hash(runtimeType,id,storeId,name,sku,category,isActive);
 
 @override
 String toString() {
-  return 'OutOfStockItem(id: $id, itemId: $itemId, itemName: $itemName, unitName: $unitName, locationName: $locationName, reason: $reason, reportedAt: $reportedAt)';
+  return 'OutOfStockItem(id: $id, storeId: $storeId, name: $name, sku: $sku, category: $category, isActive: $isActive)';
 }
 
 
@@ -5555,7 +5574,7 @@ abstract mixin class _$OutOfStockItemCopyWith<$Res> implements $OutOfStockItemCo
   factory _$OutOfStockItemCopyWith(_OutOfStockItem value, $Res Function(_OutOfStockItem) _then) = __$OutOfStockItemCopyWithImpl;
 @override @useResult
 $Res call({
- String id,@JsonKey(name: 'item_id') String itemId,@JsonKey(name: 'item_name') String itemName,@JsonKey(name: 'unit_name') String? unitName,@JsonKey(name: 'location_name') String? locationName, String? reason,@JsonKey(name: 'reported_at') DateTime? reportedAt
+ String id,@JsonKey(name: 'store_id') String storeId, String name, String? sku, String? category,@JsonKey(name: 'is_active') bool isActive
 });
 
 
@@ -5572,16 +5591,15 @@ class __$OutOfStockItemCopyWithImpl<$Res>
 
 /// Create a copy of OutOfStockItem
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? itemId = null,Object? itemName = null,Object? unitName = freezed,Object? locationName = freezed,Object? reason = freezed,Object? reportedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? storeId = null,Object? name = null,Object? sku = freezed,Object? category = freezed,Object? isActive = null,}) {
   return _then(_OutOfStockItem(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,itemId: null == itemId ? _self.itemId : itemId // ignore: cast_nullable_to_non_nullable
-as String,itemName: null == itemName ? _self.itemName : itemName // ignore: cast_nullable_to_non_nullable
-as String,unitName: freezed == unitName ? _self.unitName : unitName // ignore: cast_nullable_to_non_nullable
-as String?,locationName: freezed == locationName ? _self.locationName : locationName // ignore: cast_nullable_to_non_nullable
-as String?,reason: freezed == reason ? _self.reason : reason // ignore: cast_nullable_to_non_nullable
-as String?,reportedAt: freezed == reportedAt ? _self.reportedAt : reportedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as String,storeId: null == storeId ? _self.storeId : storeId // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,sku: freezed == sku ? _self.sku : sku // ignore: cast_nullable_to_non_nullable
+as String?,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String?,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

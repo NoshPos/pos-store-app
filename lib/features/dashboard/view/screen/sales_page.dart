@@ -110,8 +110,10 @@ class _SalesFilters extends ConsumerWidget {
 
   static const _orderStatuses = [
     'open',
-    'in_kitchen',
+    'sent_to_kitchen',
+    'preparing',
     'ready',
+    'served',
     'completed',
     'paid',
     'cancelled',
@@ -364,7 +366,8 @@ class _OrderDetailPanel extends ConsumerWidget {
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const Spacer(),
-            if (order.paymentStatus != 'completed')
+            if (order.status != 'cancelled' &&
+                order.paymentStatus != 'completed')
               FilledButton.icon(
                 onPressed: () => _showRecordPaymentDialog(context, ref, order),
                 icon: const Icon(Icons.payment),

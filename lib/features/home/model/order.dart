@@ -77,6 +77,7 @@ abstract class OrderCreate with _$OrderCreate {
     @JsonKey(name: 'employee_id') String? employeeId,
     @JsonKey(name: 'terminal_id') String? terminalId,
     @JsonKey(name: 'table_number') int? tableNumber,
+    @JsonKey(name: 'shift_id') String? shiftId,
     @JsonKey(name: 'order_type') @Default('dine_in') String orderType,
     @Default('pos') String channel,
     @JsonKey(name: 'discount_amount') @Default(0) double discountAmount,
